@@ -3,6 +3,7 @@ import { scale, verticalScale, moderateScale } from 'react-native-size-matters';
 
 export const COLORS = {
   primary: '#FF6600',
+  orange200: '#FED7AA',
   background: '#FFFFFF',
   textPrimary: '#333333',
   textSecondary: '#777777',
@@ -70,6 +71,12 @@ const globalStyles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+
+  flexRow: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center'
+  }
 });
 
 export default globalStyles;
