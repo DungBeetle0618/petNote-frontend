@@ -11,6 +11,22 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		761780ED2CA45674006654EE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761780EC2CA45674006654EE /* AppDelegate.swift */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		AE7B1B0F7F3C4623B90B732C /* NanumSquareB.otf in Resources */ = {isa = PBXBuildFile; fileRef = D24C8D7184DB4E0DB8B529F1 /* NanumSquareB.otf */; };
+		7FBC23DD74E04DD6B7EA7562 /* NanumSquareEB.otf in Resources */ = {isa = PBXBuildFile; fileRef = 6DFEA128B5F24325BB89FEA8 /* NanumSquareEB.otf */; };
+		9824297870034D2A899267DD /* NanumSquareL.otf in Resources */ = {isa = PBXBuildFile; fileRef = 26B90789413043DFA0138F9F /* NanumSquareL.otf */; };
+		D4372628B25449EBBA41FA84 /* NanumSquareOTF_acB.otf in Resources */ = {isa = PBXBuildFile; fileRef = 6455851DB1B2483D8744F53E /* NanumSquareOTF_acB.otf */; };
+		578AEF3F686747AE973CCF14 /* NanumSquareOTF_acEB.otf in Resources */ = {isa = PBXBuildFile; fileRef = 91E9D5DBFBBF4FD78DB70CFF /* NanumSquareOTF_acEB.otf */; };
+		4FDB079CEC0A4DED98C5F14D /* NanumSquareOTF_acL.otf in Resources */ = {isa = PBXBuildFile; fileRef = C46619FBA88341CAA93A8163 /* NanumSquareOTF_acL.otf */; };
+		11991DFEDB8745C1BC550247 /* NanumSquareOTF_acR.otf in Resources */ = {isa = PBXBuildFile; fileRef = 0D3574774C0342A6BE6516E0 /* NanumSquareOTF_acR.otf */; };
+		A7D010A5283D477681582AD9 /* NanumSquareR.otf in Resources */ = {isa = PBXBuildFile; fileRef = 18EDC8996943497989C715D9 /* NanumSquareR.otf */; };
+		F32FCA17D9C74E45AF4F2D0F /* NanumSquareB.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E8CF3F42F2754BBFADA1166D /* NanumSquareB.ttf */; };
+		854E8C66A7EA45FC98822114 /* NanumSquareEB.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9CB94C93558E4E77833EBD1A /* NanumSquareEB.ttf */; };
+		46CEFF5D0BDD4E43A356E044 /* NanumSquareL.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0A9EB5BFF34740AF838E8BFC /* NanumSquareL.ttf */; };
+		9C2D92C6B00D414192397A81 /* NanumSquareR.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 23A063C7EF014E8F9786248F /* NanumSquareR.ttf */; };
+		ACB6ACFDEFD34085B054A082 /* NanumSquare_acB.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 41334BE9080C41D5AF7B7C11 /* NanumSquare_acB.ttf */; };
+		A4193BCAE9B54B5CB85207B3 /* NanumSquare_acEB.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B3EC43F68F214584A945B206 /* NanumSquare_acEB.ttf */; };
+		6A664B30A85344B091524B81 /* NanumSquare_acL.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D3B3E8F9335440ABAC2BDF56 /* NanumSquare_acL.ttf */; };
+		6EDD7DA109794C2A898644FA /* NanumSquare_acR.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6101E5101E7D45489CF1EECF /* NanumSquare_acR.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +40,22 @@
 		761780EC2CA45674006654EE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = petNote/AppDelegate.swift; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = petNote/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		D24C8D7184DB4E0DB8B529F1 /* NanumSquareB.otf */ = {isa = PBXFileReference; name = "NanumSquareB.otf"; path = "../src/assets/fonts/NanumSquareB.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		6DFEA128B5F24325BB89FEA8 /* NanumSquareEB.otf */ = {isa = PBXFileReference; name = "NanumSquareEB.otf"; path = "../src/assets/fonts/NanumSquareEB.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		26B90789413043DFA0138F9F /* NanumSquareL.otf */ = {isa = PBXFileReference; name = "NanumSquareL.otf"; path = "../src/assets/fonts/NanumSquareL.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		6455851DB1B2483D8744F53E /* NanumSquareOTF_acB.otf */ = {isa = PBXFileReference; name = "NanumSquareOTF_acB.otf"; path = "../src/assets/fonts/NanumSquareOTF_acB.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		91E9D5DBFBBF4FD78DB70CFF /* NanumSquareOTF_acEB.otf */ = {isa = PBXFileReference; name = "NanumSquareOTF_acEB.otf"; path = "../src/assets/fonts/NanumSquareOTF_acEB.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		C46619FBA88341CAA93A8163 /* NanumSquareOTF_acL.otf */ = {isa = PBXFileReference; name = "NanumSquareOTF_acL.otf"; path = "../src/assets/fonts/NanumSquareOTF_acL.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		0D3574774C0342A6BE6516E0 /* NanumSquareOTF_acR.otf */ = {isa = PBXFileReference; name = "NanumSquareOTF_acR.otf"; path = "../src/assets/fonts/NanumSquareOTF_acR.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		18EDC8996943497989C715D9 /* NanumSquareR.otf */ = {isa = PBXFileReference; name = "NanumSquareR.otf"; path = "../src/assets/fonts/NanumSquareR.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		E8CF3F42F2754BBFADA1166D /* NanumSquareB.ttf */ = {isa = PBXFileReference; name = "NanumSquareB.ttf"; path = "../src/assets/fonts/NanumSquareB.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		9CB94C93558E4E77833EBD1A /* NanumSquareEB.ttf */ = {isa = PBXFileReference; name = "NanumSquareEB.ttf"; path = "../src/assets/fonts/NanumSquareEB.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		0A9EB5BFF34740AF838E8BFC /* NanumSquareL.ttf */ = {isa = PBXFileReference; name = "NanumSquareL.ttf"; path = "../src/assets/fonts/NanumSquareL.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		23A063C7EF014E8F9786248F /* NanumSquareR.ttf */ = {isa = PBXFileReference; name = "NanumSquareR.ttf"; path = "../src/assets/fonts/NanumSquareR.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		41334BE9080C41D5AF7B7C11 /* NanumSquare_acB.ttf */ = {isa = PBXFileReference; name = "NanumSquare_acB.ttf"; path = "../src/assets/fonts/NanumSquare_acB.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		B3EC43F68F214584A945B206 /* NanumSquare_acEB.ttf */ = {isa = PBXFileReference; name = "NanumSquare_acEB.ttf"; path = "../src/assets/fonts/NanumSquare_acEB.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		D3B3E8F9335440ABAC2BDF56 /* NanumSquare_acL.ttf */ = {isa = PBXFileReference; name = "NanumSquare_acL.ttf"; path = "../src/assets/fonts/NanumSquare_acL.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		6101E5101E7D45489CF1EECF /* NanumSquare_acR.ttf */ = {isa = PBXFileReference; name = "NanumSquare_acR.ttf"; path = "../src/assets/fonts/NanumSquare_acR.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -74,6 +106,7 @@
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				BBD78D7AC51CEA395F1C20DB /* Pods */,
+				939BEE6B5BD6428C97C7F67C /* Resources */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -96,6 +129,30 @@
 			);
 			path = Pods;
 			sourceTree = "<group>";
+		};
+		939BEE6B5BD6428C97C7F67C /* Resources */ = {
+			isa = "PBXGroup";
+			children = (
+				D24C8D7184DB4E0DB8B529F1 /* NanumSquareB.otf */,
+				6DFEA128B5F24325BB89FEA8 /* NanumSquareEB.otf */,
+				26B90789413043DFA0138F9F /* NanumSquareL.otf */,
+				6455851DB1B2483D8744F53E /* NanumSquareOTF_acB.otf */,
+				91E9D5DBFBBF4FD78DB70CFF /* NanumSquareOTF_acEB.otf */,
+				C46619FBA88341CAA93A8163 /* NanumSquareOTF_acL.otf */,
+				0D3574774C0342A6BE6516E0 /* NanumSquareOTF_acR.otf */,
+				18EDC8996943497989C715D9 /* NanumSquareR.otf */,
+				E8CF3F42F2754BBFADA1166D /* NanumSquareB.ttf */,
+				9CB94C93558E4E77833EBD1A /* NanumSquareEB.ttf */,
+				0A9EB5BFF34740AF838E8BFC /* NanumSquareL.ttf */,
+				23A063C7EF014E8F9786248F /* NanumSquareR.ttf */,
+				41334BE9080C41D5AF7B7C11 /* NanumSquare_acB.ttf */,
+				B3EC43F68F214584A945B206 /* NanumSquare_acEB.ttf */,
+				D3B3E8F9335440ABAC2BDF56 /* NanumSquare_acL.ttf */,
+				6101E5101E7D45489CF1EECF /* NanumSquare_acR.ttf */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+			path = "";
 		};
 /* End PBXGroup section */
 
@@ -159,6 +216,22 @@
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				AE7B1B0F7F3C4623B90B732C /* NanumSquareB.otf in Resources */,
+				7FBC23DD74E04DD6B7EA7562 /* NanumSquareEB.otf in Resources */,
+				9824297870034D2A899267DD /* NanumSquareL.otf in Resources */,
+				D4372628B25449EBBA41FA84 /* NanumSquareOTF_acB.otf in Resources */,
+				578AEF3F686747AE973CCF14 /* NanumSquareOTF_acEB.otf in Resources */,
+				4FDB079CEC0A4DED98C5F14D /* NanumSquareOTF_acL.otf in Resources */,
+				11991DFEDB8745C1BC550247 /* NanumSquareOTF_acR.otf in Resources */,
+				A7D010A5283D477681582AD9 /* NanumSquareR.otf in Resources */,
+				F32FCA17D9C74E45AF4F2D0F /* NanumSquareB.ttf in Resources */,
+				854E8C66A7EA45FC98822114 /* NanumSquareEB.ttf in Resources */,
+				46CEFF5D0BDD4E43A356E044 /* NanumSquareL.ttf in Resources */,
+				9C2D92C6B00D414192397A81 /* NanumSquareR.ttf in Resources */,
+				ACB6ACFDEFD34085B054A082 /* NanumSquare_acB.ttf in Resources */,
+				A4193BCAE9B54B5CB85207B3 /* NanumSquare_acEB.ttf in Resources */,
+				6A664B30A85344B091524B81 /* NanumSquare_acL.ttf in Resources */,
+				6EDD7DA109794C2A898644FA /* NanumSquare_acR.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
