@@ -15,7 +15,9 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import RegularText from './RegularText';
 import BoldText from './BoldText';
 
-
+/**
+ * 화살표 아이콘 애니메이션 
+ */
 const RotatingIcon = ({ visible }) => {
     const rotateAnim = useRef(new Animated.Value(0)).current;
 
@@ -41,13 +43,15 @@ const RotatingIcon = ({ visible }) => {
 };
 
 
+/**
+ * @param options 내 반려동물 리스트
+ * @param selectedValue 선택한 동물 object
+ * @param onSelect select시 작업
+ * @param visible 드롭박스 display 여부
+ * @param onOpen 드롭박스 보이게
+ * @param onClose 드롭박스 안보이게
+ */
 const PetSelectBox = ({ options, selectedValue, onSelect, visible, onOpen, onClose }) => {
-    // const [visible, setVisible] = useState(false);
-
-    // const handleSelect = (item) => {
-    //     onSelect(item);
-    //     setVisible(false);
-    // };
 
     return (
         <View style={{ position: 'relative' }}>

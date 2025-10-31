@@ -16,6 +16,7 @@ const PetManageScreen = () => {
     const [selected, setSelected] = useState(null);
     const [dropdownVisible, setDropdownVisible] = useState(false);
 
+    //예시데이터
     const options = [
         { no: 1, name: '레오나르도', breed: '골든리트리버', profile: require('../assets/images/golden_retriever_sample.png') },
         { no: 2, name: '아치', breed: '코리안 숏헤어', profile: '' },
@@ -29,12 +30,13 @@ const PetManageScreen = () => {
 
     return (
         <>
-        {/* dropdown이 열려있을 때, 전체 클릭 감지 오버레이 */}
-        {dropdownVisible && (
-            <TouchableWithoutFeedback onPress={() => setDropdownVisible(false)}>
-                <View style={[StyleSheet.absoluteFill, { zIndex: 10 }]} />
-            </TouchableWithoutFeedback>
-        )}
+        {   /* dropdown이 열려있을 때, 전체 클릭 감지 오버레이 */
+            dropdownVisible && (
+                <TouchableWithoutFeedback onPress={() => setDropdownVisible(false)}>
+                    <View style={[StyleSheet.absoluteFill, { zIndex: 10 }]} />
+                </TouchableWithoutFeedback>
+            )
+        }
         <ScrollView contentContainerStyle={gs.screen}>
 
             <EBoldText style={gs.title}>Pet</EBoldText>
