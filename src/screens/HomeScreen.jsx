@@ -7,10 +7,10 @@ import { View, Text, ScrollView, Button, TouchableWithoutFeedback, Picker,  Styl
 import { scale } from 'react-native-size-matters';
 import PetSelectBox from '../components/PetSelectBox';
 import { useEffect } from 'react';
-import EBoldText from '../components/EBoldText';
-import BoldText from '../components/BoldText';
-import RegularText from '../components/RegularText';
-import LightText from '../components/LightText';
+import EBoldText from '../components/font/EBoldText';
+import BoldText from '../components/font/BoldText';
+import RegularText from '../components/font/RegularText';
+import LightText from '../components/font/LightText';
 
 import gs from '../assets/styles/globalStyles';
 
@@ -78,12 +78,7 @@ const HomeScreen = () => {
 
   return (
       <ScrollView contentContainerStyle={gs.screen}>
-        {/* dropdown이 열려있을 때, 전체 클릭 감지 오버레이 */}
-        {dropdownVisible && (
-            <TouchableWithoutFeedback onPress={() => setDropdownVisible(false)}>
-                <View style={[StyleSheet.absoluteFill, { zIndex: 10 }]} />
-            </TouchableWithoutFeedback>
-        )}
+        
         <EBoldText style={gs.title}>오늘의 {selected?.name}</EBoldText>
         <BoldText style={gs.subtitle}>10월 29일 수요일</BoldText>
 

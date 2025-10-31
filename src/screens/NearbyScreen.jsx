@@ -4,7 +4,7 @@
 import React from 'react';
 import { View, Text, ScrollView } from 'react-native';
 
-import EBoldText from '../components/EBoldText';
+import EBoldText from '../components/font/EBoldText';
 import gs from '../assets/styles/globalStyles';
 
 const NearbyScreen = () => {

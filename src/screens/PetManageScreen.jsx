@@ -4,13 +4,14 @@
 import React, { useState } from 'react';
 import { View, Text, ScrollView, Button, TouchableWithoutFeedback, StyleSheet } from 'react-native';
 
-import EBoldText from '../components/EBoldText';
+import EBoldText from '../components/font/EBoldText';
 import gs from '../assets/styles/globalStyles';
 import { scale } from 'react-native-size-matters';
 
 import PetSelectBox from '../components/PetSelectBox';
 import { useEffect } from 'react';
-import RegularText from '../components/RegularText';
+import RegularText from '../components/font/RegularText';
+import PetInfo from '../components/PetInfo';
 
 const PetManageScreen = () => {
     const [selected, setSelected] = useState(null);
@@ -20,17 +21,17 @@ const PetManageScreen = () => {
     const options = [
         { no: 1, name: '레오나르도', breed: '골든리트리버', profile: require('../assets/images/golden_retriever_sample.png') },
         { no: 2, name: '아치', breed: '코리안 숏헤어', profile: '' },
-        // { no: 3, name: '마루', breed: '푸들', profile: '' },
-        // { no: 4, name: '흰둥이', breed: '비숑', profile: '' },
+        { no: 4, name: '흰둥이', breed: '비숑', profile: require('../assets/images/siro.jpg') },
+        { no: 3, name: '마루', breed: '푸들', profile: '' },
     ];
 
     useEffect(()=>{
         //대표동물 기본 선택
-        setSelected(options[0]);
+        setSelected(options[2]);
     }, [])
 
     return (
-        <ScrollView contentContainerStyle={gs.screen}>
+        <ScrollView contentContainerStyle={[gs.screen, {backgroundColor: '#faf5ff80'}]} >
 
             <EBoldText style={gs.title}>Pet</EBoldText>
             <RegularText style={{fontSize: scale(14)}}>반려동물의 건강정보를 한눈에 확인하세요!</RegularText>
@@ -49,22 +50,10 @@ const PetManageScreen = () => {
                 />
             </View>
 
-            <View style={[gs.card, style.pteInfo]}>
-
-            </View>
+            <PetInfo data={selected} />
 
         </ScrollView>
     );
 };
-
-const style = StyleSheet.create({
-    pteInfo: {
-        width: '100%',
-        height: scale(300),
-        marginTop: 25,
-        backgroundColor: 'blue',
-        borderRadius: scale(15)
-    }
-});
 
 export default PetManageScreen;

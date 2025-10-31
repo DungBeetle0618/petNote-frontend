@@ -60,9 +60,9 @@ const globalStyles = StyleSheet.create({
     padding: 15,
     marginBottom: 15,
     shadowColor: '#000000',
-    shadowOpacity: 0.1,
+    shadowOpacity: 0.4,
     shadowRadius: 4,
-    elevation: 2, // Android 그림자
+    elevation: 5, // Android 그림자
   },
 
   /* 중앙 정렬 */

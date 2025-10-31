@@ -1,3 +1,6 @@
+/**
+ * 동물 선택 셀렉트박스 컴포넌트
+ */
 import React, { useState, useEffect, useRef } from 'react';
 import {
     View,
@@ -15,8 +18,8 @@ import { scale } from 'react-native-size-matters';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
-import RegularText from './RegularText';
-import BoldText from './BoldText';
+import RegularText from './font/RegularText';
+import BoldText from './font/BoldText';
 import { FlatList, ScrollView } from 'react-native-gesture-handler';
 
 /**
