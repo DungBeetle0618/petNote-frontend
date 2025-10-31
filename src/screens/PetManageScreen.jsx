@@ -20,7 +20,8 @@ const PetManageScreen = () => {
     const options = [
         { no: 1, name: '레오나르도', breed: '골든리트리버', profile: require('../assets/images/golden_retriever_sample.png') },
         { no: 2, name: '아치', breed: '코리안 숏헤어', profile: '' },
-        { no: 3, name: '마루', breed: '푸들', profile: '' },
+        // { no: 3, name: '마루', breed: '푸들', profile: '' },
+        // { no: 4, name: '흰둥이', breed: '비숑', profile: '' },
     ];
 
     useEffect(()=>{

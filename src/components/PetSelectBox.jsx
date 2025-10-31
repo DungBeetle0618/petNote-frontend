@@ -17,6 +17,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import RegularText from './RegularText';
 import BoldText from './BoldText';
+import { FlatList, ScrollView } from 'react-native-gesture-handler';
 
 /**
  * 화살표 아이콘 애니메이션 
@@ -56,6 +57,9 @@ const RotatingIcon = ({ visible }) => {
  */
 const PetSelectBox = ({ options, selectedValue, onSelect, visible, onOpen, onClose }) => {
 
+    const [listHeight, setListHeight] = useState(0);
+    const MAX_HEIGHT = 250; // 드롭박스 최대 높이
+
     const [dropdownPos, setDropdownPos] = useState({ x: 0, y: 0, width: 0, height: 0 });
     const selectBoxRef = useRef(null);
 
@@ -64,7 +68,7 @@ const PetSelectBox = ({ options, selectedValue, onSelect, visible, onOpen, onClo
         if (!visible) {
             selectBoxRef.current.measure((_fx, _fy, width, height, px, py) => {
                 const statusBarHeight = StatusBar.currentHeight || 0;
-                setDropdownPos({ x: px, y: py + height - statusBarHeight + 10, width });
+                setDropdownPos({ x: px, y: py + height - statusBarHeight + 8, width });
                 onOpen();
             });
         } 
@@ -112,32 +116,39 @@ const PetSelectBox = ({ options, selectedValue, onSelect, visible, onOpen, onClo
                         <View style={[StyleSheet.absoluteFill, { zIndex: 10, }]} />
                     </TouchableWithoutFeedback>
 
-                    <View
-                        style={[styles.dropdown,
-                        { top: dropdownPos.y, left: dropdownPos.x, width: dropdownPos.width, },
-                        ]}
+                    <View style={[styles.dropdown,
+                                { top: dropdownPos.y, left: dropdownPos.x, width: dropdownPos.width, height: Math.min(listHeight + scale(15), MAX_HEIGHT), },
+                            ]}
                     >
-                        {options.map((item) => (
-                            <TouchableOpacity
-                                style={[styles.option, selectedValue.no == item.no && styles.optionSelected]}
-                                onPress={() => onSelect(item)}
-                                key={item.no}
-                            >
-                                <View style={styles.optionRow}>
-                                    {
-                                        item.profile ? <Image source={item.profile} style={styles.optionImg} />
-                                            : <View style={[styles.optionImg, { backgroundColor: COLORS.textLight }]} />
-                                    }
+                        <FlatList
+                            data={options}
+                            keyExtractor={(item) => String(item.no)}
+                            renderItem={({item})=>(
+                                <TouchableOpacity
+                                    style={[styles.option, selectedValue.no == item.no && styles.optionSelected]}
+                                    onPress={() => onSelect(item)}
+                                >
+                                    <View style={styles.optionRow}>
+                                        {
+                                            item.profile ? <Image source={item.profile} style={styles.optionImg} />
+                                                : <View style={[styles.optionImg, { backgroundColor: COLORS.textLight }]} />
+                                        }
 
-                                    <RegularText style={styles.optionText}>{item.name}</RegularText>
-                                    {
-                                        selectedValue.no == item.no
-                                        &&
-                                        <Ionicons name='checkmark-circle' color={COLORS.primary} style={{ marginLeft: 'auto' }} />
-                                    }
-                                </View>
-                            </TouchableOpacity>
-                        ))}
+                                        <RegularText style={styles.optionText}>{item.name}</RegularText>
+                                        {
+                                            selectedValue.no == item.no
+                                            &&
+                                            <Ionicons name='checkmark-circle' color={COLORS.primary} style={{ marginLeft: 'auto' }} />
+                                        }
+                                    </View>
+                                </TouchableOpacity>
+                            )}
+                            onContentSizeChange={(_, contentHeight) => setListHeight(contentHeight)}
+                            showsVerticalScrollIndicator={false}
+                            scrollEnabled={listHeight > MAX_HEIGHT}
+                            bounces={false}
+                        >
+                        </FlatList>
                     </View>
                 </Modal>
             )}
@@ -150,7 +161,7 @@ const styles = StyleSheet.create({
     selectBox: {
         borderWidth: 2,
         borderColor: COLORS.orange200,
-        padding: scale(15),
+        padding: scale(10),
         borderRadius: scale(15),
         backgroundColor: '#fff',
     },
@@ -161,25 +172,25 @@ const styles = StyleSheet.create({
     profileView: {
         alignItems: 'center',
         justifyContent: 'center',
-        width: scale(55),
-        height: scale(55),
+        width: scale(45),
+        height: scale(45),
         borderRadius: 50,
         borderWidth: 3,
         borderColor: COLORS.primary,
         marginRight: scale(15),
     },
     profileImg: {
-        width: scale(45),
-        height: scale(45),
+        width: scale(35),
+        height: scale(35),
         borderRadius: 50,
     },
     title: {
-        fontSize: scale(16),
+        fontSize: scale(12),
         marginBottom: scale(5),
         color: '#333',
     },
     breed: {
-        fontSize: scale(12),
+        fontSize: scale(10),
     },
     dropdown: {
         backgroundColor: '#fff',
@@ -200,8 +211,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     optionImg: {
-        width: scale(40),
-        height: scale(40),
+        width: scale(35),
+        height: scale(35),
         borderRadius: 50,
         marginRight: scale(20),
     },
