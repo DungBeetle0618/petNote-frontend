@@ -29,14 +29,6 @@ const PetManageScreen = () => {
     }, [])
 
     return (
-        <>
-        {   /* dropdown이 열려있을 때, 전체 클릭 감지 오버레이 */
-            dropdownVisible && (
-                <TouchableWithoutFeedback onPress={() => setDropdownVisible(false)}>
-                    <View style={[StyleSheet.absoluteFill, { zIndex: 10 }]} />
-                </TouchableWithoutFeedback>
-            )
-        }
         <ScrollView contentContainerStyle={gs.screen}>
 
             <EBoldText style={gs.title}>Pet</EBoldText>
@@ -56,13 +48,22 @@ const PetManageScreen = () => {
                 />
             </View>
 
-            <View style={{width: '100%', height: 500, backgroundColor: 'black', marginTop: 10}}>
+            <View style={[gs.card, style.pteInfo]}>
 
             </View>
 
         </ScrollView>
-        </>
     );
 };
+
+const style = StyleSheet.create({
+    pteInfo: {
+        width: '100%',
+        height: scale(300),
+        marginTop: 25,
+        backgroundColor: 'blue',
+        borderRadius: scale(15)
+    }
+});
 
 export default PetManageScreen;

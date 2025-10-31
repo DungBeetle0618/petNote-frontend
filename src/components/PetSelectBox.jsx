@@ -6,6 +6,9 @@ import {
     Image,
     Animated,
     Easing,
+    TouchableWithoutFeedback,
+    Modal,
+    StatusBar
 } from 'react-native';
 import gs, { COLORS } from '../assets/styles/globalStyles';
 import { scale } from 'react-native-size-matters';
@@ -53,12 +56,27 @@ const RotatingIcon = ({ visible }) => {
  */
 const PetSelectBox = ({ options, selectedValue, onSelect, visible, onOpen, onClose }) => {
 
+    const [dropdownPos, setDropdownPos] = useState({ x: 0, y: 0, width: 0, height: 0 });
+    const selectBoxRef = useRef(null);
+
+    const openDropdown = () => {
+        if (!selectBoxRef.current) return;
+        if (!visible) {
+            selectBoxRef.current.measure((_fx, _fy, width, height, px, py) => {
+                const statusBarHeight = StatusBar.currentHeight || 0;
+                setDropdownPos({ x: px, y: py + height - statusBarHeight + 10, width });
+                onOpen();
+            });
+        } 
+    };
+
     return (
         <View style={{ position: 'relative' }}>
             {selectedValue ? (
                 <TouchableOpacity
+                    ref={selectBoxRef}
                     style={styles.selectBox}
-                    onPress={() => (visible ? onClose() : onOpen())}
+                    onPress={openDropdown}
                     activeOpacity={1}
                 >
                     <View style={styles.selectContainer}>
@@ -88,29 +106,40 @@ const PetSelectBox = ({ options, selectedValue, onSelect, visible, onOpen, onClo
 
 
             {visible && (
-                <View style={styles.dropdown}>
-                    {options.map((item, key) => (
-                        <TouchableOpacity
-                            style={[styles.option, selectedValue.no == item.no ? styles.optionSelected : '']}
-                            onPress={() => onSelect(item)}
-                            key={key}
-                        >
-                            <View style={styles.optionRow}>
-                                {
-                                    item.profile ? <Image source={item.profile} style={styles.optionImg} /> 
-                                    : <View style={[styles.optionImg, {backgroundColor: COLORS.textLight}]}/>
-                                }
-                                
-                                <RegularText style={styles.optionText}>{item.name}</RegularText>
-                                {
-                                    selectedValue.no == item.no ? <Ionicons name='checkmark-circle' color={COLORS.primary} style={{marginLeft: 'auto'}}/>
-                                    :
-                                    <View/>
-                                }
-                            </View>
-                        </TouchableOpacity>
-                    ))}
-                </View>
+                <Modal transparent>
+                    {/* dropdown이 열려있을 때, 전체 클릭 감지 오버레이 */}
+                    <TouchableWithoutFeedback onPress={onClose}>
+                        <View style={[StyleSheet.absoluteFill, { zIndex: 10, }]} />
+                    </TouchableWithoutFeedback>
+
+                    <View
+                        style={[styles.dropdown,
+                        { top: dropdownPos.y, left: dropdownPos.x, width: dropdownPos.width, },
+                        ]}
+                    >
+                        {options.map((item) => (
+                            <TouchableOpacity
+                                style={[styles.option, selectedValue.no == item.no && styles.optionSelected]}
+                                onPress={() => onSelect(item)}
+                                key={item.no}
+                            >
+                                <View style={styles.optionRow}>
+                                    {
+                                        item.profile ? <Image source={item.profile} style={styles.optionImg} />
+                                            : <View style={[styles.optionImg, { backgroundColor: COLORS.textLight }]} />
+                                    }
+
+                                    <RegularText style={styles.optionText}>{item.name}</RegularText>
+                                    {
+                                        selectedValue.no == item.no
+                                        &&
+                                        <Ionicons name='checkmark-circle' color={COLORS.primary} style={{ marginLeft: 'auto' }} />
+                                    }
+                                </View>
+                            </TouchableOpacity>
+                        ))}
+                    </View>
+                </Modal>
             )}
         </View>
     );
@@ -153,17 +182,13 @@ const styles = StyleSheet.create({
         fontSize: scale(12),
     },
     dropdown: {
-        position: 'absolute',
-        top: scale(95),
-        left: 0,
-        right: 0,
         backgroundColor: '#fff',
         borderWidth: 2,
         borderColor: COLORS.orange200,
         borderRadius: scale(15),
         zIndex: 10,
         paddingHorizontal: scale(10),
-        paddingTop: scale(10)
+        paddingTop: scale(10),
     },
     option: {
         paddingVertical: scale(10),
