@@ -10,10 +10,9 @@ const LightText = props => {
   return (
     <Text
       {...props}
-      style={{
-        ...props.style,
+      style={[{
         fontFamily: 'NanumSquareL',
-      }}>
+      }, props.style,]}>
       {props.children}
     </Text>
   );

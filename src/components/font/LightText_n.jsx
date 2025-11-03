@@ -10,10 +10,9 @@ const LightTextN = props => {
   return (
     <Text
       {...props}
-      style={{
-        ...props.style,
+      style={[{
         fontFamily: '남양주고딕Light (OTF)',
-      }}>
+      }, props.style,]}>
       {props.children}
     </Text>
   );

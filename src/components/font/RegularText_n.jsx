@@ -10,10 +10,9 @@ const RegularTextN = props => {
   return (
     <Text
       {...props}
-      style={{
-        ...props.style,
+      style={[{
         fontFamily: '남양주고딕Medium (OTF)',
-      }}>
+      }, props.style,]}>
       {props.children}
     </Text>
   );

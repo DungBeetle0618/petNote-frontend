@@ -10,10 +10,9 @@ const EBoldText = props => {
   return (
     <Text
       {...props}
-      style={{
-        ...props.style,
+      style={[{
         fontFamily: 'NanumSquareEB',
-      }}>
+      }, props.style,]}>
       {props.children}
     </Text>
   );

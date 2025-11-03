@@ -42,11 +42,6 @@ const PetInfo = ({ data }) => {
     /**
      * 대표설정
      */
-    // function setMainPet(main) {
-    //     let isMain = confirm('대표 동물로 설정하시겠습니까?');
-    //     if(isMain) setMain(!main);
-    // }
-
     function setMainPet(main) {
 
         Alert.alert(
@@ -66,7 +61,7 @@ const PetInfo = ({ data }) => {
     return (
         <Shadow 
             distance={6}
-            offset={[3, 5]}
+            offset={[3, 3]}
             startColor="rgba(0,0,0,0.12)"
             finalColor="rgba(0,0,0,0)"
             radius={scale(45)}
@@ -150,7 +145,7 @@ const styles = StyleSheet.create({
     card: {
         width: '100%',
 
-        backgroundColor: COLORS.sub,
+        backgroundColor: '#f8f0f0ff',
         borderRadius: scale(45),
         alignItems: 'center',
     },

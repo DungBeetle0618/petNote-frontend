@@ -10,10 +10,9 @@ const RegularText = props => {
   return (
     <Text
       {...props}
-      style={{
-        ...props.style,
+      style={[{
         fontFamily: 'NanumSquareR',
-      }}>
+      }, props.style,]}>
       {props.children}
     </Text>
   );

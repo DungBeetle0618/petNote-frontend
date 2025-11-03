@@ -15,9 +15,33 @@ import EBoldTextN from '../components/font/EBoldText_n';
 import PetSelectBox from '../components/PetSelectBox';
 import PetInfo from '../components/PetInfo';
 
+import TabMenu from '../components/TabMenu';
+
 const PetManageScreen = () => {
     const [selected, setSelected] = useState(null);
     const [dropdownVisible, setDropdownVisible] = useState(false);
+
+    const [activeTabName, setActiveTabName] = useState('');
+    const onPressHandler = (renderName) => {
+        if(renderName == '몸무게'){
+            // setFeedRender(true);
+            // setColumnsRender(false);
+            // setReivewsRender(false);
+            setActiveTabName('몸무게');
+        } 
+        if(renderName == '식사량'){
+            // setFeedRender(false);
+            // setColumnsRender(true);
+            // setReivewsRender(false);
+            setActiveTabName('식사량');
+        }
+        if(renderName == '활동량'){
+            // setFeedRender(false);
+            // setColumnsRender(false);
+            // setReivewsRender(true);
+            setActiveTabName('활동량');
+        }
+    }
 
     //예시데이터
     const options = [
@@ -68,6 +92,14 @@ const PetManageScreen = () => {
                 {/* 동물 상세 */}
                 {selected && <PetInfo data={selected} />}
             </View>
+
+            <View style={gs.mt25}>
+                <TabMenu onPressHandler={onPressHandler} menuList={['몸무게', '식사량', '활동량']} activeTab={activeTabName}/>
+            </View>
+            <View>
+                
+            </View>
+
         </ScrollView>
     );
 };

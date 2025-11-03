@@ -10,10 +10,9 @@ const BoldText = props => {
   return (
     <Text
       {...props}
-      style={{
-        ...props.style,
+      style={[{
         fontFamily: 'NanumSquareB',
-      }}>
+      }, props.style,]}>
       {props.children}
     </Text>
   );

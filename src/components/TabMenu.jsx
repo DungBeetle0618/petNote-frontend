@@ -5,6 +5,7 @@ import {
     StyleSheet,
     Pressable,
 } from 'react-native';
+import BoldTextN from '../components/font/BoldText_n';
 
 
 const TabMenu = ({onPressHandler, menuList, activeTab}) => {
@@ -13,7 +14,7 @@ const TabMenu = ({onPressHandler, menuList, activeTab}) => {
     <View style={styles.div}>
       {menuList.map(name => (
         <Pressable key={name} style={styles.divFlex} onPress={() => onPressHandler(name)}>
-            <Text style={[ styles.buttonBox, activeTab === name && styles.buttonBoxActive]}>{name}</Text>
+            <BoldTextN style={[ styles.buttonBox, activeTab === name && styles.buttonBoxActive]}>{name}</BoldTextN>
         </Pressable>
       ))}
     </View>

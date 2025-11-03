@@ -10,11 +10,10 @@ const EBoldTextN = props => {
   return (
     <Text
       {...props}
-      style={{
-        ...props.style,
+      style={[{
         fontFamily: '남양주고딕Extra Bold (OTF)',
         letterSpacing: -2
-      }}>
+      }, props.style,]}>
       {props.children}
     </Text>
   );
