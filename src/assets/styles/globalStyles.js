@@ -3,6 +3,7 @@ import { scale, verticalScale, moderateScale } from 'react-native-size-matters';
 
 export const COLORS = {
   primary: '#FF6600',
+  sub: '#FED7AA',
   orange200: '#FED7AA',
   background: '#FFFFFF',
   textPrimary: '#333333',
