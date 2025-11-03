@@ -8,7 +8,9 @@ import {
     StyleSheet,
     Image,
     ScrollView,
-    ImageBackground
+    ImageBackground,
+    Text,
+    Alert
 } from 'react-native';
 import gs, { COLORS } from '../assets/styles/globalStyles';
 import { scale } from 'react-native-size-matters';
@@ -26,6 +28,12 @@ import LightTextN from './font/LightText_n';
 
 const PetInfo = ({ data }) => {
     const [main, setMain] = useState(data.main);
+    const [expanded, setExpanded] = useState(false);
+    const [showMore, setShowMore] = useState(false);
+
+    //특이사항(예시)
+    const contents = '아주 건강하고 똑똑하지만 약간 멍청함 먹는거 좋아하고 사람이나 다른 강아지들 좋아함 알러지 없음 하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하 하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하';
+    
 
     useEffect(()=>{
         setMain(data.main)
@@ -34,8 +42,25 @@ const PetInfo = ({ data }) => {
     /**
      * 대표설정
      */
+    // function setMainPet(main) {
+    //     let isMain = confirm('대표 동물로 설정하시겠습니까?');
+    //     if(isMain) setMain(!main);
+    // }
+
     function setMainPet(main) {
-        setMain(!main);
+
+        Alert.alert(
+            'PetNote',
+            '대표 동물로 설정하시겠습니까?',
+            [
+                {text: '확인', onPress:()=>{setMain(!main)}, style: 'default'},
+                {text: '취소', onPress:()=>{}, style: 'cancel'}
+            ],
+            {
+                cancelable: true,
+                onDismiss: () => {}
+            }
+        )
     }
 
     return (
@@ -58,9 +83,12 @@ const PetInfo = ({ data }) => {
                     <Image source={data.profile} style={styles.profileImg} />
                     <TouchableOpacity style={styles.setMainBtn} onPress={()=>setMainPet(main)} activeOpacity={1}>
                         {
-                            main ? <FontAwesome name='star' style={{fontSize: scale(25), color: 'pink'}} /> 
-                            : <FontAwesome name='star-o' style={{fontSize: scale(25), color: COLORS.textPrimary}} />
+                            main ? <FontAwesome name='star' style={{fontSize: scale(20), color: 'pink'}} /> 
+                            : <FontAwesome name='star-o' style={{fontSize: scale(20), color: COLORS.textPrimary}} />
                         }
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={()=>{alert('수정')}} activeOpacity={1} style={{position: 'absolute', right: scale(20), bottom: 0}}>
+                        <FontAwesome name="pencil" style={{fontSize: scale(20)}}/>
                     </TouchableOpacity>
                 </View>
                 <View style={styles.info}>
@@ -72,7 +100,7 @@ const PetInfo = ({ data }) => {
                         contentContainerStyle={{ paddingVertical: scale(20), paddingHorizontal: scale(25) }}
                         shadowHorizontalScrollIndicator={false}
                     >
-                        <View style={styles.infoSub}>
+                        <View style={[styles.infoSub, {width: scale(90)}]}>
                             <EBoldTextN style={{fontSize: scale(14), marginBottom: 6}}>생일</EBoldTextN>
                             <LightTextN>{data.birth}</LightTextN>
                         </View>
@@ -91,13 +119,26 @@ const PetInfo = ({ data }) => {
                     </ScrollView>
 
                     <View style={styles.memo}>
-                        <EBoldTextN style={{fontSize: scale(16), marginBottom: 8}}>MEMO</EBoldTextN>
-                        <LightTextN style={styles.memoContent}>안녕하세요 만나서 반값습니다 다음에 또 만나요 헬로우헬로우 하하 집에가고싶다 퇴근언제하지
-안녕하세요 만나서 반값습니다 다음에 또 만나요 헬로우헬로우 하하 집에가고싶다 퇴근언제하지
-안녕하세요 만나서 반값습니다 다음에 또 만나요 헬로우헬로우 하하 집에가고싶다 퇴근언제하지
-
-
+                        <EBoldTextN style={{fontSize: scale(16), marginBottom: 8}}>NOTES</EBoldTextN>
+                        <LightTextN style={styles.memoContent} 
+                            numberOfLines={expanded ? undefined : 3}
+                            onTextLayout={e => {
+                                if (e.nativeEvent.lines.length > 3 && !showMore) {
+                                    setShowMore(true);
+                                }
+                            }}
+                            >
+                            {contents}
+                                
                         </LightTextN>
+                        { contents.length > 100 && (
+                            
+                            <TouchableOpacity onPress={() => setExpanded(!expanded)}>
+                            <Text style={{ textAlign: 'right', marginTop: 4 }}>
+                                {expanded ? '접기' : '더보기'}
+                            </Text>
+                            </TouchableOpacity> 
+                        )}
                     </View>
                 </View>
             </View>
@@ -119,16 +160,19 @@ const styles = StyleSheet.create({
       borderRadius: scale(45),
     },
     profileImg: {
-        width: scale(150),
-        height: scale(150),
-        borderRadius: scale(150)/2,
-        // marginBlock: scale(20)
+        width: scale(180),
+        height: scale(180),
+        // borderRadius: scale(150)/2,
+        borderTopLeftRadius: scale(70),
+        borderTopRightRadius: scale(85),
+        borderBottomLeftRadius: scale(100),
+        borderBottomRightRadius: scale(60),
     },
     infoHead: {
         width: '100%',
         // height: 200,
         alignItems: 'center',
-        marginBlock: scale(20),
+        marginBlock: scale(15),
         position: 'relative',
     },
     setMainBtn: {
@@ -138,6 +182,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         position: 'absolute',
         right: scale(20),
+        top: 0,
         alignItems: 'center',
         justifyContent: 'center'
     },
@@ -166,7 +211,7 @@ const styles = StyleSheet.create({
         borderRadius: scale(10),
         width: scale(80),
         height: scale(60),
-        backgroundColor: '#faf0f0ff',
+        backgroundColor: '#fdf8e2',
         marginRight: scale(10),
         alignItems: 'center'
     },
@@ -177,7 +222,8 @@ const styles = StyleSheet.create({
         paddingHorizontal: scale(25)
     },
     memoContent: {
-        lineHeight: 20
+        lineHeight: 20,
+        flexShrink: 1
     }
     
 
