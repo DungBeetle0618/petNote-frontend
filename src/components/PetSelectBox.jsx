@@ -103,7 +103,7 @@ const PetSelectBox = ({ options, selectedValue, onSelect, visible, onOpen, onClo
                     </View>
                 </TouchableOpacity>
             ) : (
-                <View style={[gs.flexRow, styles.selectBox]}>
+                <View style={[gs.flexRow, styles.selectBox, {alignItems: 'center'}]}>
                     <RegularText style={gs.text}>
                         첫번째 반려동물을 추가해주세요
                     </RegularText>
@@ -163,7 +163,7 @@ const PetSelectBox = ({ options, selectedValue, onSelect, visible, onOpen, onClo
 const styles = StyleSheet.create({
     selectBox: {
         borderWidth: 2,
-        borderColor: COLORS.orange200,
+        borderColor: COLORS.sub,
         padding: scale(10),
         borderRadius: scale(15),
         backgroundColor: '#fff',
@@ -198,7 +198,7 @@ const styles = StyleSheet.create({
     dropdown: {
         backgroundColor: '#fff',
         borderWidth: 2,
-        borderColor: COLORS.orange200,
+        borderColor: COLORS.sub,
         borderRadius: scale(15),
         zIndex: 10,
         paddingHorizontal: scale(10),
