@@ -2,8 +2,8 @@
  * 홈(메인) 화면
  */
 import React, { useState } from 'react'
-import { View, Text, ScrollView, Button, TouchableWithoutFeedback, Picker,  StyleSheet } from 'react-native';
-
+import { View, Text, ScrollView, Dimensions, StyleSheet } from 'react-native';
+import { LineChart } from "react-native-chart-kit";
 import { scale } from 'react-native-size-matters';
 import PetSelectBox from '../components/PetSelectBox';
 import { useEffect } from 'react';
@@ -12,7 +12,7 @@ import BoldText from '../components/font/BoldText';
 import RegularText from '../components/font/RegularText';
 import LightText from '../components/font/LightText';
 
-import gs from '../assets/styles/globalStyles';
+import gs, { COLORS } from '../assets/styles/globalStyles';
 
 const styles = StyleSheet.create({
    cardContainer: {
@@ -47,6 +47,23 @@ const styles = StyleSheet.create({
     marginTop: 4,
     color: "green",
   },
+  orangeSection: {
+    backgroundColor: "#FF6600",
+    paddingHorizontal: 20,
+    paddingTop: 20,
+    paddingBottom: 40,
+    borderBottomLeftRadius: 30,
+    borderBottomRightRadius: 30,
+  },
+  whiteSection: {
+    flex: 1,
+    backgroundColor: "#fff",
+    padding: 20,
+    marginTop: 10, // 경계부 좀 더 부드럽게
+  },
+   dateText: {
+    color: '#fff', // 폰트 컬러
+  },
 });
 
 const HomeScreen = () => {
@@ -71,6 +88,8 @@ const HomeScreen = () => {
     { day: "Sun", steps: 3000 },
   ];
 
+  const screenWidth = Dimensions.get("window").width;
+
     useEffect(()=>{
         //대표동물 기본 선택
         setSelected(options[0]);
@@ -78,11 +97,12 @@ const HomeScreen = () => {
 
   return (
       <ScrollView contentContainerStyle={gs.screen}>
-        
-        <EBoldText style={gs.title}>오늘의 {selected?.name}</EBoldText>
-        <BoldText style={gs.subtitle}>10월 29일 수요일</BoldText>
+        {/* 상단 주황색 영역 */}
+        <View >
+           <EBoldText style={gs.title}>오늘의 {selected?.name}</EBoldText>
+           <BoldText style={gs.subtitle}>10월 29일 수요일</BoldText>
 
-        <View style={{paddingTop: scale(20)}}>
+          <View>
                 <PetSelectBox 
                     visible={dropdownVisible}
                     onOpen={() => setDropdownVisible(true)}
@@ -94,45 +114,63 @@ const HomeScreen = () => {
                     options={options}
                     selectedValue={selected}
                 />
-        </View>
-
-        {/* Weight Card */}
-        <View style={styles.cardContainer}>
-          <View style={styles.card}>
-            <Text style={styles.cardTitle}>Weight</Text>
-            <Text style={styles.cardValue}>{selected?.weight} kg</Text>
-            <Text style={styles.cardChange}>
-              +{selected?.weightChangeThisWeek} kg this week
-            </Text>
           </View>
 
-          {/* Health Card */}
-          <View style={styles.card}>
-            <Text style={styles.cardTitle}>Health</Text>
-            <Text style={styles.cardValue}>{selected?.healthStatus}</Text>
-            <Text style={styles.cardChange}>Status</Text>
-          </View>
+          {/* Weight Card */}
+          <View style={styles.cardContainer}>
+            <View style={styles.card}>
+              <Text style={styles.cardTitle}>Weight</Text>
+              <Text style={styles.cardValue}>{selected?.weight} kg</Text>
+              <Text style={styles.cardChange}>
+                +{selected?.weightChangeThisWeek} kg this week
+              </Text>
+            </View>
 
-          {/* Meals */}
-          <View style={styles.card}>
-            <Text style={styles.cardTitle}>Meals Today</Text>
-            <Text style={styles.cardValue}>2/3 fed</Text>
-            <Text style={styles.cardChange}>Dinner pending</Text>
-          </View>
+            {/* Health Card */}
+            <View style={styles.card}>
+              <Text style={styles.cardTitle}>Health</Text>
+              <Text style={styles.cardValue}>{selected?.healthStatus}</Text>
+              <Text style={styles.cardChange}>Status</Text>
+            </View>
 
-          {/* Walks */}
-          <View style={styles.card}>
-            <Text style={styles.cardTitle}>Steps</Text>
-            <Text style={styles.cardValue}>{selected?.stepsToday}</Text>
-            <Text style={styles.cardChange}>Today's Steps</Text>
+            {/* Meals */}
+            <View style={styles.card}>
+              <Text style={styles.cardTitle}>Meals Today</Text>
+              <Text style={styles.cardValue}>2/3 fed</Text>
+              <Text style={styles.cardChange}>Dinner pending</Text>
+            </View>
+
+            {/* Walks */}
+            <View style={styles.card}>
+              <Text style={styles.cardTitle}>Steps</Text>
+              <Text style={styles.cardValue}>{selected?.stepsToday}</Text>
+              <Text style={styles.cardChange}>Today's Steps</Text>
+            </View>
           </View>
         </View>
         
-        
+
         {/* Activity Chart */}
         <View style={{ marginTop: 20 }}>
           <RegularText style={gs.text}>Weekly Activity</RegularText>
-           
+          <LineChart
+            data={{
+              labels: ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"],
+              datasets: [
+                { data: [2300, 4500, 5200, 7000, 8000, 6500, 3000] }
+              ]
+            }}
+            width={screenWidth - 40}
+            height={200}
+            chartConfig={{
+              backgroundColor: "#fff",
+              backgroundGradientFrom: "#fff",
+              backgroundGradientTo: "#fff",
+              decimalPlaces: 0,
+              color: () => "black",
+              labelColor: () => "black",
+            }}
+          />
         </View>
 
         <View style={gs.card}>
@@ -144,6 +182,8 @@ const HomeScreen = () => {
           <EBoldText>Extra Bold 폰트사이즈</EBoldText>
           <LightText style={gs.text}>Light 폰트사이즈</LightText>
         </View>
+        
+        
 
       </ScrollView>
   );
