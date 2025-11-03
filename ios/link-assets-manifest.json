@@ -64,6 +64,38 @@
     {
       "path": "src/assets/fonts/NanumSquare_acR.ttf",
       "sha1": "153cebe1517941a6b8da5cb892be8e39fef8d36a"
+    },
+    {
+      "path": "src/assets/fonts/남양주고딕Bold (OTF).otf",
+      "sha1": "3e6434e485668422d56b188519a4fcc3ad87184d"
+    },
+    {
+      "path": "src/assets/fonts/남양주고딕Bold (TTF).ttf",
+      "sha1": "70234c55e90da02e13718fad898500ff6efb3500"
+    },
+    {
+      "path": "src/assets/fonts/남양주고딕Extra Bold (OTF).otf",
+      "sha1": "34a10f41495c2ecc68cbaa437288bd41b3dbfaa4"
+    },
+    {
+      "path": "src/assets/fonts/남양주고딕Extra Bold (TTF).ttf",
+      "sha1": "54606f6d66fbdb32eaf8497a2746718da28a0769"
+    },
+    {
+      "path": "src/assets/fonts/남양주고딕Light (OTF).otf",
+      "sha1": "26461e305bba603975c912ba19ec9da56b50ae6c"
+    },
+    {
+      "path": "src/assets/fonts/남양주고딕Light (TTF).ttf",
+      "sha1": "4e6bb0e26b9f284108fa072b11d5726eb7dd4a64"
+    },
+    {
+      "path": "src/assets/fonts/남양주고딕Medium (OTF).otf",
+      "sha1": "597a4a859d58c22915847954fb67ee0fcfa4a361"
+    },
+    {
+      "path": "src/assets/fonts/남양주고딕Medium (TTF).ttf",
+      "sha1": "3a03a6ee0313ca17901fef7b4d0341235b4e17ba"
     }
   ]
 }

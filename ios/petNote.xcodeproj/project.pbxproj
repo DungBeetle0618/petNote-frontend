@@ -27,6 +27,14 @@
 		A4193BCAE9B54B5CB85207B3 /* NanumSquare_acEB.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B3EC43F68F214584A945B206 /* NanumSquare_acEB.ttf */; };
 		6A664B30A85344B091524B81 /* NanumSquare_acL.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D3B3E8F9335440ABAC2BDF56 /* NanumSquare_acL.ttf */; };
 		6EDD7DA109794C2A898644FA /* NanumSquare_acR.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6101E5101E7D45489CF1EECF /* NanumSquare_acR.ttf */; };
+		FB45B77E1FFB484983A8B44A /* 남양주고딕Bold (OTF).otf in Resources */ = {isa = PBXBuildFile; fileRef = E21F00633C694F568558B0AD /* 남양주고딕Bold (OTF).otf */; };
+		793608BD10F64C2D9917B4C8 /* 남양주고딕Extra Bold (OTF).otf in Resources */ = {isa = PBXBuildFile; fileRef = 5E48F4372A24412AA6AE4A9A /* 남양주고딕Extra Bold (OTF).otf */; };
+		7C3DB74CD6EE4E47BFC0CAD9 /* 남양주고딕Light (OTF).otf in Resources */ = {isa = PBXBuildFile; fileRef = 0418B4E4EEC643578FEB49AD /* 남양주고딕Light (OTF).otf */; };
+		B24C1C951B7E4580AC695B33 /* 남양주고딕Medium (OTF).otf in Resources */ = {isa = PBXBuildFile; fileRef = E4C26EB908784690A6D712C5 /* 남양주고딕Medium (OTF).otf */; };
+		C16DA36BDAC2481DA5DB51DC /* 남양주고딕Bold (TTF).ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0DC4D27571DC462BBB9D1389 /* 남양주고딕Bold (TTF).ttf */; };
+		CFCC403246E7451591195C48 /* 남양주고딕Extra Bold (TTF).ttf in Resources */ = {isa = PBXBuildFile; fileRef = 76C13A59BB1043579FA9AFB3 /* 남양주고딕Extra Bold (TTF).ttf */; };
+		96CE1E04DE504ECCB0D76CE8 /* 남양주고딕Light (TTF).ttf in Resources */ = {isa = PBXBuildFile; fileRef = 48A6B3ADDDAE4E3385BB84EB /* 남양주고딕Light (TTF).ttf */; };
+		CCB50E752B794AC68A4E307B /* 남양주고딕Medium (TTF).ttf in Resources */ = {isa = PBXBuildFile; fileRef = E34EC9687BAA46FC9C6BDD1C /* 남양주고딕Medium (TTF).ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -56,6 +64,14 @@
 		B3EC43F68F214584A945B206 /* NanumSquare_acEB.ttf */ = {isa = PBXFileReference; name = "NanumSquare_acEB.ttf"; path = "../src/assets/fonts/NanumSquare_acEB.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		D3B3E8F9335440ABAC2BDF56 /* NanumSquare_acL.ttf */ = {isa = PBXFileReference; name = "NanumSquare_acL.ttf"; path = "../src/assets/fonts/NanumSquare_acL.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		6101E5101E7D45489CF1EECF /* NanumSquare_acR.ttf */ = {isa = PBXFileReference; name = "NanumSquare_acR.ttf"; path = "../src/assets/fonts/NanumSquare_acR.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		E21F00633C694F568558B0AD /* 남양주고딕Bold (OTF).otf */ = {isa = PBXFileReference; name = "남양주고딕Bold (OTF).otf"; path = "../src/assets/fonts/남양주고딕Bold (OTF).otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		5E48F4372A24412AA6AE4A9A /* 남양주고딕Extra Bold (OTF).otf */ = {isa = PBXFileReference; name = "남양주고딕Extra Bold (OTF).otf"; path = "../src/assets/fonts/남양주고딕Extra Bold (OTF).otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		0418B4E4EEC643578FEB49AD /* 남양주고딕Light (OTF).otf */ = {isa = PBXFileReference; name = "남양주고딕Light (OTF).otf"; path = "../src/assets/fonts/남양주고딕Light (OTF).otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		E4C26EB908784690A6D712C5 /* 남양주고딕Medium (OTF).otf */ = {isa = PBXFileReference; name = "남양주고딕Medium (OTF).otf"; path = "../src/assets/fonts/남양주고딕Medium (OTF).otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		0DC4D27571DC462BBB9D1389 /* 남양주고딕Bold (TTF).ttf */ = {isa = PBXFileReference; name = "남양주고딕Bold (TTF).ttf"; path = "../src/assets/fonts/남양주고딕Bold (TTF).ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		76C13A59BB1043579FA9AFB3 /* 남양주고딕Extra Bold (TTF).ttf */ = {isa = PBXFileReference; name = "남양주고딕Extra Bold (TTF).ttf"; path = "../src/assets/fonts/남양주고딕Extra Bold (TTF).ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		48A6B3ADDDAE4E3385BB84EB /* 남양주고딕Light (TTF).ttf */ = {isa = PBXFileReference; name = "남양주고딕Light (TTF).ttf"; path = "../src/assets/fonts/남양주고딕Light (TTF).ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		E34EC9687BAA46FC9C6BDD1C /* 남양주고딕Medium (TTF).ttf */ = {isa = PBXFileReference; name = "남양주고딕Medium (TTF).ttf"; path = "../src/assets/fonts/남양주고딕Medium (TTF).ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -149,6 +165,14 @@
 				B3EC43F68F214584A945B206 /* NanumSquare_acEB.ttf */,
 				D3B3E8F9335440ABAC2BDF56 /* NanumSquare_acL.ttf */,
 				6101E5101E7D45489CF1EECF /* NanumSquare_acR.ttf */,
+				E21F00633C694F568558B0AD /* 남양주고딕Bold (OTF).otf */,
+				5E48F4372A24412AA6AE4A9A /* 남양주고딕Extra Bold (OTF).otf */,
+				0418B4E4EEC643578FEB49AD /* 남양주고딕Light (OTF).otf */,
+				E4C26EB908784690A6D712C5 /* 남양주고딕Medium (OTF).otf */,
+				0DC4D27571DC462BBB9D1389 /* 남양주고딕Bold (TTF).ttf */,
+				76C13A59BB1043579FA9AFB3 /* 남양주고딕Extra Bold (TTF).ttf */,
+				48A6B3ADDDAE4E3385BB84EB /* 남양주고딕Light (TTF).ttf */,
+				E34EC9687BAA46FC9C6BDD1C /* 남양주고딕Medium (TTF).ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -232,6 +256,14 @@
 				A4193BCAE9B54B5CB85207B3 /* NanumSquare_acEB.ttf in Resources */,
 				6A664B30A85344B091524B81 /* NanumSquare_acL.ttf in Resources */,
 				6EDD7DA109794C2A898644FA /* NanumSquare_acR.ttf in Resources */,
+				FB45B77E1FFB484983A8B44A /* 남양주고딕Bold (OTF).otf in Resources */,
+				793608BD10F64C2D9917B4C8 /* 남양주고딕Extra Bold (OTF).otf in Resources */,
+				7C3DB74CD6EE4E47BFC0CAD9 /* 남양주고딕Light (OTF).otf in Resources */,
+				B24C1C951B7E4580AC695B33 /* 남양주고딕Medium (OTF).otf in Resources */,
+				C16DA36BDAC2481DA5DB51DC /* 남양주고딕Bold (TTF).ttf in Resources */,
+				CFCC403246E7451591195C48 /* 남양주고딕Extra Bold (TTF).ttf in Resources */,
+				96CE1E04DE504ECCB0D76CE8 /* 남양주고딕Light (TTF).ttf in Resources */,
+				CCB50E752B794AC68A4E307B /* 남양주고딕Medium (TTF).ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
