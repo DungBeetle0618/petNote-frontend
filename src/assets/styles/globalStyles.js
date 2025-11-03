@@ -23,7 +23,7 @@ export const PX_SIZE = {
 const globalStyles = StyleSheet.create({
   /* 화면 기본 틀 */
   screen: {
-    flex: 1,
+    // flex: 1,
     backgroundColor: COLORS.background,
     paddingHorizontal: PX_SIZE.lg, 
     paddingVertical: PX_SIZE.md,
@@ -75,7 +75,10 @@ const globalStyles = StyleSheet.create({
   flexRow: {
     display: 'flex',
     flexDirection: 'row',
-    alignItems: 'center'
+  },
+
+  mt25: {
+    marginTop: scale(25)
   }
 });
 
