@@ -14,31 +14,36 @@ import EBoldTextN from '../components/font/EBoldText_n';
 
 import PetSelectBox from '../components/PetSelectBox';
 import PetInfo from '../components/PetInfo';
-
 import TabMenu from '../components/TabMenu';
+import WeightComponent from '../components/WeightComponent';
+import MealsComponent from '../components/MealsComponent';
+import ActivityComponent from '../components/ActivityComponent';
 
 const PetManageScreen = () => {
     const [selected, setSelected] = useState(null);
     const [dropdownVisible, setDropdownVisible] = useState(false);
 
     const [activeTabName, setActiveTabName] = useState('');
+    const [weightRender, setWeightRender] = useState(true);
+    const [mealsRender, setMealsRender] = useState(false);
+    const [activityRender, setActivityRender] = useState(false);
     const onPressHandler = (renderName) => {
-        if(renderName == '몸무게'){
-            // setFeedRender(true);
-            // setColumnsRender(false);
-            // setReivewsRender(false);
+        if (renderName == '몸무게') {
+            setWeightRender(true);
+            setMealsRender(false);
+            setActivityRender(false);
             setActiveTabName('몸무게');
-        } 
-        if(renderName == '식사량'){
-            // setFeedRender(false);
-            // setColumnsRender(true);
-            // setReivewsRender(false);
+        }
+        if (renderName == '식사량') {
+            setWeightRender(false);
+            setMealsRender(true);
+            setActivityRender(false);
             setActiveTabName('식사량');
         }
-        if(renderName == '활동량'){
-            // setFeedRender(false);
-            // setColumnsRender(false);
-            // setReivewsRender(true);
+        if (renderName == '활동량') {
+            setWeightRender(false);
+            setMealsRender(false);
+            setActivityRender(true);
             setActiveTabName('활동량');
         }
     }
@@ -64,15 +69,15 @@ const PetManageScreen = () => {
 
             <View style={{ paddingTop: scale(20) }}>
                 {/* 동물 추가 버튼 */}
-                <TouchableOpacity 
+                <TouchableOpacity
                     activeOpacity={0.8}
-                    style={[styles.addBtn, gs.flexRow, { justifyContent: 'center', alignItems: 'center' }]} 
-                    onPress={()=>{alert('등록')}}
+                    style={[styles.addBtn, gs.flexRow, { justifyContent: 'center', alignItems: 'center' }]}
+                    onPress={() => { alert('등록') }}
                 >
                     <EBoldText style={styles.whiteFont}>등록</EBoldText>
                     <FontAwesome name='plus' style={[styles.whiteFont, { marginLeft: scale(5) }]} />
                 </TouchableOpacity>
-                
+
                 {/* 동물 선택 드롭박스 */}
                 <PetSelectBox
                     visible={dropdownVisible}
@@ -94,11 +99,12 @@ const PetManageScreen = () => {
             </View>
 
             <View style={gs.mt25}>
-                <TabMenu onPressHandler={onPressHandler} menuList={['몸무게', '식사량', '활동량']} activeTab={activeTabName}/>
+                <TabMenu onPressHandler={onPressHandler} menuList={['몸무게', '식사량', '활동량']} activeTab={activeTabName} />
+                {weightRender && <WeightComponent />}
+                {mealsRender && <MealsComponent />}
+                {activityRender && <ActivityComponent />}
             </View>
-            <View>
-                
-            </View>
+
 
         </ScrollView>
     );
