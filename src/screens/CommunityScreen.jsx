@@ -10,7 +10,6 @@ import {
     Pressable,
     Alert
 } from 'react-native';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
 import EBoldText from '../components/font/EBoldText';
 import gs from '../assets/styles/globalStyles';
@@ -19,14 +18,12 @@ import ColumnsScreen from './ColumnsScreen';
 import ReivewsScreen from './ReivewsScreen';
 import TabMenu from '../components/TabMenu';
 
-const Tab = createBottomTabNavigator();
-
 const CommunityScreen = () => {
 
     const [feedRender, setFeedRender] = useState(true);
     const [columnsRender, setColumnsRender] = useState(false);
     const [reivewsRender, setReivewsRender] = useState(false);
-    const [activeTabName, setActiveTabName] = useState('');
+    const [activeTabName, setActiveTabName] = useState('Feed');
 
     const onPressHandler = (renderName) => {
         if(renderName == 'Feed'){
@@ -51,7 +48,6 @@ const CommunityScreen = () => {
 
     return (
         <ScrollView contentContainerStyle={gs.screen}>
-
             <View>
                 <EBoldText style={gs.title}>Community</EBoldText>
             </View>
