@@ -42,12 +42,11 @@ const styles = StyleSheet.create({
         borderRadius: 7,
         textAlign: 'center',
         lineHeight: 25,
-        fontSize: 11,
+        fontSize: 15,
         fontWeight: 400
     },
     buttonBoxActive: {
         backgroundColor: '#fff',
-        color:'#155dfc',
     }
 });
 
