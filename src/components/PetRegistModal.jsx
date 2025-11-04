@@ -1,20 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
-    Modal,
     View,
     Text,
-    TextInput,
     TouchableOpacity,
     StyleSheet,
-    Pressable,
-    ScrollView,
-    Image,
-    Animated,
 } from 'react-native';
-import { Dropdown } from 'react-native-element-dropdown';
-import { launchImageLibrary } from 'react-native-image-picker';
-import DatePicker from 'react-native-date-picker';
 
+import {
+    BottomModal,
+    AppInput,
+    AppSelect,
+    AppDatePicker,
+    AppDropdown,
+    AppTextArea,
+    AppImagePicker,
+    AppButton,
+} from '../components/common';
+import DatePicker from 'react-native-date-picker';
+import { MODAL_COLORS } from '../assets/styles/globalStyles';
 
 export default function PetRegistModal({ visible, onClose, onSubmit }) {
     const [data, setData] = useState({
@@ -31,17 +34,22 @@ export default function PetRegistModal({ visible, onClose, onSubmit }) {
         profileImg: null,
     });
 
-    const [translateY] = useState(new Animated.Value(400));
-
-    const [showDatePicker, setShowDatePicker] = useState(false);
-    const [date, setDate] = useState(data.birth ? new Date(data.birth) : new Date());
-
-    React.useEffect(() => {
-        Animated.timing(translateY, {
-            toValue: visible ? 0 : 400,
-            duration: visible ? 250 : 200,
-            useNativeDriver: true,
-        }).start();
+    useEffect(() => {
+        if (!visible) {
+            setData({
+                petName: '',
+                age: '',
+                birth: '',
+                birthKnowYn: false,
+                gender: '',
+                neuterYn: '',
+                breedType1: '',
+                breedType2: '',
+                breed: '',
+                remark: '',
+                profileImg: null,
+            });
+        }
     }, [visible]);
 
     const breedOptions = {
@@ -50,16 +58,11 @@ export default function PetRegistModal({ visible, onClose, onSubmit }) {
         기타: ['기타'],
     };
 
-    const handleChange = (key, value) => setData(prev => ({ ...prev, [key]: value }));
+    const [showDatePicker, setShowDatePicker] = useState(false);
+    const [date, setDate] = useState(data.birth ? new Date(data.birth) : new Date());
+    const [disabled, setDisabled] = useState(data.birthKnowYn);
 
-    const handleSelectImage = () => {
-        launchImageLibrary({ mediaType: 'photo', selectionLimit: 1 }, res => { 
-            if (res?.didCancel || res?.errorCode) 
-                return; 
-            
-            const uri = res?.assets?.[0]?.uri; 
-            if (uri) handleChange('profileImg', uri); });
-    };
+    const handleChange = (key, value) => setData(prev => ({ ...prev, [key]: value }));
 
     const handleSubmit = () => {
         if (!data.petName.trim()) return alert('이름을 입력해주세요 🐶');
@@ -68,196 +71,142 @@ export default function PetRegistModal({ visible, onClose, onSubmit }) {
     };
 
     return (
-        <Modal transparent visible={visible} animationType="fade" onRequestClose={onClose}>
-            <Pressable style={styles.overlay} onPress={onClose} />
+        <BottomModal visible={visible} onClose={onClose} title="🐾 동물 정보 등록">
+            <AppInput label="이름" value={data.petName} onChangeText={v => handleChange('petName', v)} />
 
-            <Animated.View style={[styles.sheetContainer, { transform: [{ translateY }] }]}>
-                <ScrollView showsVerticalScrollIndicator={false}>
-                    <Text style={styles.title}>🐾 동물 정보 등록</Text>
+            <AppInput
+                label="나이"
+                value={data.age}
+                onChangeText={v => handleChange('age', v)}
+                keyboardType="numeric"
+            />
 
-                    <Input label="이름" value={data.petName} onChangeText={v => handleChange('petName', v)} />
-                    <Input label="나이" value={data.age} onChangeText={v => handleChange('age', v)} keyboardType="numeric" />
-                    {/* <Input label="생일 (YYYY-MM-DD)" value={data.birth} onChangeText={v => handleChange('birth', v)} /> */}
-                    <View style={styles.inputGroup}>
-                        <Text style={styles.label}>생일</Text>
-                        <TouchableOpacity
-                            style={[styles.input, { justifyContent: 'center' }]}
-                            onPress={() => setShowDatePicker(true)}
-                        >
-                            <Text style={{ color: data.birth ? '#333' : '#999' }}>
-                                {data.birth ? data.birth : '날짜 선택'}
-                            </Text>
-                        </TouchableOpacity>
+            <View style={styles.inputGroup}>
+                <View style={styles.rowLabel}>
+                    <Text style={styles.label}>생일</Text>
 
-                        {
-                            showDatePicker && <DatePicker
-                                modal
-                                mode="date"
-                                open={showDatePicker}
-                                date={date}
-                                locale="ko"
-                                maximumDate={new Date()} // 미래 선택 방지
-                                confirmText="확인"
-                                cancelText="취소"
-                                title="생일 선택"
-                                onConfirm={(selectedDate) => {
-                                    setShowDatePicker(false);
-                                    setDate(selectedDate);
-                                    const yyyy = selectedDate.getFullYear();
-                                    const mm = String(selectedDate.getMonth() + 1).padStart(2, '0');
-                                    const dd = String(selectedDate.getDate()).padStart(2, '0');
-                                    handleChange('birth', `${yyyy}-${mm}-${dd}`);
-                                }}
-                                onCancel={() => setShowDatePicker(false)}
-                            />
-                        }
-                    </View>
+                    <TouchableOpacity
+                        onPress={() => {
+                            const next = !data.birthKnowYn;
+                            setDisabled(next);
+                            handleChange('birthKnowYn', next);
 
-                    <TouchableOpacity onPress={() => {
-                            handleChange('birthKnowYn', !data.birthKnowYn); 
-                            if(!data.birthKnowYn) handleChange('birth', ''); 
-                            setShowDatePicker(false);}
-                        } 
+                            if (next) {
+                                handleChange('birth', '');
+                                setShowDatePicker(false);
+                            }
+                        }}
                         style={styles.checkboxRow}
+                        activeOpacity={0.7}
                     >
                         <View style={[styles.checkbox, data.birthKnowYn && styles.checkboxActive]} />
                         <Text style={styles.checkboxLabel}>생일 모름</Text>
                     </TouchableOpacity>
+                </View>
 
-                    <Select label="성별" options={['수컷', '암컷']} selected={data.gender} onSelect={v => handleChange('gender', v)} />
-                    <Select label="중성화 여부" options={['예', '아니오']} selected={data.neuterYn} onSelect={v => handleChange('neuterYn', v)} />
+                <TouchableOpacity
+                    style={[
+                        styles.input,
+                        { justifyContent: 'center' },
+                        disabled && { backgroundColor: '#f2f2f2' },
+                    ]}
+                    onPress={() => !disabled && setShowDatePicker(true)}
+                    activeOpacity={disabled ? 1 : 0.7}
+                >
+                    <Text style={{ color: data.birth ? '#333' : '#999' }}>
+                        {data.birth ? data.birth : '날짜 선택'}
+                    </Text>
+                </TouchableOpacity>
 
-                    <Select label="품종1 (동물종)" options={Object.keys(breedOptions)} selected={data.breedType1} onSelect={v => {
-                        handleChange('breedType1', v);
-                        handleChange('breedType2', '');
-                        handleChange('breed', '');
-                    }} />
+                {
+                    showDatePicker && <DatePicker
+                        modal
+                        mode="date"
+                        open={showDatePicker}
+                        date={date}
+                        locale="ko"
+                        maximumDate={new Date()} // 미래 선택 방지
+                        confirmText="확인"
+                        cancelText="취소"
+                        title="생일 선택"
+                        onConfirm={(selectedDate) => {
+                            setShowDatePicker(false);
+                            setDate(selectedDate);
+                            const yyyy = selectedDate.getFullYear();
+                            const mm = String(selectedDate.getMonth() + 1).padStart(2, '0');
+                            const dd = String(selectedDate.getDate()).padStart(2, '0');
+                            handleChange('birth', `${yyyy}-${mm}-${dd}`);
+                        }}
+                        onCancel={() => setShowDatePicker(false)}
 
-                    {data.breedType1 ? (
-                        <View style={styles.inputGroup}>
-                            <Text style={styles.label}>품종2 (세부종)</Text>
-                            <Dropdown
-                                style={styles.dropdown}
-                                placeholderStyle={styles.placeholderStyle}
-                                selectedTextStyle={styles.selectedTextStyle}
-                                inputSearchStyle={styles.inputSearchStyle}
-                                search
-                                searchPlaceholder="품종을 검색하세요"
-                                data={breedOptions[data.breedType1].map(o => ({ label: o, value: o }))}
-                                labelField="label"
-                                valueField="value"
-                                placeholder="선택하세요"
-                                value={data.breedType2}
-                                onChange={item => handleChange('breedType2', item.value)}
-                            />
-                        </View>
-                    ) : null}
+                    />
+                }
+            </View>
 
-                    {data.breedType2 === '기타' && (
-                        <Input label="기타 품종" value={data.breed} onChangeText={v => handleChange('breed', v)} />
-                    )}
+            <AppSelect
+                label="성별"
+                options={['수컷', '암컷']}
+                selected={data.gender}
+                onSelect={(v) => handleChange('gender', v)}
+            />
 
-                    <Input label="특이사항" value={data.remark} onChangeText={v => handleChange('remark', v)} multiline />
+            <AppSelect
+                label="중성화 여부"
+                options={['예', '아니오']}
+                selected={data.neuterYn}
+                onSelect={(v) => handleChange('neuterYn', v)}
+            />
 
-                    <Text style={styles.label}>대표 사진</Text>
-                    <TouchableOpacity style={styles.imagePicker} onPress={handleSelectImage}>
-                        {data.profileImg ? (
-                            <Image source={{ uri: data.profileImg }} style={styles.profileImg} />
-                        ) : (
-                            <Text style={{ color: '#777777' }}>사진 선택하기</Text>
-                        )}
-                    </TouchableOpacity>
+            <AppSelect
+                label="품종1 (동물종)"
+                options={['강아지', '고양이', '기타']}
+                selected={data.breedType1}
+                onSelect={(v) => handleChange('breedType1', v)}
+            />
 
-                    <TouchableOpacity style={styles.submitBtn} onPress={handleSubmit}>
-                        <Text style={styles.submitText}>등록하기</Text>
-                    </TouchableOpacity>
+            {data.breedType1 && (
+                <AppDropdown
+                    label="품종2 (세부종)"
+                    data={breedOptions[data.breedType1].map(o => ({ label: o, value: o }))}
+                    value={data.breedType2}
+                    onChange={(v) => handleChange('breedType2', v)}
+                />
+            )}
 
-                    <TouchableOpacity style={styles.cancelBtn} onPress={onClose}>
-                        <Text style={styles.cancelText}>닫기</Text>
-                    </TouchableOpacity>
-                </ScrollView>
-            </Animated.View>
-        </Modal>
+            {data.breedType2 === '기타' && (
+                <AppInput
+                    label="기타 품종"
+                    value={data.breed}
+                    onChangeText={(v) => handleChange('breed', v)}
+                />
+            )}
+
+            <AppTextArea
+                label="특이사항"
+                value={data.remark}
+                onChangeText={(v) => handleChange('remark', v)}
+            />
+
+            <AppImagePicker
+                label="대표 사진"
+                value={data.profileImg}
+                onChange={(v) => handleChange('profileImg', v)}
+            />
+
+            <AppButton title="등록하기" onPress={handleSubmit} />
+            <TouchableOpacity style={styles.cancelBtn} onPress={onClose}>
+                <Text style={styles.cancelText}>닫기</Text>
+            </TouchableOpacity>
+        </BottomModal>
     );
 }
 
-// 🧩 하위 컴포넌트
-const Input = ({ label, ...props }) => (
-    <View style={styles.inputGroup}>
-        <Text style={styles.label}>{label}</Text>
-        <TextInput style={styles.input} placeholder={label} {...props} />
-    </View>
-);
-
-const Select = ({ label, options, selected, onSelect }) => (
-    <View style={styles.inputGroup}>
-        <Text style={styles.label}>{label}</Text>
-        <View style={styles.selectRow}>
-            {options.map(o => (
-                <TouchableOpacity
-                    key={o}
-                    style={[styles.selectBox, selected === o && styles.selectBoxActive]}
-                    onPress={() => onSelect(o)}
-                >
-                    <Text style={[styles.selectText, selected === o && styles.selectTextActive]}>{o}</Text>
-                </TouchableOpacity>
-            ))}
-        </View>
-    </View>
-);
-
-
-const COLORS = {
-    primary: '#FF6600',      
-    secondary: '#FF9E40',    
-    lightBorder: '#FFD8B0',  
-    background: '#FFF8F0',   
-    textPrimary: '#FF6600',  
-};
-
 const styles = StyleSheet.create({
-    overlay: {
-        position: 'absolute',
-        top: 0, left: 0, right: 0, bottom: 0,
-        backgroundColor: 'rgba(0,0,0,0.4)',
-    },
-    sheetContainer: {
-        position: 'absolute',
-        bottom: 0,
-        width: '100%',
-        maxHeight: '85%',
-        backgroundColor: COLORS.background,
-        borderTopLeftRadius: 30,
-        borderTopRightRadius: 30,
-        padding: 24,
-        shadowColor: COLORS.primary,
-        shadowOpacity: 0.2,
-        shadowOffset: { width: 0, height: -6 },
-        shadowRadius: 12,
-        elevation: 10,
-    },
-    title: {
-        fontSize: 20,
-        fontWeight: '700',
-        color: '#333333',
-        textAlign: 'center',
-        marginBottom: 18,
-    },
-    inputGroup: { marginBottom: 12 },
-    label: { fontSize: 14, color: '#555', marginBottom: 6 },
-    input: {
-        borderWidth: 1,
-        borderColor: COLORS.lightBorder,
-        borderRadius: 12,
-        paddingVertical: 10,
-        paddingHorizontal: 14,
-        backgroundColor: '#FFFFFF',
-        fontSize: 14,
-        color: '#333',
-        shadowColor: COLORS.lightBorder,
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.15,
-        shadowRadius: 4,
+    rowLabel: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between'
     },
     checkboxRow: { flexDirection: 'row', alignItems: 'center', marginBottom: 12 },
     checkbox: {
@@ -267,66 +216,20 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         marginRight: 8,
     },
-    checkboxActive: { backgroundColor: COLORS.secondary },
+    checkboxActive: { backgroundColor: '#FF6600' },
     checkboxLabel: { color: '#555' },
-    selectRow: { flexDirection: 'row', flexWrap: 'wrap' },
-    selectBox: {
-        borderWidth: 1,
-        borderColor: COLORS.lightBorder,
-        borderRadius: 20,
-        paddingVertical: 6,
-        paddingHorizontal: 14,
-        marginRight: 8,
-        marginBottom: 6,
-        backgroundColor: '#FFF3E0',
-    },
-    selectBoxActive: { backgroundColor: COLORS.primary + '22', borderColor: COLORS.primary },
-    selectText: { color: '#555', fontSize: 14 },
-    selectTextActive: { color: COLORS.primary, fontWeight: '600' },
-    dropdown: {
-        height: 48,
-        borderColor: COLORS.lightBorder,
-        borderWidth: 1,
-        borderRadius: 12,
-        paddingHorizontal: 14,
-        backgroundColor: '#fff',
-    },
-    placeholderStyle: { fontSize: 14, color: '#999' },
-    selectedTextStyle: { fontSize: 14, color: '#333' },
-    inputSearchStyle: {
-        height: 40,
-        fontSize: 14,
-        color: '#333',
-        borderBottomWidth: 0.5,
-        borderColor: COLORS.lightBorder,
-    },
-    imagePicker: {
-        height: 120,
-        borderWidth: 1,
-        borderColor: COLORS.lightBorder,
-        borderRadius: 16,
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginBottom: 20,
-        backgroundColor: '#fff',
-        shadowColor: COLORS.lightBorder,
-        shadowOffset: { width: 0, height: 3 },
-        shadowOpacity: 0.2,
-        shadowRadius: 6,
-    },
-    profileImg: { width: '100%', height: '100%' },
-    submitBtn: {
-        backgroundColor: COLORS.primary,
-        borderRadius: 20,
-        paddingVertical: 12,
-        marginTop: 8,
-    },
-    submitText: {
-        color: '#fff',
-        fontWeight: '700',
-        textAlign: 'center',
-        fontSize: 16,
-    },
     cancelBtn: { paddingVertical: 8 },
     cancelText: { textAlign: 'center', color: '#999' },
-});
+    inputGroup: { marginBottom: 12 },
+    label: { fontSize: 14, color: '#555', marginBottom: 6 },
+    input: {
+        borderWidth: 1,
+        borderColor: MODAL_COLORS.border,
+        borderRadius: 12,
+        paddingVertical: 10,
+        paddingHorizontal: 14,
+        backgroundColor: MODAL_COLORS.background,
+        fontSize: 14,
+        color: MODAL_COLORS.text,
+    },
+})

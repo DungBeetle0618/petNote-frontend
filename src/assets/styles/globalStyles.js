@@ -13,6 +13,18 @@ export const COLORS = {
   cardBg: '#F9F9F9',
 };
 
+export const MODAL_COLORS = {
+  border: '#FFD8B0',
+  primary: '#FF6600',
+  text: '#333',
+  label: '#555',
+  background: '#fff',
+  activeBorder: '#FF6600',
+  activeBg: '#FF660022',
+  activeText: '#FF6600',
+  placeholder: '#999',
+}
+
 export const PX_SIZE = {
   xs: scale(12),    
   sm: scale(14),   

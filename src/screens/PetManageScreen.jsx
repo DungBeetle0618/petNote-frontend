@@ -9,6 +9,7 @@ import gs, { COLORS } from '../assets/styles/globalStyles';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import EBoldText from '../components/font/EBoldText';
+import BoldText from '../components/font/BoldText';
 import RegularText from '../components/font/RegularText';
 import EBoldTextN from '../components/font/EBoldText_n';
 
@@ -73,7 +74,7 @@ const PetManageScreen = () => {
         <ScrollView contentContainerStyle={gs.screen} >
 
             <EBoldTextN style={gs.title}>Pet</EBoldTextN>
-            <RegularText style={{ fontSize: scale(14) }}>반려동물의 건강정보를 한눈에 확인하세요!</RegularText>
+            <Text style={{ fontSize: scale(14) }}>반려동물의 건강정보를 한눈에 확인하세요!</Text>
 
             <View style={{ paddingTop: scale(20) }}>
                 {/* 동물 추가 버튼 */}
@@ -82,7 +83,7 @@ const PetManageScreen = () => {
                     style={[styles.addBtn, gs.flexRow, { justifyContent: 'center', alignItems: 'center' }]}
                     onPress={() => { setPetModalVisible(true) }}
                 >
-                    <EBoldText style={styles.whiteFont}>등록</EBoldText>
+                    <BoldText style={styles.whiteFont}>등록</BoldText>
                     <FontAwesome name='plus' style={[styles.whiteFont, { marginLeft: scale(5) }]} />
                 </TouchableOpacity>
                 <PetRegistModal visible={petModalVisible}
