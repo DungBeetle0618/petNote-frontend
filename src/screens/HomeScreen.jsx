@@ -6,6 +6,7 @@ import { View, Text, ScrollView, Dimensions, StyleSheet } from 'react-native';
 import { LineChart } from "react-native-chart-kit";
 import { scale } from 'react-native-size-matters';
 import PetSelectBox from '../components/PetSelectBox';
+import MagazineSlider from "../components/Slider";
 import { useEffect } from 'react';
 import EBoldText from '../components/font/EBoldText';
 import BoldText from '../components/font/BoldText';
@@ -47,22 +48,87 @@ const styles = StyleSheet.create({
     marginTop: 4,
     color: "green",
   },
-  orangeSection: {
-    backgroundColor: "#FF6600",
-    paddingHorizontal: 20,
-    paddingTop: 20,
-    paddingBottom: 40,
-    borderBottomLeftRadius: 30,
-    borderBottomRightRadius: 30,
+  cardContainer1: {
+    padding: 16,
+    marginTop: 20,
+    marginBottom: 24,
+    backgroundColor: "#FFFFFF",
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: "#FCD9A3",
+    shadowColor: "#000",
+    shadowOpacity: 0.05,
+    shadowRadius: 4,
+    elevation: 2,
   },
-  whiteSection: {
+  header: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: 16,
+    alignItems: "center",
+  },
+  title: {
+    color: "#1A1A1A",
+    fontSize: 16,
+    fontWeight: "600",
+  },
+  calendarIcon: {
+    fontSize: 20,
+    color: "#EA580C",
+  },
+  item: {
+    flexDirection: "row",
+    alignItems: "flex-start",
+    padding: 12,
+    borderRadius: 14,
+    marginBottom: 10,
+  },
+  iconCircle: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  emoji: {
+    fontSize: 18,
+  },
+  content: {
     flex: 1,
-    backgroundColor: "#fff",
-    padding: 20,
-    marginTop: 10, // 경계부 좀 더 부드럽게
+    marginLeft: 10,
   },
-   dateText: {
-    color: '#fff', // 폰트 컬러
+  itemTitle: {
+    color: "#1A1A1A",
+    fontSize: 14,
+    fontWeight: "500",
+  },
+  itemSub: {
+    color: "#666",
+    fontSize: 12,
+    marginTop: 4,
+  },
+  badgeOrange: {
+    backgroundColor: "#EA580C",
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: 999,
+  },
+  badgeOrangeText: {
+    color: "#fff",
+    fontSize: 10,
+    fontWeight: "600",
+  },
+  badgeAmberBorder: {
+    borderWidth: 1,
+    borderColor: "#FCD34D",
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: 999,
+  },
+  badgeAmberBorderText: {
+    color: "#B45309",
+    fontSize: 10,
+    fontWeight: "600",
   },
 });
 
@@ -85,7 +151,7 @@ const HomeScreen = () => {
     { day: "Thu", steps: 7000 },
     { day: "Fri", steps: 8000 },
     { day: "Sat", steps: 6500 },
-    { day: "Sun", steps: 3000 },
+    { day: "Sun", steps: 20000 },
   ];
 
   const screenWidth = Dimensions.get("window").width;
@@ -149,16 +215,14 @@ const HomeScreen = () => {
           </View>
         </View>
         
-
+        
         {/* Activity Chart */}
         <View style={{ marginTop: 20 }}>
           <RegularText style={gs.text}>Weekly Activity</RegularText>
           <LineChart
             data={{
-              labels: ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"],
-              datasets: [
-                { data: [2300, 4500, 5200, 7000, 8000, 6500, 3000] }
-              ]
+              labels: activityData.map(d => d.day),
+              datasets: [{ data: activityData.map(d => d.steps) }]
             }}
             width={screenWidth - 40}
             height={200}
@@ -167,21 +231,71 @@ const HomeScreen = () => {
               backgroundGradientFrom: "#fff",
               backgroundGradientTo: "#fff",
               decimalPlaces: 0,
-              color: () => "black",
-              labelColor: () => "black",
+              color: (opacity = 1) => `rgba(255, 102, 0, ${opacity})`,
+              labelColor: (opacity = 1) => `rgba(74, 40, 0, ${opacity})`,
+              propsForDots: {
+                r: "2",
+                strokeWidth: "2",
+                stroke: "#FF6600"
+              }
             }}
           />
         </View>
 
-        <View style={gs.card}>
-          <BoldText>Bold 폰트사이즈</BoldText>
-          <RegularText style={gs.text}>Regular 폰트사이즈</RegularText>
+        {/* Upcoming Reminders */}
+        <View style={styles.cardContainer1}>
+          <View style={styles.header}>
+            <RegularText style={gs.text}>Upcoming Reminders</RegularText>
+            <Text style={styles.calendarIcon}>📅</Text>
+          </View>
+
+          <View style={[styles.item, { backgroundColor: "#FFF7ED" }]}>
+            <View style={[styles.iconCircle, { backgroundColor: "#F97316" }]}>
+              <Text style={styles.emoji}>💉</Text>
+            </View>
+            <View style={styles.content}>
+              <Text style={styles.itemTitle}>Next Vaccination</Text>
+              <Text style={styles.itemSub}>Oct 30, 2025 • Happy Animal Hospital</Text>
+            </View>
+            <View style={styles.badgeOrange}>
+              <Text style={styles.badgeOrangeText}>Tomorrow</Text>
+            </View>
+          </View>
+          
+          {/* Item 2 */}
+          <View style={[styles.item, { backgroundColor: "#FEF3C7" }]}>
+            <View style={[styles.iconCircle, { backgroundColor: "#D97706" }]}>
+              <Text style={styles.emoji}>✂️</Text>
+            </View>
+            <View style={styles.content}>
+              <Text style={styles.itemTitle}>Grooming Appointment</Text>
+              <Text style={styles.itemSub}>Nov 1, 2025 • Pet Paradise Salon</Text>
+            </View>
+            <View style={styles.badgeAmberBorder}>
+              <Text style={styles.badgeAmberBorderText}>4 days</Text>
+            </View>
+          </View>
         </View>
 
-        <View style={gs.card}>
-          <EBoldText>Extra Bold 폰트사이즈</EBoldText>
-          <LightText style={gs.text}>Light 폰트사이즈</LightText>
+        {/* Challenge */}
+        <View style={{ marginTop: 20 }}>
+          <RegularText style={gs.text}>Challenge</RegularText>
+          <View style={gs.card}>
+            <EBoldText>Extra Bold 폰트사이즈</EBoldText>
+            <LightText style={gs.text}>Light 폰트사이즈</LightText>
+          </View>
+          <View style={gs.card}>
+            <EBoldText>Extra Bold 폰트사이즈</EBoldText>
+            <LightText style={gs.text}>Light 폰트사이즈</LightText>
+          </View>
         </View>
+
+        {/* 매거진 */}
+        <View style={{ marginTop: 20 }}>
+          <RegularText style={gs.text}>매거진</RegularText>
+           <MagazineSlider flag="magazine"/>
+        </View>
+
         
         
 
