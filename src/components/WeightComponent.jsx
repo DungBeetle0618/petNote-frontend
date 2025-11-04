@@ -1,14 +1,15 @@
-import React from 'react';
-import { View, Text, ScrollView, StyleSheet } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, ScrollView, StyleSheet, Dimensions } from 'react-native';
+import { LineChart } from "react-native-chart-kit";
+import Animated, { useSharedValue, withTiming, useAnimatedProps } from 'react-native-reanimated';
 
 const WeightComponent = () => {
 
-    return (
-        <ScrollView>
-            <View><Text>WeightComponent</Text></View>        
-        </ScrollView>
-        
-    );
+  return (
+    <View>
+      
+    </View>
+  );
 };
 
 

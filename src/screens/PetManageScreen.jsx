@@ -18,10 +18,18 @@ import TabMenu from '../components/TabMenu';
 import WeightComponent from '../components/WeightComponent';
 import MealsComponent from '../components/MealsComponent';
 import ActivityComponent from '../components/ActivityComponent';
+import PetRegistModal from '../components/PetRegistModal';
 
 const PetManageScreen = () => {
     const [selected, setSelected] = useState(null);
     const [dropdownVisible, setDropdownVisible] = useState(false);
+
+    const [petModalVisible, setPetModalVisible] = useState(false);
+
+    const handleSubmit = data => {
+        console.log('등록된 동물 정보:', data);
+        setPetModalVisible(false);
+    };
 
     const [activeTabName, setActiveTabName] = useState('몸무게');
     const [weightRender, setWeightRender] = useState(true);
@@ -72,11 +80,15 @@ const PetManageScreen = () => {
                 <TouchableOpacity
                     activeOpacity={0.8}
                     style={[styles.addBtn, gs.flexRow, { justifyContent: 'center', alignItems: 'center' }]}
-                    onPress={() => { alert('등록') }}
+                    onPress={() => { setPetModalVisible(true) }}
                 >
                     <EBoldText style={styles.whiteFont}>등록</EBoldText>
                     <FontAwesome name='plus' style={[styles.whiteFont, { marginLeft: scale(5) }]} />
                 </TouchableOpacity>
+                <PetRegistModal visible={petModalVisible}
+                                onClose={() => setPetModalVisible(false)}
+                                onSubmit={handleSubmit} 
+                />
 
                 {/* 동물 선택 드롭박스 */}
                 <PetSelectBox
