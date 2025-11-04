@@ -27,7 +27,7 @@ const globalStyles = StyleSheet.create({
     // flex: 1,
     backgroundColor: COLORS.background,
     paddingHorizontal: PX_SIZE.lg, 
-    paddingVertical: PX_SIZE.md,
+    paddingVertical: scale(30),
   },
 
   /* 제목 텍스트 */

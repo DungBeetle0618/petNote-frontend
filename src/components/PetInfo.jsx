@@ -25,6 +25,7 @@ import LightText from './font/LightText';
 import EBoldText from './font/EBoldText';
 import EBoldTextN from './font/EBoldText_n';
 import LightTextN from './font/LightText_n';
+import ChevronIcon from './ChevronIcon';
 
 const PetInfo = ({ data }) => {
     const [main, setMain] = useState(data.main);
@@ -32,7 +33,7 @@ const PetInfo = ({ data }) => {
     const [showMore, setShowMore] = useState(false);
 
     //특이사항(예시)
-    const contents = '아주 건강하고 똑똑하지만 약간 멍청함 먹는거 좋아하고 사람이나 다른 강아지들 좋아함 알러지 없음 하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하 하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하';
+    const contents = '아주 건강하고 똑똑하지만 약간 멍청함\n먹는거 좋아하고 사람이나 다른 강아지들 좋아함\n알러지 없음\n하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하\n하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하';
     
 
     useEffect(()=>{
@@ -83,7 +84,7 @@ const PetInfo = ({ data }) => {
                         }
                     </TouchableOpacity>
                     <TouchableOpacity onPress={()=>{alert('수정')}} activeOpacity={1} style={{position: 'absolute', right: scale(20), bottom: 0}}>
-                        <FontAwesome name="pencil" style={{fontSize: scale(20)}}/>
+                        <FontAwesome name="pencil" style={{fontSize: scale(16)}}/>
                     </TouchableOpacity>
                 </View>
                 <View style={styles.info}>
@@ -96,44 +97,45 @@ const PetInfo = ({ data }) => {
                         shadowHorizontalScrollIndicator={false}
                     >
                         <View style={[styles.infoSub, {width: scale(90)}]}>
-                            <EBoldTextN style={{fontSize: scale(14), marginBottom: 6}}>생일</EBoldTextN>
-                            <LightTextN>{data.birth}</LightTextN>
+                            <EBoldTextN style={{fontSize: scale(12), marginBottom: 6}}>생일</EBoldTextN>
+                            <LightTextN styles={styles.subContent}>{data.birth}</LightTextN>
                         </View>
                         <View style={styles.infoSub}>
-                            <EBoldTextN style={{fontSize: scale(14), marginBottom: 6}}>나이</EBoldTextN>
-                            <LightTextN>{data.age}</LightTextN>
+                            <EBoldTextN style={{fontSize: scale(12), marginBottom: 6}}>나이</EBoldTextN>
+                            <LightTextN styles={styles.subContent}>{data.age}</LightTextN>
                         </View>
                         <View style={styles.infoSub}>
-                            <EBoldTextN style={{fontSize: scale(14), marginBottom: 6}}>성별</EBoldTextN>
-                            <LightTextN>{data.gender}</LightTextN>
+                            <EBoldTextN style={{fontSize: scale(12), marginBottom: 6}}>성별</EBoldTextN>
+                            <LightTextN styles={styles.subContent}>{data.gender}</LightTextN>
                         </View>
                         <View style={styles.infoSub}>
-                            <EBoldTextN style={{fontSize: scale(14), marginBottom: 6}}>중성화</EBoldTextN>
-                            <LightTextN>Y</LightTextN>
+                            <EBoldTextN style={{fontSize: scale(12), marginBottom: 6}}>중성화</EBoldTextN>
+                            <LightTextN styles={styles.subContent}>Y</LightTextN>
                         </View>
                     </ScrollView>
 
                     <View style={styles.memo}>
-                        <EBoldTextN style={{fontSize: scale(16), marginBottom: 8}}>NOTES</EBoldTextN>
-                        <LightTextN style={styles.memoContent} 
-                            numberOfLines={expanded ? undefined : 3}
-                            onTextLayout={e => {
-                                if (e.nativeEvent.lines.length > 3 && !showMore) {
-                                    setShowMore(true);
-                                }
-                            }}
-                            >
-                            {contents}
-                                
-                        </LightTextN>
-                        { contents.length > 100 && (
-                            
-                            <TouchableOpacity onPress={() => setExpanded(!expanded)}>
-                            <Text style={{ textAlign: 'right', marginTop: 4 }}>
-                                {expanded ? '접기' : '더보기'}
-                            </Text>
-                            </TouchableOpacity> 
-                        )}
+                        <View style={{flexDirection: 'row', alignItems: 'start', justifyContent: 'space-between'}}>
+                            <EBoldTextN style={{fontSize: scale(16), marginBottom: 8}}>NOTES</EBoldTextN>
+                            { contents.length > 100 && (
+                                <TouchableOpacity onPress={() => setExpanded(!expanded)} activeOpacity={1}>
+                                    <ChevronIcon visible={expanded} size={scale(16)} />
+                                </TouchableOpacity>
+                            )}
+                        </View>
+                        <TouchableOpacity onPress={() => setExpanded(!expanded)} activeOpacity={1}>
+                            <LightTextN style={styles.memoContent} 
+                                numberOfLines={expanded ? undefined : 3}
+                                onTextLayout={e => {
+                                    if (e.nativeEvent.lines.length > 3 && !showMore) {
+                                        setShowMore(true);
+                                    }
+                                }}
+                                >
+                                {contents}
+                                    
+                            </LightTextN>
+                        </TouchableOpacity> 
                     </View>
                 </View>
             </View>
@@ -155,8 +157,8 @@ const styles = StyleSheet.create({
       borderRadius: scale(45),
     },
     profileImg: {
-        width: scale(180),
-        height: scale(180),
+        width: scale(160),
+        height: scale(160),
         // borderRadius: scale(150)/2,
         borderTopLeftRadius: scale(70),
         borderTopRightRadius: scale(85),
@@ -191,7 +193,7 @@ const styles = StyleSheet.create({
         paddingBottom: scale(30)
     },
     infoName: {
-        fontSize: scale(22),
+        fontSize: scale(20),
         marginBottom: scale(8),
         marginHorizontal: scale(25),
         marginTop: scale(25),
@@ -210,6 +212,9 @@ const styles = StyleSheet.create({
         marginRight: scale(10),
         alignItems: 'center'
     },
+    subContent: {
+        fontSize: scale(10)
+    },
     memo: {
         width: '100%',
         minHeight: scale(50),
@@ -218,7 +223,8 @@ const styles = StyleSheet.create({
     },
     memoContent: {
         lineHeight: 20,
-        flexShrink: 1
+        flexShrink: 1,
+        fontSize: scale(12)
     }
     
 

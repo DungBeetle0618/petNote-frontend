@@ -21,33 +21,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import RegularText from './font/RegularText';
 import BoldText from './font/BoldText';
 import { FlatList, ScrollView } from 'react-native-gesture-handler';
-
-/**
- * 화살표 아이콘 애니메이션 
- */
-const RotatingIcon = ({ visible }) => {
-    const rotateAnim = useRef(new Animated.Value(0)).current;
-
-    useEffect(() => {
-        Animated.timing(rotateAnim, {
-            toValue: visible ? 1 : 0,
-            duration: 200,
-            easing: Easing.inOut(Easing.ease),
-            useNativeDriver: true,
-        }).start();
-    }, [visible]);
-
-    const rotate = rotateAnim.interpolate({
-        inputRange: [0, 1],
-        outputRange: ['0deg', '180deg'],
-    });
-
-    return (
-        <Animated.View style={{ transform: [{ rotate }], marginLeft: 'auto' }}>
-            <Ionicons name='chevron-down-outline' style={{ fontSize: scale(20) }} />
-        </Animated.View>
-    );
-};
+import ChevronIcon from './ChevronIcon';
 
 
 /**
@@ -99,7 +73,7 @@ const PetSelectBox = ({ options, selectedValue, onSelect, visible, onOpen, onClo
                                 {selectedValue.breed}
                             </RegularText>
                         </View>
-                        <RotatingIcon visible={visible} />
+                        <ChevronIcon visible={visible} size={scale(20)} />
                     </View>
                 </TouchableOpacity>
             ) : (

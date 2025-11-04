@@ -6,6 +6,7 @@ import {
     Pressable,
 } from 'react-native';
 import BoldTextN from '../components/font/BoldText_n';
+import { scale } from 'react-native-size-matters';
 
 
 const TabMenu = ({onPressHandler, menuList, activeTab}) => {
@@ -43,7 +44,7 @@ const styles = StyleSheet.create({
         borderRadius: 7,
         textAlign: 'center',
         lineHeight: 25,
-        fontSize: 15,
+        fontSize: scale(12),
         fontWeight: 400
     },
     buttonBoxActive: {

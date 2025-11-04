@@ -23,7 +23,7 @@ const PetManageScreen = () => {
     const [selected, setSelected] = useState(null);
     const [dropdownVisible, setDropdownVisible] = useState(false);
 
-    const [activeTabName, setActiveTabName] = useState('');
+    const [activeTabName, setActiveTabName] = useState('몸무게');
     const [weightRender, setWeightRender] = useState(true);
     const [mealsRender, setMealsRender] = useState(false);
     const [activityRender, setActivityRender] = useState(false);
