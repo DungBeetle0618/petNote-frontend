@@ -31,13 +31,15 @@ const CommunityScreen = () => {
           setColumnsRender(false);
           setReivewsRender(false);
           setActiveTabName('Feed');
-        } 
+        }
+
         if(renderName == 'Columns'){
           setFeedRender(false);
           setColumnsRender(true);
           setReivewsRender(false);
           setActiveTabName('Columns');
         }
+
         if(renderName == 'Reviews'){
           setFeedRender(false);
           setColumnsRender(false);
