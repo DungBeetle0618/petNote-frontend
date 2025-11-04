@@ -6,11 +6,11 @@ import ColumnsCard from '../components/ColumnsCard';
 const ColumnsScreen = () => {
 
     return (
-        <View style={{paddingHorizontal:1, paddingVertical:5}}>
+        <>
             <ColumnsCard />
             <ColumnsCard />
             <ColumnsCard />
-        </View>
+        </>
     );
 };
 

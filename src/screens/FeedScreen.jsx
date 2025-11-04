@@ -5,11 +5,11 @@ import FeedCard from '../components/FeedCard';
 const FeedScreen = () => {
 
     return (
-        <View style={{paddingHorizontal:1, paddingVertical:5}}>
+        <>
             <FeedCard />
             <FeedCard />
             <FeedCard />
-        </View>
+        </>
     );
 
 };

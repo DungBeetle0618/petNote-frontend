@@ -15,14 +15,14 @@ import EBoldText from '../components/font/EBoldText';
 import gs from '../assets/styles/globalStyles';
 import FeedScreen from './FeedScreen';
 import ColumnsScreen from './ColumnsScreen';
-import ReivewsScreen from './ReivewsScreen';
+import ReviewScreen from './ReviewScreen';
 import TabMenu from '../components/TabMenu';
 
 const CommunityScreen = () => {
 
     const [feedRender, setFeedRender] = useState(true);
     const [columnsRender, setColumnsRender] = useState(false);
-    const [reivewsRender, setReivewsRender] = useState(false);
+    const [reviewsRender, setReivewsRender] = useState(false);
     const [activeTabName, setActiveTabName] = useState('Feed');
 
     const onPressHandler = (renderName) => {
@@ -61,7 +61,7 @@ const CommunityScreen = () => {
 
             {feedRender && <FeedScreen/>}
             {columnsRender && <ColumnsScreen/>}
-            {reivewsRender && <ReivewsScreen/>}
+            {reviewsRender && <ReviewScreen/>}
 
         </ScrollView>
     );

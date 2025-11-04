@@ -77,7 +77,8 @@ const styles = StyleSheet.create({
     columnsBodyText:{
         width:310,
         fontSize:13,
-        letterSpacing:0.5
+        letterSpacing:0.5,
+        color:'#333'
     },
     columnsFooter:{
         borderColor:'#ff6900',
