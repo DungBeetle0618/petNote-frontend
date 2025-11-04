@@ -15,7 +15,7 @@ const TabMenu = ({onPressHandler, menuList, activeTab}) => {
     <View style={styles.div}>
       {menuList.map(name => (
         <Pressable key={name} style={styles.divFlex} onPress={() => onPressHandler(name)}>
-            <BoldTextN style={[ styles.buttonBox, activeTab === name && styles.buttonBoxActive]}>{name}</BoldTextN>
+            <Text style={[ styles.buttonBox, activeTab === name && styles.buttonBoxActive]}>{name}</Text>
         </Pressable>
       ))}
     </View>

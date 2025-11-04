@@ -49,6 +49,8 @@ export default function PetRegistModal({ visible, onClose, onSubmit }) {
                 remark: '',
                 profileImg: null,
             });
+            setDisabled(false);
+            setShowDatePicker(false);
         }
     }, [visible]);
 

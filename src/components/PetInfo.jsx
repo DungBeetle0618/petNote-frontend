@@ -49,8 +49,8 @@ const PetInfo = ({ data }) => {
             'PetNote',
             '대표 동물로 설정하시겠습니까?',
             [
+                {text: '취소', onPress:()=>{}, style: 'cancel'},
                 {text: '확인', onPress:()=>{setMain(!main)}, style: 'default'},
-                {text: '취소', onPress:()=>{}, style: 'cancel'}
             ],
             {
                 cancelable: true,
@@ -124,7 +124,7 @@ const PetInfo = ({ data }) => {
                             )}
                         </View>
                         <TouchableOpacity onPress={() => setExpanded(!expanded)} activeOpacity={1}>
-                            <LightTextN style={styles.memoContent} 
+                            <Text style={styles.memoContent} 
                                 numberOfLines={expanded ? undefined : 3}
                                 onTextLayout={e => {
                                     if (e.nativeEvent.lines.length > 3 && !showMore) {
@@ -134,7 +134,7 @@ const PetInfo = ({ data }) => {
                                 >
                                 {contents}
                                     
-                            </LightTextN>
+                            </Text>
                         </TouchableOpacity> 
                     </View>
                 </View>
@@ -224,7 +224,8 @@ const styles = StyleSheet.create({
     memoContent: {
         lineHeight: 20,
         flexShrink: 1,
-        fontSize: scale(12)
+        fontSize: scale(12),
+        color: '#555',
     }
     
 
