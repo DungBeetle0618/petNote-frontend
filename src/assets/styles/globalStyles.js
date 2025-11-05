@@ -48,11 +48,12 @@ const globalStyles = StyleSheet.create({
     // fontWeight: '700',
     color: COLORS.textPrimary,
     marginBottom: scale(10),
+    letterSpacing: -2,
   },
 
   /* 부제목 */
   subtitle: {
-    fontSize: PX_SIZE.md,
+    fontSize: PX_SIZE.sm,
     // fontWeight: '500',
     color: COLORS.textSecondary,
     marginBottom: scale(20), 
@@ -92,6 +93,9 @@ const globalStyles = StyleSheet.create({
 
   mt25: {
     marginTop: scale(25)
+  },
+  mt40: {
+    marginTop: scale(40)
   }
 });
 
