@@ -3,8 +3,8 @@
  */
 import React, { useState } from 'react'
 import { View, Text, ScrollView, Dimensions, StyleSheet } from 'react-native';
-import { LineChart } from "react-native-chart-kit";
-import { scale } from 'react-native-size-matters';
+import { VictoryChart, VictoryLine, VictoryVoronoiContainer, VictoryTooltip, VictoryAxis, VictoryScatter, VictoryGroup } from "victory-native";
+
 import PetSelectBox from '../components/PetSelectBox';
 import MagazineSlider from "../components/Slider";
 import { useEffect } from 'react';
@@ -219,33 +219,75 @@ const HomeScreen = () => {
         {/* Activity Chart */}
         <View style={{ marginTop: 20 }}>
           <RegularText style={gs.text}>Weekly Activity</RegularText>
-          <LineChart
-            data={{
-              labels: activityData.map(d => d.day),
-              datasets: [{ data: activityData.map(d => d.steps) }]
-            }}
-            width={screenWidth - 40}
+          <VictoryChart 
+           width={screenWidth - 40}
             height={200}
-            chartConfig={{
-              backgroundColor: "#fff",
-              backgroundGradientFrom: "#fff",
-              backgroundGradientTo: "#fff",
-              decimalPlaces: 0,
-              color: (opacity = 1) => `rgba(255, 102, 0, ${opacity})`,
-              labelColor: (opacity = 1) => `rgba(74, 40, 0, ${opacity})`,
-              propsForDots: {
-                r: "2",
-                strokeWidth: "2",
-                stroke: "#FF6600"
-              }
-            }}
-          />
+            padding={{ top: 20, bottom: 40, left: 40, right: 20 }}
+            containerComponent={
+              <VictoryVoronoiContainer
+                voronoiBlacklist={["scatter"]}
+                labels={({ datum }) => `${datum.y} steps`}
+                labelComponent={
+                  <VictoryTooltip
+                    flyoutStyle={{
+                      stroke: COLORS.primary,
+                      fill: "#fff"
+                    }}
+                    style={{ fontSize: 12, fill: "#4A2800" }}
+                    cornerRadius={6}
+                    pointerLength={6}
+                  />
+                }
+              />
+            }
+          >
+            <VictoryAxis
+              style={{
+                axis: { stroke: "#E5E5E5" },
+                tickLabels: { fill: "#4A2800", fontSize: 11, padding: 5 },
+                grid: { stroke: "transparent" }
+              }}
+            />
+
+            {/* Y축 스타일 */}
+            <VictoryAxis
+              dependentAxis
+              style={{
+                axis: { stroke: "transparent" },
+                tickLabels: { fill: "#4A2800", fontSize: 11, padding: 5 },
+                grid: { stroke: "#F2F2F2" }
+              }}
+            />
+
+            <VictoryGroup data={activityData.map(d => ({ x: d.day, y: d.steps }))}>
+              <VictoryLine
+                interpolation="monotoneX"
+                style={{ data: { stroke: COLORS.primary, strokeWidth: 2 } }}
+              />
+
+              {/* ✅ scatter는 보이기만, 이벤트 비활성화 */}
+              <VictoryScatter
+                name="scatter" 
+                size={4}
+                style={{
+                  data: {
+                    fill: COLORS.primary,
+                    stroke: "#fff",
+                    strokeWidth: 1
+                  }
+                }}
+              />
+          </VictoryGroup>
+
+
+
+          </VictoryChart>
         </View>
 
-        {/* Upcoming Reminders */}
+        {/* 진행중인 챌린지 */}
         <View style={styles.cardContainer1}>
           <View style={styles.header}>
-            <RegularText style={gs.text}>Upcoming Reminders</RegularText>
+            <RegularText style={gs.text}>진행중인 챌린지</RegularText>
             <Text style={styles.calendarIcon}>📅</Text>
           </View>
 
