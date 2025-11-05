@@ -1,8 +1,8 @@
 /**
  * 반려동물 관리 화면 
  */
-import React, { useState, useEffect } from 'react';
-import { View, Text, ScrollView, Button, StyleSheet, Touchable, TouchableOpacity } from 'react-native';
+import React, { useState, useEffect, useRef } from 'react';
+import { View, Text, ScrollView, Button, StyleSheet, TouchableOpacity } from 'react-native';
 
 import { scale } from 'react-native-size-matters';
 import gs, { COLORS } from '../assets/styles/globalStyles';
@@ -27,16 +27,25 @@ const PetManageScreen = () => {
 
     const [petModalVisible, setPetModalVisible] = useState(false);
 
+    const scrollRef = useRef(null);
+    const tabMenuRef = useRef(0);
+
     const handleSubmit = data => {
         console.log('등록된 동물 정보:', data);
         setPetModalVisible(false);
     };
 
-    const [activeTabName, setActiveTabName] = useState('몸무게');
-    const [weightRender, setWeightRender] = useState(true);
-    const [mealsRender, setMealsRender] = useState(false);
+    const [activeTabName, setActiveTabName] = useState('식사량');
+    const [weightRender, setWeightRender] = useState(false);
+    const [mealsRender, setMealsRender] = useState(true);
     const [activityRender, setActivityRender] = useState(false);
+
     const onPressHandler = (renderName) => {
+        // scrollRef.current?.scrollTo({
+        //     animated: true,
+        //     y: tabMenuRef.current
+        // })
+
         if (renderName == '몸무게') {
             setWeightRender(true);
             setMealsRender(false);
@@ -59,7 +68,7 @@ const PetManageScreen = () => {
 
     //예시데이터
     const options = [
-        { no: 1, name: '레오나르도 디카프리오', species: '강아지', breed: '노바 스코샤 덕 톨링 리트리버', profile: require('../assets/images/golden_retriever_sample.png'), birth: '2023.12.25', age: '3살', gender: '수컷' },
+        { no: 1, name: '뭉치', species: '강아지', breed: '노바 스코샤 덕 톨링 리트리버', profile: require('../assets/images/golden_retriever_sample.png'), birth: '2023.12.25', age: '3살', gender: '수컷' },
         { no: 2, name: '아치', species: '고양이', breed: '코리안 숏헤어', profile: '', birth: '2023.12.25', age: '3살', gender: '암컷' },
         { no: 4, name: '흰둥이', species: '강아지', breed: '비숑', profile: require('../assets/images/siro.jpg'), birth: '2023.12.25', age: '3살', gender: '수컷', main: true },
         { no: 3, name: '마루', species: '강아지', breed: '푸들', profile: '', birth: '2023.12.25', age: '3살', gender: '암컷' },
@@ -71,7 +80,7 @@ const PetManageScreen = () => {
     }, [])
 
     return (
-        <ScrollView contentContainerStyle={gs.screen} >
+        <ScrollView contentContainerStyle={gs.screen} ref={scrollRef} >
 
             <EBoldTextN style={gs.title}>Pet</EBoldTextN>
             <Text style={{ fontSize: scale(14) }}>반려동물의 건강정보를 한눈에 확인하세요!</Text>
@@ -111,8 +120,15 @@ const PetManageScreen = () => {
                 {selected && <PetInfo data={selected} />}
             </View>
 
-            <View style={gs.mt25}>
-                <TabMenu onPressHandler={onPressHandler} menuList={['몸무게', '식사량', '활동량']} activeTab={activeTabName} />
+            <View style={gs.mt25} onLayout={(e)=>{
+                tabMenuRef.current = e.nativeEvent.layout.y;
+            }} collapsable={false}>
+                <TabMenu onPressHandler={(name)=>{
+                        scrollRef.current?.scrollTo({y: tabMenuRef.current, animated: true});
+                        onPressHandler(name);
+                    }} 
+                    menuList={['몸무게', '식사량', '활동량']} activeTab={activeTabName} 
+                />
                 {weightRender && <WeightComponent />}
                 {mealsRender && <MealsComponent />}
                 {activityRender && <ActivityComponent />}
