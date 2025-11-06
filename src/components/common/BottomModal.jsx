@@ -23,13 +23,13 @@ export default function BottomModal({ visible, onClose, title, children, maxHeig
 
   return (
     <Modal transparent visible={visible} animationType="fade" onRequestClose={onClose}>
-      <Pressable style={styles.overlay} onPress={onClose} />
-      <Animated.View style={[styles.sheetContainer, { height: maxHeight, transform: [{ translateY }], maxHeight }]}>
-        <ScrollView showsVerticalScrollIndicator={false}>
-          {title && <Text style={styles.title}>{title}</Text>}
-          <View>{children}</View>
-        </ScrollView>
-      </Animated.View>
+      	<Pressable style={styles.overlay} onPress={onClose} />
+		<Animated.View style={[styles.sheetContainer, { height: maxHeight, transform: [{ translateY }], maxHeight }]}>
+		<ScrollView contentContainerStyle={{ flexGrow: 1 }} showsVerticalScrollIndicator={false}>
+			{title && <Text style={styles.title}>{title}</Text>}
+			<View>{children}</View>
+		</ScrollView>
+		</Animated.View>
     </Modal>
   );
 }
