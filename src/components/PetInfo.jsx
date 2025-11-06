@@ -118,23 +118,33 @@ const PetInfo = ({ data }) => {
                         <View style={{flexDirection: 'row', alignItems: 'start', justifyContent: 'space-between'}}>
                             <EBoldTextN style={{fontSize: scale(16), marginBottom: 8}}>NOTES</EBoldTextN>
                             { contents.length > 100 && (
-                                <TouchableOpacity onPress={() => setExpanded(!expanded)} activeOpacity={1}>
+                                <TouchableOpacity onPress={() => setExpanded(prev=>!prev)} activeOpacity={1} hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}>
                                     <ChevronIcon visible={expanded} size={scale(16)} />
                                 </TouchableOpacity>
                             )}
                         </View>
-                        <TouchableOpacity onPress={() => setExpanded(!expanded)} activeOpacity={1}>
-                            <Text style={styles.memoContent} 
-                                numberOfLines={expanded ? undefined : 3}
-                                onTextLayout={e => {
-                                    if (e.nativeEvent.lines.length > 3 && !showMore) {
-                                        setShowMore(true);
-                                    }
-                                }}
+                        <TouchableOpacity onPress={() => setExpanded(prev => !prev)} activeOpacity={1}>
+                            {expanded ? (
+                                <Text style={styles.memoContent}
+                                    key="open"
+                                    ellipsizeMode='tail'
                                 >
-                                {contents}
-                                    
-                            </Text>
+                                    {contents}
+                                </Text>
+                            ) : (
+                                <Text style={styles.memoContent}
+                                    key="closed"
+                                    numberOfLines={3}
+                                    ellipsizeMode='tail'
+                                    onTextLayout={e => {
+                                        if (e.nativeEvent.lines.length > 3 && !showMore) {
+                                            setShowMore(true);
+                                        }
+                                    }}
+                                >
+                                    {contents}
+                                </Text>
+                            )}
                         </TouchableOpacity> 
                     </View>
                 </View>

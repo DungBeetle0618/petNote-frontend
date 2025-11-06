@@ -15,11 +15,15 @@ import ProductScreen from '../screens/ProductScreen';
 import ChallengeScreen from '../screens/ChallengeScreen';
 import ReminderScreen from '../screens/ReminderScreen';
 import MypageScreen from '../screens/MypageScreen';
+import MealsDetailScreen from '../screens/MealsDetailScreen';
+import ActivityDetailScreen from '../screens/ActivityDetailScreen';
+import WeightDetailScreen from '../screens/WeightDetailScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
+const RootStack = createNativeStackNavigator();
 
-function Navigator() {
+function Navigator({ onRouteChange }) {
   const drawerRef = useRef(null);
   const navigationRef = useRef(null);
 
@@ -143,6 +147,31 @@ function Navigator() {
     </Tab.Navigator>
   );
 
+  /**
+   * 헤더 옵션
+   * @param {*} param0 
+   * @returns 
+   */
+  const headerOptions = ({ navigation, route }) => ({
+    headerShown: true,
+    headerTopInsetEnabled: false,
+    headerTitle: route?.params && (route.params.headerTitle || route.params.title),
+    headerBackTitleVisible: false,
+    headerTitleAlign: 'center',
+    headerTitleStyle: { fontSize: 18 },
+    headerStyle: {
+      backgroundColor: '#FFFFFF',
+    },
+    statusBarStyle: 'dark',
+    headerTransparent: false,
+    statusBarTranslucent: false,
+    headerLeft: () => (
+      <TouchableOpacity onPress={() => navigation.goBack()} style={{ paddingHorizontal: 12 }}>
+        <Ionicons name="chevron-back" size={22} color="#1A1A1A" />
+      </TouchableOpacity>
+    ),
+  })
+
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
@@ -152,8 +181,17 @@ function Navigator() {
         drawerPosition="right"
         renderNavigationView={renderDrawerContent}
       >
-        <NavigationContainer ref={navigationRef}>
-          <TabNavigator />
+        <NavigationContainer
+          ref={navigationRef}
+          onReady={() => onRouteChange?.(navigationRef.current?.getCurrentRoute()?.name)}
+          onStateChange={() => onRouteChange?.(navigationRef.current?.getCurrentRoute()?.name)}
+        >
+          <RootStack.Navigator screenOptions={{ headerShown: false }}>
+            <RootStack.Screen name="Tabs" component={TabNavigator} />
+            <RootStack.Screen name="mealsDetail" component={MealsDetailScreen} options={headerOptions} />
+            <RootStack.Screen name="weightDetail" component={WeightDetailScreen} options={headerOptions} />
+            <RootStack.Screen name="activityDetail" component={ActivityDetailScreen} options={headerOptions} />
+          </RootStack.Navigator>
         </NavigationContainer>
       </ReanimatedDrawerLayout>
     </GestureHandlerRootView>

@@ -35,9 +35,9 @@ const PetManageScreen = () => {
         setPetModalVisible(false);
     };
 
-    const [activeTabName, setActiveTabName] = useState('식사량');
-    const [weightRender, setWeightRender] = useState(false);
-    const [mealsRender, setMealsRender] = useState(true);
+    const [activeTabName, setActiveTabName] = useState('몸무게');
+    const [weightRender, setWeightRender] = useState(true);
+    const [mealsRender, setMealsRender] = useState(false);
     const [activityRender, setActivityRender] = useState(false);
 
     const onPressHandler = (renderName) => {
@@ -82,10 +82,10 @@ const PetManageScreen = () => {
     return (
         <ScrollView contentContainerStyle={gs.screen} ref={scrollRef} >
 
-            <EBoldTextN style={gs.title}>Pet</EBoldTextN>
-            <Text style={{ fontSize: scale(14) }}>반려동물의 건강정보를 한눈에 확인하세요!</Text>
+            <EBoldText style={gs.title}>Pet</EBoldText>
+            <Text style={gs.subtitle}>반려동물의 건강정보를 한눈에 확인하세요!</Text>
 
-            <View style={{ paddingTop: scale(20) }}>
+            <View>
                 {/* 동물 추가 버튼 */}
                 <TouchableOpacity
                     activeOpacity={0.8}
@@ -120,14 +120,15 @@ const PetManageScreen = () => {
                 {selected && <PetInfo data={selected} />}
             </View>
 
-            <View style={gs.mt25} onLayout={(e)=>{
+            <View style={gs.mt40} onLayout={(e)=>{
                 tabMenuRef.current = e.nativeEvent.layout.y;
             }} collapsable={false}>
                 <TabMenu onPressHandler={(name)=>{
                         scrollRef.current?.scrollTo({y: tabMenuRef.current, animated: true});
                         onPressHandler(name);
                     }} 
-                    menuList={['몸무게', '식사량', '활동량']} activeTab={activeTabName} 
+                    menuList={['몸무게', '식사량', '활동량']} 
+                    activeTab={activeTabName} 
                 />
                 {weightRender && <WeightComponent />}
                 {mealsRender && <MealsComponent />}
