@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import { MODAL_COLORS } from '../../assets/styles/globalStyles';
 
-export default function BottomModal({ visible, onClose, title, children, maxHeight = '85%' }) {
+export default function BottomModal({ visible, onClose, title, children, maxHeight }) {
   const [translateY] = useState(new Animated.Value(400));
 
   useEffect(() => {

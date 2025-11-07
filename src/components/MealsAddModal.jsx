@@ -4,7 +4,7 @@ import gs, { COLORS } from '../assets/styles/globalStyles';
 import { scale } from 'react-native-size-matters';
 import { BottomModal, AppInput, AppSelect, AppButton } from './common';
 
-const MealsAddModal = ({visible, onClose, onSubmit, modiData }) => {
+const MealsAddModal = ({visible, onClose, onSubmit, modiData, day }) => {
     const [data, setData] = useState({
         meal: '',
         foodType: '',
@@ -42,7 +42,9 @@ const MealsAddModal = ({visible, onClose, onSubmit, modiData }) => {
 
     return (
 
-        < BottomModal visible={visible} onClose={onClose} maxHeight='73%' >
+        < BottomModal visible={visible} onClose={onClose} >
+            <Text style={styles.modalTitle}>{day?day:'오늘의 기록'}</Text>
+
             <AppSelect
                 label={'식사종류'}
                 options={['아침', '점심', '저녁', '아침 간식', '점심 간식', '저녁 간식']}
@@ -92,6 +94,11 @@ const MealsAddModal = ({visible, onClose, onSubmit, modiData }) => {
 const styles = StyleSheet.create({
     cancelBtn: { paddingVertical: 8 },
     cancelText: { textAlign: 'center', color: '#999' },
+    modalTitle: {
+        marginBottom: scale(28),
+        fontSize: 18,
+        fontWeight: 500
+    }
 
 });
 

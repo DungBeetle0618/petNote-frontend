@@ -6,9 +6,13 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import gs, { COLORS } from '../assets/styles/globalStyles';
 import { scale } from 'react-native-size-matters';
 import { VictoryChart, VictoryLine, VictoryVoronoiContainer, VictoryTooltip, VictoryAxis, VictoryScatter, VictoryGroup } from "victory-native";
+import { useNavigation } from '@react-navigation/native';
+
 const WeightComponent = () => {
   const [open, setOpen] = useState(false);
   const screenWidth = Dimensions.get("window").width;
+
+  const navigation = useNavigation();
 
   const weightData = [
     { day: "9/31", weight: 11.5 },
@@ -45,7 +49,7 @@ const WeightComponent = () => {
             <Text style={styles.subTitle}>지난 30일</Text>
           </View>
         </View>
-        <TouchableOpacity onPress={() => setOpen(true)} style={styles.calendar}>
+        <TouchableOpacity onPress={() => navigation.navigate('weightDetail', { headerTitle: '몸무게 기록' })} style={styles.calendar}>
             <FontAwesome name='calendar' style={{ fontSize: 20, color: '#381600ff' }} />
         </TouchableOpacity>
       </View>

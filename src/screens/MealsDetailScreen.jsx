@@ -7,13 +7,10 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import { BottomModal } from '../components/common';
 import AppCalendar from '../components/common/AppCalendar';
 import MealsAddModal from '../components/MealsAddModal';
-
-
-const today = new Date();
-const todayString = today.toISOString().split('T')[0];
+import dayjs from 'dayjs';
 
 const MealsDetailScreen = () => {
-    const [daySelected, setDaySelected] = useState(todayString);
+    const [daySelected, setDaySelected] = useState(dayjs().format('YYYY-MM-DD'));
     const [kor, setKor] = useState('');
 
     //추가, 수정 모달
@@ -26,8 +23,8 @@ const MealsDetailScreen = () => {
     };
 
     useEffect(() => {
-        const day = daySelected.split('-');
-        setKor(day[0] + '년 ' + day[1] + '월 ' + day[2] + '일');
+        const day = dayjs(daySelected);
+        setKor(day.format('YYYY년 MM월 DD일'));
     }, [daySelected])
 
     const mealStatus = [
@@ -120,7 +117,7 @@ const MealsDetailScreen = () => {
             </View>
 
             {/* 추가/수정 모달 */}
-            <MealsAddModal visible={open} onClose={()=>setOpen(false)} onSubmit={handleSubmit} modiData={modiData} />
+            <MealsAddModal visible={open} onClose={()=>setOpen(false)} onSubmit={handleSubmit} modiData={modiData} day={kor} />
 
         </ScrollView>
 

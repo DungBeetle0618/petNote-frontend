@@ -6,19 +6,16 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import { BottomModal } from '../components/common';
 import AppCalendar from '../components/common/AppCalendar';
-
-
-const today = new Date();
-const todayString = today.toISOString().split('T')[0];
+import dayjs from 'dayjs';
 
 const ActivityDetailScreen = () => {
     const [open, setOpen] = useState(false);
-    const [daySelected, setDaySelected] = useState(todayString);
+    const [daySelected, setDaySelected] = useState(dayjs().format('YYYY-MM-DD'));
     const [kor, setKor] = useState('');
 
     useEffect(() => {
-        const day = daySelected.split('-');
-        setKor(day[0] + '년 ' + day[1] + '월 ' + day[2] + '일');
+        const day = dayjs(daySelected);
+        setKor(day.format('YYYY년 MM월 DD일'));
     }, [daySelected])
 
 

@@ -21,7 +21,7 @@ function App() {
 
 function AppContent({ routeName, onRouteChange }) {
   const insets = useSafeAreaInsets();
-  const headerScreens = ['mealsDetail']; // 헤더가 있는 화면 목록
+  const headerScreens = ['mealsDetail', 'weightDetail', 'activityDetail']; // 헤더가 있는 화면 목록
   const usesHeader = headerScreens.includes(routeName);
 
   return (

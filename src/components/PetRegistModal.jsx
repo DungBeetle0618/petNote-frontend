@@ -73,7 +73,7 @@ export default function PetRegistModal({ visible, onClose, onSubmit }) {
     };
 
     return (
-        <BottomModal visible={visible} onClose={onClose} title="🐾 동물 정보 등록">
+        <BottomModal visible={visible} onClose={onClose} title="🐾 동물 정보 등록" maxHeight='85%'>
             <AppInput label="이름" value={data.petName} onChangeText={v => handleChange('petName', v)} />
 
             <AppInput
