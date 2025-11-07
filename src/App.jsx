@@ -2,16 +2,20 @@ import React, { useState } from 'react';
 import { StatusBar, useColorScheme, View } from 'react-native';
 import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
 import Navigator from './navigation/Navigatior';
+import { Provider } from 'react-redux';
+import store from './store';
 
 function App() {
   const isDarkMode = useColorScheme() === 'dark';
   const [routeName, setRouteName] = useState();
 
   return (
-    <SafeAreaProvider>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <AppContent routeName={routeName} onRouteChange={setRouteName} />
-    </SafeAreaProvider>
+    <Provider store={store}>
+      <SafeAreaProvider>
+        <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+        <AppContent routeName={routeName} onRouteChange={setRouteName} />
+      </SafeAreaProvider>
+    </Provider>
   );
 }
 

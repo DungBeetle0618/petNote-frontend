@@ -6,10 +6,14 @@ import Feather from 'react-native-vector-icons/Feather';
 import { BottomModal } from './common';
 import { Positions } from 'react-native-calendars/src/expandableCalendar';
 import { TextInput } from 'react-native-gesture-handler';
+import { useSelector } from 'react-redux';
 
 const FeedCard = () => {
 
 	const [visible, setVisible] = useState(false);
+
+	//리덕스로 전역상태값 불러오는거
+	const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
 
 	const onCloseCommnet = () => {
 		setVisible(false);
@@ -21,10 +25,13 @@ const FeedCard = () => {
 
 	useEffect(()=>{
 
-	}, [visible])
+	}, [visible]);
+
+
 
   return (
 	<>
+	{isLoggedIn && <View><Text>로그인 완료</Text></View>}
 	<View style={styles.card}>
 			<View style={styles.cardHeader}>
 			<View style={{flexDirection:'row'}}>
