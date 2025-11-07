@@ -4,27 +4,35 @@ import gs, { COLORS } from '../assets/styles/globalStyles';
 import { scale } from 'react-native-size-matters';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import { BottomModal } from './common';
+import { BottomModal, AppInput, AppSelect, AppButton } from './common';
 import { useNavigation } from '@react-navigation/native';
+import MealsAddModal from './MealsAddModal';
 
 const MealsComponent = () => {
     const navigation = useNavigation();
 
+    //추가, 수정 모달
     const [open, setOpen] = useState(false);
+    const [modiData, setModiData] = useState(null);
+
+    const handleSubmit = () => {
+         console.log('식사량 :', data);
+        setOpen(false);
+    };
 
     const mealStatus = [
         { meal: '아침', foodType: '사료(건식)', amount: '200g', status: 'completed' },
-        { meal: '간식', foodType: '간식(개껌)', amount: '100g', status: 'completed' },
+        { meal: '점심 간식', foodType: '간식(개껌)', amount: '100g', status: 'completed' },
         { meal: '저녁', foodType: '사료(습식)', amount: '200g', status: 'pending' },
     ]
 
-    const MealStatusListComponent = ({list, text='식사로그를 기록해보세요.'}) => {
+    const MealStatusListComponent = ({ list, text = '식사로그를 기록해보세요.' }) => {
         return (
-            list.length>0 ? list.map((item, key) => {
+            list.length > 0 ? list.map((item, key) => {
                 return (<MealStatusCard key={key} meal={item.meal} foodType={item.foodType} amount={item.amount} status={item.status} />)
             })
-            :
-            <Text style={styles.noLogs}>{text}</Text>
+                :
+                <Text style={styles.noLogs}>{text}</Text>
         )
     }
 
@@ -45,7 +53,17 @@ const MealsComponent = () => {
                 isPending && styles.pendingCard,
             ]}
                 activeOpacity={0.8}
-                onPress={() => { alert('수정') }}
+                onPress={() => { 
+                    setOpen(true);
+                    setModiData({
+                        meal: meal,
+                        foodType: foodType,
+                        amount: amount,
+                        calorie: '',
+                        status: status=='completed'?'완료':'예정',
+                        pendingTime: '',
+                    })
+                }}
             >
                 <View>
                     <Text style={styles.meal}>{meal}</Text>
@@ -70,34 +88,38 @@ const MealsComponent = () => {
 
 
     return (
-        <View style={styles.container}>
-            <View style={styles.titleView}>
-                <View style={[gs.flexRow, { alignItems: 'center' }]}>
-                    <FontAwesome name='cutlery' style={styles.titleIcon} />
-                    <View>
-                        <Text style={styles.title}>오늘의 식사</Text>
-                        <Text style={styles.subTitle}>오늘의 영양 밸런스를 기록해요</Text>
+        <>
+            <View style={styles.container}>
+                <View style={styles.titleView}>
+                    <View style={[gs.flexRow, { alignItems: 'center' }]}>
+                        <FontAwesome name='cutlery' style={styles.titleIcon} />
+                        <View>
+                            <Text style={styles.title}>오늘의 식사</Text>
+                            <Text style={styles.subTitle}>오늘의 영양 밸런스를 기록해요</Text>
+                        </View>
                     </View>
+                    <TouchableOpacity onPress={() => navigation.navigate('mealsDetail', { headerTitle: '식사 기록' })}
+                        style={styles.calendar}
+                    >
+                        <FontAwesome name='calendar' style={{ fontSize: 20, color: '#381600ff' }} />
+                    </TouchableOpacity>
                 </View>
-                <TouchableOpacity onPress={() => navigation.navigate('mealsDetail', { headerTitle: '식사 기록' })} 
-                    style={styles.calendar}
-                >
-                    <FontAwesome name='calendar' style={{ fontSize: 20, color: '#381600ff' }} />
-                </TouchableOpacity>
+
+                <View style={{ marginTop: scale(16) }}>
+                    <MealStatusListComponent list={mealStatus} text='아직 오늘의 식사를 기록하지 않았어요!' />
+                </View>
+
+                <View style={{ marginTop: scale(16) }}>
+                    <TouchableOpacity style={styles.addBtn} activeOpacity={0.8} onPress={() => { setModiData(null); setOpen(true); }}>
+                        <Text style={styles.addBtnText}>식사로그 기록</Text>
+                    </TouchableOpacity>
+                </View>
             </View>
 
-            <View style={{ marginTop: scale(16) }}>
-                <MealStatusListComponent list={mealStatus} text='아직 오늘의 식사를 기록하지 않았어요!' />
-            </View>
 
-            <View style={{ marginTop: scale(16) }}>
-                <TouchableOpacity style={styles.addBtn} activeOpacity={0.8} onPress={() => { alert('작성') }}>
-                    <Text style={styles.addBtnText}>식사로그 기록</Text>
-                </TouchableOpacity>
-            </View>
-
-        </View>
-
+            {/* 추가/수정 모달 */}
+            <MealsAddModal visible={open} onClose={()=>setOpen(false)} onSubmit={handleSubmit} modiData={modiData} />
+        </>
     );
 };
 
@@ -209,7 +231,9 @@ const styles = StyleSheet.create({
         color: COLORS.textSecondary,
         marginBlock: scale(20),
         textAlign: 'center'
-    }
+    },
+    cancelBtn: { paddingVertical: 8 },
+    cancelText: { textAlign: 'center', color: '#999' },
 
 });
 

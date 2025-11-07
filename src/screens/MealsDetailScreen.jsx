@@ -6,15 +6,24 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import { BottomModal } from '../components/common';
 import AppCalendar from '../components/common/AppCalendar';
+import MealsAddModal from '../components/MealsAddModal';
 
 
 const today = new Date();
 const todayString = today.toISOString().split('T')[0];
 
 const MealsDetailScreen = () => {
-    const [open, setOpen] = useState(false);
     const [daySelected, setDaySelected] = useState(todayString);
     const [kor, setKor] = useState('');
+
+    //추가, 수정 모달
+    const [open, setOpen] = useState(false);
+    const [modiData, setModiData] = useState(null);
+
+    const handleSubmit = () => {
+            console.log('식사량:', data);
+        setOpen(false);
+    };
 
     useEffect(() => {
         const day = daySelected.split('-');
@@ -23,7 +32,7 @@ const MealsDetailScreen = () => {
 
     const mealStatus = [
         { meal: '아침', foodType: '사료(건식)', amount: '200g', status: 'completed' },
-        { meal: '간식', foodType: '간식(개껌)', amount: '100g', status: 'completed' },
+        { meal: '점심 간식', foodType: '간식(개껌)', amount: '100g', status: 'completed' },
         { meal: '저녁', foodType: '사료(습식)', amount: '200g', status: 'pending' },
     ]
 
@@ -58,7 +67,16 @@ const MealsDetailScreen = () => {
                 isPending && styles.pendingCard,
             ]}
                 activeOpacity={0.8}
-                onPress={() => { alert('수정') }}
+                onPress={() => { 
+                    setOpen(true);
+                    setModiData({
+                        meal: meal,
+                        foodType: foodType,
+                        amount: amount,
+                        calorie: '',
+                        status: status=='completed'?'완료':'예정',
+                        pendingTime: '',
+                    }) }}
             >
                 <View>
                     <Text style={styles.meal}>{meal}</Text>
@@ -86,15 +104,23 @@ const MealsDetailScreen = () => {
         <ScrollView style={gs.screen}>
             <AppCalendar selected={daySelected} setSelected={(day) => daySelectHandle(day)} />
 
-                <View style={{ marginTop: scale(30) }}>
-                    <View style={{ marginBottom: 10, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-                        <Text style={styles.calTitle}>{kor}</Text>
-                        <TouchableOpacity style={styles.mealPlus} onPress={()=>{alert('추가')}}>
-                            <AntDesign name='pluscircle' style={{color: COLORS.primary, fontSize: scale(20)}}/>
-                        </TouchableOpacity>
-                    </View>
-                    <MealStatusListComponent list={mealStatus} />
+            <View style={{ marginTop: scale(30) }}>
+                <View style={{ marginBottom: 10, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                    <Text style={styles.calTitle}>{kor}</Text>
+                    {/* 아이콘 터치하면 안되고 옆 여백 터치하면 됨... 왜지... */}
+                    <TouchableOpacity
+                        style={styles.mealPlus}
+                        hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}
+                        onPress={() => { setModiData(null); setOpen(true); }}
+                    >
+                        <AntDesign name='pluscircle' style={{color: COLORS.primary, fontSize: scale(20)}}/>
+                    </TouchableOpacity>
                 </View>
+                <MealStatusListComponent list={mealStatus} />
+            </View>
+
+            {/* 추가/수정 모달 */}
+            <MealsAddModal visible={open} onClose={()=>setOpen(false)} onSubmit={handleSubmit} modiData={modiData} />
 
         </ScrollView>
 

@@ -2,13 +2,13 @@ import React from 'react';
 import { View, Text, TextInput, StyleSheet } from 'react-native';
 import { MODAL_COLORS } from '../../assets/styles/globalStyles';
 
-export default function AppInput({ label, style, ...props }) {
+export default function AppInput({ label, placeholder, style, ...props }) {
   return (
     <View style={styles.inputGroup}>
       {label && <Text style={styles.label}>{label}</Text>}
       <TextInput
         style={[styles.input, style]}
-        placeholder={label}
+        placeholder={placeholder?placeholder:label}
         placeholderTextColor="#999"
         {...props}
       />
