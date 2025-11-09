@@ -3,7 +3,7 @@ import { View, Text, StyleSheet } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
 import { MODAL_COLORS } from '../../assets/styles/globalStyles';
 
-export default function AppDropdown({ label, data, value, onChange }) {
+export default function AppDropdown({ label, data, value, onChange, isSearch }) {
   return (
     <View style={styles.inputGroup}>
       {label && <Text style={styles.label}>{label}</Text>}
@@ -13,7 +13,7 @@ export default function AppDropdown({ label, data, value, onChange }) {
         selectedTextStyle={styles.selectedTextStyle}
         inputSearchStyle={styles.inputSearchStyle}
         data={data}
-        search
+        search={isSearch?true:false}
         labelField="label"
         valueField="value"
         placeholder="선택하세요"

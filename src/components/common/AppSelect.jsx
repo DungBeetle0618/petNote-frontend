@@ -9,14 +9,14 @@ export default function AppSelect({ label, options, selected, onSelect }) {
       <View style={styles.selectRow}>
         {options.map((o) => (
           <TouchableOpacity
-            key={o}
-            style={[styles.selectBox, selected === o && styles.selectBoxActive]}
-            onPress={() => onSelect(o)}
+            key={o.code}
+            style={[styles.selectBox, selected === o.code && styles.selectBoxActive]}
+            onPress={() => onSelect(o.code)}
           >
             <Text
-              style={[styles.selectText, selected === o && styles.selectTextActive]}
+              style={[styles.selectText, selected === o.code && styles.selectTextActive]}
             >
-              {o}
+              {o.title}
             </Text>
           </TouchableOpacity>
         ))}

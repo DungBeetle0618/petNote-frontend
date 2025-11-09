@@ -47,7 +47,7 @@ const MealsAddModal = ({visible, onClose, onSubmit, modiData, day }) => {
 
             <AppSelect
                 label={'식사종류'}
-                options={['아침', '점심', '저녁', '아침 간식', '점심 간식', '저녁 간식']}
+                options={[{code: '0001', title: '아침'}, {code: '0002', title: '점심'}, {code: '0003', title: '저녁'}, {code: '0004', title: '아침 간식'}, {code: '0005', title: '점심 간식'}, {code: '0006', title: '저녁 간식'}]}
                 selected={data.meal}
                 onSelect={(v) => handleChange('meal', v)}
             />
@@ -59,6 +59,7 @@ const MealsAddModal = ({visible, onClose, onSubmit, modiData, day }) => {
             />
             <AppInput
                 label={'식사량 (g)'}
+                placeholder={'숫자만 입력해주세요'}
                 value={data.amount}
                 onChangeText={(v) => handleChange('amount', v)}
             />
@@ -69,12 +70,12 @@ const MealsAddModal = ({visible, onClose, onSubmit, modiData, day }) => {
             />
             <AppSelect
                 label={'식사 완료 여부'}
-                options={['완료', '예정']}
+                options={[{code: 'C', title: '완료'}, {code: 'P', title: '예정'}]}
                 selected={data.status}
                 onSelect={(v) => handleChange('status', v)}
             />
             {
-                data.status === "예정" && (
+                data.status === "P" && (
                     <AppInput
                         label={'예정 시간 (리마인더로 알려드려요!)'}
                         placeholder={'시간picker 필요'}

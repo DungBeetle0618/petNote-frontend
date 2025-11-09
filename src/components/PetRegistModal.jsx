@@ -55,9 +55,9 @@ export default function PetRegistModal({ visible, onClose, onSubmit }) {
     }, [visible]);
 
     const breedOptions = {
-        강아지: ['말티즈', '푸들', '시바견', '리트리버', '시츄', '포메라니안', '기타'],
-        고양이: ['러시안블루', '페르시안', '먼치킨', '스코티시폴드', '기타'],
-        기타: ['기타'],
+        DOG: [{code: '0000', title: '말티즈'}, {code: '0001', title: '푸들'}, {code: '0002', title: '시바견'}, {code: '0003', title: '리트리버'}, {code: '0004', title: '시츄'}, {code: '0005', title: '포메라니안'}, {code: '0006', title: '기타'},],
+        CAT: [{code: '0000', title: '러시안블루'}, {code: '0001', title: '페르시안'}, {code: '0002', title: '먼치킨'}, {code: '0003', title: '스코티시폴드'}, {code: '0004', title: '기타'}],
+        ETC: [{code: '0000', title: '기타'}],
     };
 
     const [showDatePicker, setShowDatePicker] = useState(false);
@@ -147,21 +147,21 @@ export default function PetRegistModal({ visible, onClose, onSubmit }) {
 
             <AppSelect
                 label="성별"
-                options={['수컷', '암컷']}
+                options={[{code: 'M', title: '수컷'}, {code: 'F', title: '암컷'}]}
                 selected={data.gender}
                 onSelect={(v) => handleChange('gender', v)}
             />
 
             <AppSelect
                 label="중성화 여부"
-                options={['예', '아니오']}
+                options={[{code: 'Y', title: '예'}, {code: 'N', title: '아니오'}]}
                 selected={data.neuterYn}
                 onSelect={(v) => handleChange('neuterYn', v)}
             />
 
             <AppSelect
                 label="품종1 (동물종)"
-                options={['강아지', '고양이', '기타']}
+                options={[{code: 'DOG', title: '강아지'}, {code: 'CAT', title: '고양이'}, {code: 'ETC', title: '기타'}]}
                 selected={data.breedType1}
                 onSelect={(v) => handleChange('breedType1', v)}
             />
@@ -169,10 +169,11 @@ export default function PetRegistModal({ visible, onClose, onSubmit }) {
             {data.breedType1 && (
                 <AppDropdown
                     label="품종2 (세부종)"
-                    data={breedOptions[data.breedType1].map(o => ({ label: o, value: o }))}
+                    data={breedOptions[data.breedType1].map(o => ({ label: o.title, value: o.code }))}
                     value={data.breedType2}
                     onChange={(v) => handleChange('breedType2', v)}
-                />
+                    isSearch={true}
+                    />
             )}
 
             {data.breedType2 === '기타' && (
