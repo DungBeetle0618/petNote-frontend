@@ -1,4 +1,5 @@
 import React from 'react'
+import { View, Text } from 'react-native';
 
 const NoComment = () => {
   return (
@@ -12,4 +13,4 @@ const NoComment = () => {
   )
 }
 
-export default CoNoCommentmment;
+export default NoComment;

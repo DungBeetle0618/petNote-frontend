@@ -7,6 +7,7 @@ import { BottomModal } from './common';
 import { Positions } from 'react-native-calendars/src/expandableCalendar';
 import { TextInput } from 'react-native-gesture-handler';
 import { useSelector } from 'react-redux';
+import NoComment from './NoComment';
 
 const FeedCard = () => {
 
@@ -31,7 +32,6 @@ const FeedCard = () => {
 
   return (
 	<>
-	{isLoggedIn && <View><Text>로그인 완료</Text></View>}
 	<View style={styles.card}>
 			<View style={styles.cardHeader}>
 			<View style={{flexDirection:'row'}}>
@@ -76,20 +76,18 @@ const FeedCard = () => {
 		</View>
 
 		<BottomModal  visible={visible} onClose={onCloseCommnet} title={false} maxHeight='96%'>
-			<View style={modal.noCommnetLayOutTitle}>
-				<Text style={modal.noCommnetLayOutTitleText}>댓글</Text>
+			<View style={modal.commnetLayOutTitle}>
+				<Text style={modal.commnetLayOutTitleText}>댓글</Text>
 			</View>
-			<View style={modal.noCommnetLayOutContents}>
-				<View>
-					<Text style={{fontSize:17, fontWeight:700, textAlign:'center'}}>아직 댓글이</Text>
-					<Text style={{fontSize:17, fontWeight:700, textAlign:'center'}}>없습니다.</Text>
-					<Text style={{fontSize:13, fontWeight:500, color:'777', marginTop:5}}>대화를 시작하세요.</Text>
-				</View>
-			</View>
-			<View style={modal.noCommnetLayOutFooter}>
+
+
+			<NoComment />
+
+
+			<View style={modal.commnetLayOutFooter}>
 				<View style={{width:40,height:40,backgroundColor:'#7ecc89ff', borderRadius:50, alignItems:'center', justifyContent:'center', marginRight:7,}}><Text style={{fontSize:21}}>🐶</Text></View>
-				<TextInput style={modal.noCommnetLayOutFooterInput} placeholder='ㅇㅇㅇ 님에게 댓글 추가..'></TextInput>
-				<Pressable style={{color:'#ccc'}}><Text style={{fontSize:25}}>⬆️</Text></Pressable>
+				<TextInput style={modal.commnetLayOutFooterInput} placeholder='ㅇㅇㅇ 님에게 댓글 추가..'></TextInput>
+				<Pressable><Feather name="send" size={23} color="#000" /></Pressable>
 			</View>
 		</BottomModal>
 
@@ -157,7 +155,7 @@ const styles = StyleSheet.create({
 });
 
 const modal = StyleSheet.create({
-	noCommnetLayOutTitle : {
+	commnetLayOutTitle : {
 		textAlign:'center',
 		position:'absolute',
 		zIndex:1,
@@ -168,20 +166,20 @@ const modal = StyleSheet.create({
 		borderBlockColor:'#ccc',
 		borderBottomWidth:StyleSheet.hairlineWidth
 	},
-	noCommnetLayOutTitleText : {
+	commnetLayOutTitleText : {
 		fontSize:15,
 	},
-	noCommnetLayOutContents : {
+	commnetLayOutContents : {
 		height:'100%',
 		alignItems:'center',
 		justifyContent:'center',
 	},
-	noCommentTitle : {
+	commentTitle : {
 		color:'#111',
 		fontWeight:'600',
 		textAlign:'center'
 	},
-	noCommnetLayOutFooter : {
+	commnetLayOutFooter : {
 		flexDirection:'row',
 		textAlign:'center',
 		position:'absolute',
@@ -194,8 +192,11 @@ const modal = StyleSheet.create({
 		bottom:0,
 		borderTopWidth:StyleSheet.hairlineWidth
 	},
-	noCommnetLayOutFooterInput:{
+	commnetLayOutFooterInput:{
 		flexGrow:1,
+		fontWeight:700,
+		color:'#000',
+		fontSize:14,
 	}
 });
 
