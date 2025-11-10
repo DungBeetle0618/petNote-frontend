@@ -49,7 +49,7 @@ const WeightAddModal = ({visible, onClose, onSubmit, modiData, day }) => {
                 onChange={(v) => handleChange('type', v)}
             />
 
-            <AppButton title={'추가하기'} onPress={handleSubmit} />
+            <AppButton title={modiData ? '수정하기' : '추가하기'} onPress={handleSubmit} />
             <TouchableOpacity style={styles.cancelBtn} onPress={onClose}>
                 <Text style={styles.cancelText}>닫기</Text>
             </TouchableOpacity>

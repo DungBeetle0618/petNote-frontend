@@ -7,6 +7,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import { BottomModal, AppInput, AppSelect, AppButton } from './common';
 import { useNavigation } from '@react-navigation/native';
 import MealsAddModal from './MealsAddModal';
+import MealStatusCard from './MealStatusCard';
 
 const MealsComponent = () => {
     const navigation = useNavigation();
@@ -21,69 +22,19 @@ const MealsComponent = () => {
     };
 
     const mealStatus = [
-        { meal: '아침', foodType: '사료(건식)', amount: '200g', status: 'completed' },
-        { meal: '점심 간식', foodType: '간식(개껌)', amount: '100g', status: 'completed' },
-        { meal: '저녁', foodType: '사료(습식)', amount: '200g', status: 'pending' },
+        { meal: '0001', foodType: '사료(건식)', amount: '200g', status: 'C' },
+        { meal: '0005', foodType: '간식(개껌)', amount: '100g', status: 'C' },
+        { meal: '0003', foodType: '사료(습식)', amount: '200g', status: 'P' },
     ]
 
     const MealStatusListComponent = ({ list, text = '식사로그를 기록해보세요.' }) => {
         return (
             list.length > 0 ? list.map((item, key) => {
-                return (<MealStatusCard key={key} meal={item.meal} foodType={item.foodType} amount={item.amount} status={item.status} />)
+                return (<MealStatusCard key={key} item={item} setOpen={setOpen} setModiData={setModiData} />)
             })
                 :
                 <Text style={styles.noLogs}>{text}</Text>
         )
-    }
-
-
-    /**
-     * 식사 상태 카드
-     * @param {*} param0 
-     * @returns 
-     */
-    const MealStatusCard = ({ meal, foodType, amount, status }) => {
-        const isCompleted = status === 'completed';
-        const isPending = status === 'pending';
-
-        return (
-            <TouchableOpacity style={[
-                styles.card,
-                isCompleted && styles.completedCard,
-                isPending && styles.pendingCard,
-            ]}
-                activeOpacity={0.8}
-                onPress={() => { 
-                    setOpen(true);
-                    setModiData({
-                        meal: meal,
-                        foodType: foodType,
-                        amount: amount,
-                        calorie: '',
-                        status: status=='completed'?'완료':'예정',
-                        pendingTime: '',
-                    })
-                }}
-            >
-                <View>
-                    <Text style={styles.meal}>{meal}</Text>
-                    <Text style={styles.desc}>{foodType} • {amount}</Text>
-                </View>
-                <View style={[
-                    styles.badge,
-                    isCompleted && styles.completedBadge,
-                    isPending && styles.pendingBadge,
-                ]}>
-                    <Text style={[
-                        styles.badgeText,
-                        isCompleted && styles.completedText,
-                        isPending && styles.pendingText,
-                    ]}>
-                        {status == 'completed' ? '완료' : '예정'}
-                    </Text>
-                </View>
-            </TouchableOpacity>
-        );
     }
 
 

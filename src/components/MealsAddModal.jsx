@@ -83,7 +83,7 @@ const MealsAddModal = ({visible, onClose, onSubmit, modiData, day }) => {
                 )
             }
 
-            <AppButton title={'추가하기'} onPress={handleSubmit} />
+            <AppButton title={modiData ? '수정하기' : '추가하기'} onPress={handleSubmit} />
             <TouchableOpacity style={styles.cancelBtn} onPress={onClose}>
                 <Text style={styles.cancelText}>닫기</Text>
             </TouchableOpacity>

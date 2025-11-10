@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, TouchableHighlight } from 'react-native';
 import gs, { COLORS } from '../assets/styles/globalStyles';
 import { scale } from 'react-native-size-matters';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -8,6 +8,7 @@ import { BottomModal } from '../components/common';
 import AppCalendar from '../components/common/AppCalendar';
 import MealsAddModal from '../components/MealsAddModal';
 import dayjs from 'dayjs';
+import MealStatusCard from '../components/MealStatusCard';
 
 const MealsDetailScreen = () => {
     const [daySelected, setDaySelected] = useState(dayjs().format('YYYY-MM-DD'));
@@ -24,9 +25,9 @@ const MealsDetailScreen = () => {
     const kor = useMemo(() => dayjs(daySelected).format('YYYY년 MM월 DD일'), [daySelected]);
 
     const mealStatus = [
-        { meal: '아침', foodType: '사료(건식)', amount: '200g', status: 'completed' },
-        { meal: '점심 간식', foodType: '간식(개껌)', amount: '100g', status: 'completed' },
-        { meal: '저녁', foodType: '사료(습식)', amount: '200g', status: 'pending' },
+        { meal: '0001', foodType: '사료(건식)', amount: '200g', status: 'C' },
+        { meal: '0005', foodType: '간식(개껌)', amount: '100g', status: 'C' },
+        { meal: '0003', foodType: '사료(습식)', amount: '200g', status: 'P' },
     ]
 
     const daySelectHandle = (day) => {
@@ -36,60 +37,11 @@ const MealsDetailScreen = () => {
     const MealStatusListComponent = ({list, text='식사로그를 기록해보세요.'}) => {
         return (
             list.length>0 ? list.map((item, key) => {
-                return (<MealStatusCard key={key} meal={item.meal} foodType={item.foodType} amount={item.amount} status={item.status} />)
+                return (<MealStatusCard key={key} item={item} setOpen={setOpen} setModiData={setModiData} />)
             })
             :
             <Text style={styles.noLogs}>{text}</Text>
         )
-    }
-
-
-    /**
-     * 식사 상태 카드
-     * @param {*} param0 
-     * @returns 
-     */
-    const MealStatusCard = ({ meal, foodType, amount, status }) => {
-        const isCompleted = status === 'completed';
-        const isPending = status === 'pending';
-
-        return (
-            <TouchableOpacity style={[
-                styles.card,
-                isCompleted && styles.completedCard,
-                isPending && styles.pendingCard,
-            ]}
-                activeOpacity={0.8}
-                onPress={() => { 
-                    setOpen(true);
-                    setModiData({
-                        meal: meal,
-                        foodType: foodType,
-                        amount: amount,
-                        calorie: '',
-                        status: status=='completed'?'완료':'예정',
-                        pendingTime: '',
-                    }) }}
-            >
-                <View>
-                    <Text style={styles.meal}>{meal}</Text>
-                    <Text style={styles.desc}>{foodType} • {amount}</Text>
-                </View>
-                <View style={[
-                    styles.badge,
-                    isCompleted && styles.completedBadge,
-                    isPending && styles.pendingBadge,
-                ]}>
-                    <Text style={[
-                        styles.badgeText,
-                        isCompleted && styles.completedText,
-                        isPending && styles.pendingText,
-                    ]}>
-                        {status == 'completed' ? '완료' : '예정'}
-                    </Text>
-                </View>
-            </TouchableOpacity>
-        );
     }
 
 
@@ -100,7 +52,6 @@ const MealsDetailScreen = () => {
             <View style={{ marginTop: scale(30) }}>
                 <View style={{ marginBottom: 10, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
                     <Text style={styles.calTitle}>{kor}</Text>
-                    {/* 아이콘 터치하면 안되고 옆 여백 터치하면 됨... 왜지... */}
                     <TouchableOpacity
                         style={styles.mealPlus}
                         hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}
