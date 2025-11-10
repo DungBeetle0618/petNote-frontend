@@ -1,17 +1,20 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text, ScrollView, StyleSheet, Image, Pressable } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, Image, Pressable, Dimensions } from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
 import { BottomModal } from './common';
-import { Positions } from 'react-native-calendars/src/expandableCalendar';
 import { TextInput } from 'react-native-gesture-handler';
 import { useSelector } from 'react-redux';
 import NoComment from './NoComment';
+import Comment from './Comment';
+const { width, height } = Dimensions.get('window');
 
 const FeedCard = () => {
 
 	const [visible, setVisible] = useState(false);
+	const modalHeight = height-90;
+	const viewWidth = width;
 
 	//리덕스로 전역상태값 불러오는거
 	const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
@@ -75,18 +78,18 @@ const FeedCard = () => {
 			</View>
 		</View>
 
-		<BottomModal  visible={visible} onClose={onCloseCommnet} title={false} maxHeight='96%'>
+		<BottomModal  visible={visible} onClose={onCloseCommnet} title={false} maxHeight={modalHeight}>
 			<View style={modal.commnetLayOutTitle}>
 				<Text style={modal.commnetLayOutTitleText}>댓글</Text>
 			</View>
 
-
-			<NoComment />
-
+			<View style={{height:modalHeight-140, flexDirection:'column', alignItems:'flex-start', justifyContent:'flex-start', position:'relative'}}>
+					<Comment />
+			</View>
 
 			<View style={modal.commnetLayOutFooter}>
-				<View style={{width:40,height:40,backgroundColor:'#7ecc89ff', borderRadius:50, alignItems:'center', justifyContent:'center', marginRight:7,}}><Text style={{fontSize:21}}>🐶</Text></View>
-				<TextInput style={modal.commnetLayOutFooterInput} placeholder='ㅇㅇㅇ 님에게 댓글 추가..'></TextInput>
+				<View style={{width:40,height:40,backgroundColor:'#7ecc89ff', borderRadius:50, alignItems:'center', justifyContent:'center', marginRight:7}}><Text style={{fontSize:21}}>🐶</Text></View>
+				<TextInput style={modal.commnetLayOutFooterInput} placeholder='유건의 님에게 댓글 추가..'></TextInput>
 				<Pressable><Feather name="send" size={23} color="#000" /></Pressable>
 			</View>
 		</BottomModal>
@@ -154,10 +157,11 @@ const styles = StyleSheet.create({
     }
 });
 
+
+
 const modal = StyleSheet.create({
 	commnetLayOutTitle : {
 		textAlign:'center',
-		position:'absolute',
 		zIndex:1,
 		width:'100%',
 		alignItems:'center',
@@ -169,11 +173,6 @@ const modal = StyleSheet.create({
 	commnetLayOutTitleText : {
 		fontSize:15,
 	},
-	commnetLayOutContents : {
-		height:'100%',
-		alignItems:'center',
-		justifyContent:'center',
-	},
 	commentTitle : {
 		color:'#111',
 		fontWeight:'600',
@@ -182,15 +181,13 @@ const modal = StyleSheet.create({
 	commnetLayOutFooter : {
 		flexDirection:'row',
 		textAlign:'center',
-		position:'absolute',
 		zIndex:1,
 		width:'100%',
 		alignItems:'center',
 		justifyContent:'center',
-		paddingTop:20,
+		paddingTop:5,
 		borderBlockColor:'#ccc',
-		bottom:0,
-		borderTopWidth:StyleSheet.hairlineWidth
+		borderTopWidth:StyleSheet.hairlineWidth,
 	},
 	commnetLayOutFooterInput:{
 		flexGrow:1,
