@@ -6,7 +6,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import ReanimatedDrawerLayout from 'react-native-gesture-handler/ReanimatedDrawerLayout';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { useAuth } from '../../src/auth/AuthProvider';
+import { useAuth } from '../auth/AuthProvider';
 import LoginScreen from '../screens/LoginScreen';
 import HomeScreen from '../screens/HomeScreen';
 import PetManageScreen from '../screens/PetManageScreen';
@@ -19,10 +19,12 @@ import MypageScreen from '../screens/MypageScreen';
 import MealsDetailScreen from '../screens/MealsDetailScreen';
 import ActivityDetailScreen from '../screens/ActivityDetailScreen';
 import WeightDetailScreen from '../screens/WeightDetailScreen';
+import SignUpScreen from '../screens/SignUpScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 const RootStack = createNativeStackNavigator();
+const AuthStack = createNativeStackNavigator();
 
 function Navigator({ onRouteChange }) {
   const { state } = useAuth(); // 'loading' | 'authenticated' | 'unauthenticated'
@@ -185,9 +187,16 @@ function Navigator({ onRouteChange }) {
     );
   }
 
-  // 2. 비로그인 → 로그인 화면만 표시 (Navigator 없음)
+  // 2. 비로그인 → 인증 네비게이터 렌더링
   if (state !== 'authenticated') {
-    return <LoginScreen />;
+    return (
+    <NavigationContainer>
+      <AuthStack.Navigator initialRouteName="login">
+        <AuthStack.Screen name="login" component={LoginScreen} />
+        <AuthStack.Screen name="signUp" component={SignUpScreen} />
+      </AuthStack.Navigator>
+    </NavigationContainer>
+    )
   }
 
   // 3. 로그인 완료 → 전체 네비게이터 렌더링

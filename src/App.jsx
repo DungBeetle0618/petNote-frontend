@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { StatusBar, useColorScheme, View } from 'react-native';
 import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
-import Navigator from './navigation/Navigatior';
+import Navigator from './navigation/Navigator';
 import { Provider } from 'react-redux';
 import store from './store';
 import { AuthProvider } from './auth/AuthProvider';

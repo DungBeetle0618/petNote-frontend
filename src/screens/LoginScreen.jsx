@@ -1,12 +1,15 @@
 import React from 'react'
 
-import { View, Text, TextInput, Button } from 'react-native';
+import { View, Text, TextInput, Button, TouchableOpacity } from 'react-native';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { useAuth } from '../auth/AuthProvider';
+import { useNavigation } from '@react-navigation/native';
 
 export default function LoginScreen() {
   const { signIn } = useAuth();
   const [id, setId] = React.useState('');
   const [pw, setPw] = React.useState('');
+  const navigation = useNavigation();
 
   return (
     <View style={{ padding: 16, gap: 12 }}>
@@ -26,6 +29,12 @@ export default function LoginScreen() {
         style={{ borderWidth: 1, padding: 10, borderRadius: 8 }}
       />
       <Button title="Login" onPress={() => signIn(id, pw)} />
+      <Button title="회원가입" onPress={()=>navigation.navigate('signUp')} />
+      <TouchableOpacity
+        title='회원가입 화면으로'
+        onPress={()=>navigation.navigate('signUp')}>
+          <Text>회원가입</Text>
+      </TouchableOpacity>
     </View>
   );
 }

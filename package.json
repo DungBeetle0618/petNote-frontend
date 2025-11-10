@@ -20,6 +20,7 @@
     "@shopify/react-native-skia": "^2.3.10",
     "axios": "^1.13.2",
     "dayjs": "^1.11.19",
+    "lucide-react": "^0.553.0",
     "react": "19.1.1",
     "react-fast-compare": "^3.2.2",
     "react-native": "0.82.0",
