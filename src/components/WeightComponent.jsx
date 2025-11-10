@@ -1,19 +1,17 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { View, Text, ScrollView, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import AntDesign from 'react-native-vector-icons/AntDesign';
 import gs, { COLORS } from '../assets/styles/globalStyles';
 import { scale } from 'react-native-size-matters';
-import { VictoryChart, VictoryLine, VictoryVoronoiContainer, VictoryTooltip, VictoryAxis, VictoryScatter, VictoryGroup } from "victory-native";
 import { useNavigation } from '@react-navigation/native';
 import WeightAddModal from './WeightAddModal';
-import { AppSelect } from './common';
+import { AppSelect, AnimateLineChart } from './common';
 import dayjs from 'dayjs';
 
 const WeightComponent = () => {
   const [open, setOpen] = useState(false);
-  const screenWidth = Dimensions.get("window").width;
+  
 
   const navigation = useNavigation();
 
@@ -75,32 +73,8 @@ const WeightComponent = () => {
     });
   }, [range]);
 
-  const weights = filteredData.map(d => d.weight);
-  let yMin = 0;
-  let yMax = 0;
+  const allWeights = weightData.map(d => d.weight);
 
-  if (weights.length > 0) {
-    const min = Math.min(...weights);
-    const max = Math.max(...weights);
-    const diff = max - min;
-    const margin = diff * 0.1 || 0.2; // 변화폭이 너무 작으면 최소 0.2 여유
-
-    yMin = min - margin;
-    yMax = max + margin;
-
-    // 데이터가 너무 적으면 강제로 보기 좋게 확대
-    if (weights.length <= 2) {
-      yMin = min - 1;
-      yMax = max + 1;
-    }
-  } else {
-    // 데이터가 아예 없을 때 대비
-    const allWeights = weightData.map(d => d.weight);
-    const min = Math.min(...allWeights);
-    const max = Math.max(...allWeights);
-    yMin = min - 0.2;
-    yMax = max + 0.2;
-  }
 
   const latest = filteredData[filteredData.length - 1];
   const prev = filteredData[0];
@@ -140,92 +114,13 @@ const WeightComponent = () => {
 
           <AppSelect options={rangeOptions} selected={range} onSelect={(v) => { setRange(v) }} />
 
-          <View style={{flexDirection: 'row', alignItems: "stretch"}}>
-            {/* y축 고정 */}
-            <VictoryChart
-              width={40}
-              height={220}
-              padding={{ top: 40, bottom: 40, left: 40, right: 0 }}
-              domain={{y: [yMin, yMax]}}
-            >
-              <VictoryAxis
-                dependentAxis
-                style={{
-                  axis: { stroke: "transparent" },
-                  tickLabels: { fill: "#4A2800", fontSize: 11, padding: 5 },
-                  grid: { stroke: "transparent" },
-                }}
-              />
-            </VictoryChart>
-
-            {/* 가로 스크롤 */}
-            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-              <VictoryChart
-                width={Math.max(screenWidth, filteredData.length * 40)}
-                height={220}
-                padding={{ top: 40, bottom: 40, left: 20, right: 20 }}
-                domain={{y: [yMin, yMax]}}
-                containerComponent={
-                  <VictoryVoronoiContainer
-                    voronoiBlacklist={["scatter"]}
-                    labels={({ datum }) => `${datum.y} kg`}
-                    labelComponent={
-                      <VictoryTooltip
-                        flyoutStyle={{
-                          stroke: COLORS.primary,
-                          fill: "#fff"
-                        }}
-                        style={{ fontSize: 12, fill: "#4A2800" }}
-                        cornerRadius={6}
-                        pointerLength={6}
-                        constrainToVisibleArea={false}
-                      />
-                    }
-                  />
-                }
-              >
-                <VictoryAxis
-                  dependentAxis
-                  style={{
-                    axis: { stroke: "transparent" },
-                    tickLabels: { display: "none" }, // 눈금 텍스트 숨김
-                    grid: { stroke: "#F2F2F2" }, // 가로선 표시
-                  }}
-                />
-                <VictoryAxis
-                  style={{
-                    axis: { stroke: "#E5E5E5" },
-                    tickLabels: { fill: "#4A2800", fontSize: 11, padding: 5 },
-                    grid: { stroke: "transparent" }
-                  }}
-                />
-                <VictoryGroup data={filteredData.map(d => ({
-                  x: dayjs(d.date).format("MM/DD"),
-                  y: d.weight
-                }))}
-                >
-                  <VictoryLine
-                    interpolation="catmullRom"
-                    style={{ data: { stroke: COLORS.primary, strokeWidth: 3 } }}
-                    animate={{
-                      onLoad: { duration: 100, easing: "bounce" }
-                    }}
-                  />
-                  <VictoryScatter
-                    name="scatter"
-                    size={5}
-                    style={{
-                      data: {
-                        fill: COLORS.primary,
-                        strokeWidth: 2
-                      }
-                    }}
-                  />
-                </VictoryGroup>
-              </VictoryChart>
-            </ScrollView>
-
-          </View>
+          {/* 차트 */}
+          <AnimateLineChart
+            key={range}
+            data={filteredData.map(d => ({ x: dayjs(d.date).format("MM/DD"), y: d.weight }))}
+            fallbackValues={allWeights}
+            unit="kg"
+          />
 
         </View>
         <View style={{ marginTop: scale(20) }}>

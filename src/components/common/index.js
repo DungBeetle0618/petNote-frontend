@@ -6,3 +6,5 @@ export { default as AppDatePicker } from './AppDatePicker';
 export { default as AppDropdown } from './AppDropdown';
 export { default as AppImagePicker } from './AppImagePicker';
 export { default as AppTextArea } from './AppTextArea';
+export { default as AppCalendar } from './AppCalendar';
+export { default as AnimateLineChart } from './AnimateLineChart';
