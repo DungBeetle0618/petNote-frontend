@@ -1,12 +1,13 @@
 import React, { useRef, useCallback } from 'react';
-import { View, Button, TouchableOpacity } from 'react-native';
+import { View, Button, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import ReanimatedDrawerLayout from 'react-native-gesture-handler/ReanimatedDrawerLayout';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-
+import { useAuth } from '../../src/auth/AuthProvider';
+import LoginScreen from '../screens/LoginScreen';
 import HomeScreen from '../screens/HomeScreen';
 import PetManageScreen from '../screens/PetManageScreen';
 import NearbyScreen from '../screens/NearbyScreen';
@@ -24,6 +25,7 @@ const Stack = createNativeStackNavigator();
 const RootStack = createNativeStackNavigator();
 
 function Navigator({ onRouteChange }) {
+  const { state } = useAuth(); // 'loading' | 'authenticated' | 'unauthenticated'
   const drawerRef = useRef(null);
   const navigationRef = useRef(null);
 
@@ -170,9 +172,25 @@ function Navigator({ onRouteChange }) {
         <Ionicons name="chevron-back" size={22} color="#1A1A1A" />
       </TouchableOpacity>
     ),
-  })
+  });
 
+  // 상태별 화면 분기
 
+  // 1. 로딩 중 → 스플래시 화면
+  if (state === 'loading') {
+    return (
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+        <ActivityIndicator />
+      </View>
+    );
+  }
+
+  // 2. 비로그인 → 로그인 화면만 표시 (Navigator 없음)
+  if (state !== 'authenticated') {
+    return <LoginScreen />;
+  }
+
+  // 3. 로그인 완료 → 전체 네비게이터 렌더링
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <ReanimatedDrawerLayout

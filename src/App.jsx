@@ -4,6 +4,8 @@ import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-cont
 import Navigator from './navigation/Navigatior';
 import { Provider } from 'react-redux';
 import store from './store';
+import { AuthProvider } from './auth/AuthProvider';
+
 
 function App() {
   const isDarkMode = useColorScheme() === 'dark';
@@ -13,7 +15,9 @@ function App() {
     <Provider store={store}>
       <SafeAreaProvider>
         <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-        <AppContent routeName={routeName} onRouteChange={setRouteName} />
+        <AuthProvider>
+          <AppContent routeName={routeName} onRouteChange={setRouteName} />
+        </AuthProvider>
       </SafeAreaProvider>
     </Provider>
   );
