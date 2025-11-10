@@ -65,11 +65,11 @@ const PetInfo = ({ data }) => {
             offset={[3, 3]}
             startColor="rgba(0,0,0,0.12)"
             finalColor="rgba(0,0,0,0)"
-            radius={scale(45)}
+            radius={45}
             sides={{ bottom: true }}
             getChildRadius={false}
             containerStyle={{
-                borderRadius: scale(45),
+                borderRadius: 45,
                 backgroundColor: '#fff',
             }}
             style={styles.shadow}
@@ -79,12 +79,12 @@ const PetInfo = ({ data }) => {
                     <Image source={data.profile} style={styles.profileImg} />
                     <TouchableOpacity style={styles.setMainBtn} onPress={()=>setMainPet(main)} activeOpacity={1}>
                         {
-                            main ? <FontAwesome name='star' style={{fontSize: scale(20), color: 'pink'}} /> 
-                            : <FontAwesome name='star-o' style={{fontSize: scale(20), color: COLORS.textPrimary}} />
+                            main ? <FontAwesome name='star' style={{fontSize: 20, color: 'pink'}} /> 
+                            : <FontAwesome name='star-o' style={{fontSize: 20, color: COLORS.textPrimary}} />
                         }
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={()=>{alert('수정')}} activeOpacity={1} style={{position: 'absolute', right: scale(20), bottom: 0}}>
-                        <FontAwesome name="pencil" style={{fontSize: scale(16)}}/>
+                    <TouchableOpacity onPress={()=>{alert('수정')}} activeOpacity={1} style={{position: 'absolute', right: 20, bottom: 0}}>
+                        <FontAwesome name="pencil" style={{fontSize: 16}}/>
                     </TouchableOpacity>
                 </View>
                 <View style={styles.info}>
@@ -93,33 +93,33 @@ const PetInfo = ({ data }) => {
 
                     <ScrollView
                         horizontal
-                        contentContainerStyle={{ paddingVertical: scale(20), paddingHorizontal: scale(25) }}
+                        contentContainerStyle={{ paddingVertical: 20, paddingHorizontal: 25 }}
                         shadowHorizontalScrollIndicator={false}
                     >
-                        <View style={[styles.infoSub, {width: scale(90)}]}>
-                            <EBoldTextN style={{fontSize: scale(12), marginBottom: 6}}>생일</EBoldTextN>
+                        <View style={[styles.infoSub, {width: 90}]}>
+                            <EBoldTextN style={{fontSize: 12, marginBottom: 6}}>생일</EBoldTextN>
                             <LightTextN styles={styles.subContent}>{data.birth}</LightTextN>
                         </View>
                         <View style={styles.infoSub}>
-                            <EBoldTextN style={{fontSize: scale(12), marginBottom: 6}}>나이</EBoldTextN>
+                            <EBoldTextN style={{fontSize: 12, marginBottom: 6}}>나이</EBoldTextN>
                             <LightTextN styles={styles.subContent}>{data.age}</LightTextN>
                         </View>
                         <View style={styles.infoSub}>
-                            <EBoldTextN style={{fontSize: scale(12), marginBottom: 6}}>성별</EBoldTextN>
+                            <EBoldTextN style={{fontSize: 12, marginBottom: 6}}>성별</EBoldTextN>
                             <LightTextN styles={styles.subContent}>{data.gender}</LightTextN>
                         </View>
                         <View style={styles.infoSub}>
-                            <EBoldTextN style={{fontSize: scale(12), marginBottom: 6}}>중성화</EBoldTextN>
+                            <EBoldTextN style={{fontSize: 12, marginBottom: 6}}>중성화</EBoldTextN>
                             <LightTextN styles={styles.subContent}>Y</LightTextN>
                         </View>
                     </ScrollView>
 
                     <View style={styles.memo}>
                         <View style={{flexDirection: 'row', alignItems: 'start', justifyContent: 'space-between'}}>
-                            <EBoldTextN style={{fontSize: scale(16), marginBottom: 8}}>NOTES</EBoldTextN>
+                            <EBoldTextN style={{fontSize: 16, marginBottom: 8}}>NOTES</EBoldTextN>
                             { contents.length > 100 && (
                                 <TouchableOpacity onPress={() => setExpanded(prev=>!prev)} activeOpacity={1} hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}>
-                                    <ChevronIcon visible={expanded} size={scale(16)} />
+                                    <ChevronIcon visible={expanded} size={16} />
                                 </TouchableOpacity>
                             )}
                         </View>
@@ -158,83 +158,83 @@ const styles = StyleSheet.create({
         width: '100%',
 
         backgroundColor: '#f8f0f0ff',
-        borderRadius: scale(45),
+        borderRadius: 45,
         alignItems: 'center',
     },
     shadow: {
       width: '100%', 
       marginBottom: 12  ,
-      borderRadius: scale(45),
+      borderRadius: 45,
     },
     profileImg: {
-        width: scale(160),
-        height: scale(160),
-        // borderRadius: scale(150)/2,
-        borderTopLeftRadius: scale(70),
-        borderTopRightRadius: scale(85),
-        borderBottomLeftRadius: scale(100),
-        borderBottomRightRadius: scale(60),
+        width: 160,
+        height: 160,
+        // borderRadius: 150/2,
+        borderTopLeftRadius: 70,
+        borderTopRightRadius: 85,
+        borderBottomLeftRadius: 100,
+        borderBottomRightRadius: 60,
     },
     infoHead: {
         width: '100%',
         // height: 200,
         alignItems: 'center',
-        marginBlock: scale(15),
+        marginBlock: 15,
         position: 'relative',
     },
     setMainBtn: {
-        width: scale(30),
-        height: scale(30),
-        borderRadius: scale(30)/2,
+        width: 30,
+        height: 30,
+        borderRadius: 30/2,
         backgroundColor: '#fff',
         position: 'absolute',
-        right: scale(20),
+        right: 20,
         top: 0,
         alignItems: 'center',
         justifyContent: 'center'
     },
     info: {
         width: '100%',
-        borderTopRightRadius: scale(45),
-        borderBottomRightRadius: scale(45),
-        borderBottomLeftRadius: scale(45),
-        minHeight: scale(200),
+        borderTopRightRadius: 45,
+        borderBottomRightRadius: 45,
+        borderBottomLeftRadius: 45,
+        minHeight: 200,
         backgroundColor: '#fff',
-        paddingBottom: scale(30)
+        paddingBottom: 30
     },
     infoName: {
-        fontSize: scale(20),
-        marginBottom: scale(8),
-        marginHorizontal: scale(25),
-        marginTop: scale(25),
+        fontSize: 20,
+        marginBottom: 8,
+        marginHorizontal: 25,
+        marginTop: 25,
     },
     infoBreed: {
         color: COLORS.textSecondary,
-        fontSize: scale(12),
-        marginHorizontal: scale(25),
+        fontSize: 13,
+        marginHorizontal: 25,
     },
     infoSub: {
-        padding: scale(12),
-        borderRadius: scale(10),
-        width: scale(80),
-        height: scale(60),
+        padding: 12,
+        borderRadius: 10,
+        width: 80,
+        height: 60,
         backgroundColor: '#fdf8e2',
-        marginRight: scale(10),
+        marginRight: 10,
         alignItems: 'center'
     },
     subContent: {
-        fontSize: scale(10)
+        fontSize: 10
     },
     memo: {
         width: '100%',
-        minHeight: scale(50),
-        marginTop: scale(20),
-        paddingHorizontal: scale(25)
+        minHeight: 50,
+        marginTop: 20,
+        paddingHorizontal: 25
     },
     memoContent: {
         lineHeight: 20,
         flexShrink: 1,
-        fontSize: scale(12),
+        fontSize: 13,
         color: '#555',
     }
     

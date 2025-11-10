@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TouchableHighlight } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
 /**
  * 식사 상태 카드
@@ -34,7 +34,7 @@ const MealStatusCard = ({item, setOpen, setModiData }) => {
 
 
     return (
-        <TouchableHighlight
+        <TouchableOpacity
                 activeOpacity={0.8}
                 underlayColor="transparent"
                 onLongPress={()=>{alert('삭제')}}
@@ -72,7 +72,7 @@ const MealStatusCard = ({item, setOpen, setModiData }) => {
                         </Text>
                     </View>
                 </View>
-            </TouchableHighlight>
+            </TouchableOpacity>
 
     );
 };

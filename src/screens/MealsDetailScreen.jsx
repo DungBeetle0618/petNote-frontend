@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView, TouchableHighlight } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, } from 'react-native';
 import gs, { COLORS } from '../assets/styles/globalStyles';
 import { scale } from 'react-native-size-matters';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';

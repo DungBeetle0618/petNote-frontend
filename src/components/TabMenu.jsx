@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
         borderRadius: 7,
         textAlign: 'center',
         lineHeight: 25,
-        fontSize: scale(12),
+        fontSize: 12,
         fontWeight: 400
     },
     buttonBoxActive: {

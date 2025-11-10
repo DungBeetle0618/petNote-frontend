@@ -93,7 +93,7 @@ const PetManageScreen = () => {
                     onPress={() => { setPetModalVisible(true) }}
                 >
                     <BoldText style={styles.whiteFont}>등록</BoldText>
-                    <FontAwesome name='plus' style={[styles.whiteFont, { marginLeft: scale(5) }]} />
+                    <FontAwesome name='plus' style={[styles.whiteFont, { marginLeft: 5 }]} />
                 </TouchableOpacity>
                 <PetRegistModal visible={petModalVisible}
                                 onClose={() => setPetModalVisible(false)}
@@ -143,13 +143,13 @@ const PetManageScreen = () => {
 const styles = StyleSheet.create({
     addBtn: {
         width: '100%',
-        height: scale(30),
-        borderRadius: scale(8),
+        height: 30,
+        borderRadius: 8,
         backgroundColor: COLORS.primary,
-        marginBottom: scale(10),
+        marginBottom: 10,
     },
     whiteFont: {
-        fontSize: scale(12),
+        fontSize: 12,
         color: 'white'
     }
 });

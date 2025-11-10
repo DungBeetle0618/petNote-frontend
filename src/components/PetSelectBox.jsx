@@ -73,7 +73,7 @@ const PetSelectBox = ({ options, selectedValue, onSelect, visible, onOpen, onClo
                                 {selectedValue.breed}
                             </RegularText>
                         </View>
-                        <ChevronIcon visible={visible} size={scale(20)} />
+                        <ChevronIcon visible={visible} size={20} />
                     </View>
                 </TouchableOpacity>
             ) : (
@@ -94,7 +94,7 @@ const PetSelectBox = ({ options, selectedValue, onSelect, visible, onOpen, onClo
                     </TouchableWithoutFeedback>
 
                     <View style={[styles.dropdown,
-                                { top: dropdownPos.y, left: dropdownPos.x, width: dropdownPos.width, height: Math.min(listHeight + scale(15), MAX_HEIGHT), },
+                                { top: dropdownPos.y, left: dropdownPos.x, width: dropdownPos.width, height: Math.min(listHeight + 15, MAX_HEIGHT), },
                             ]}
                     >
                         <FlatList
@@ -138,8 +138,8 @@ const styles = StyleSheet.create({
     selectBox: {
         borderWidth: 2,
         borderColor: COLORS.sub,
-        padding: scale(10),
-        borderRadius: scale(15),
+        padding: 10,
+        borderRadius: 15,
         backgroundColor: '#fff',
     },
     selectContainer: {
@@ -149,57 +149,57 @@ const styles = StyleSheet.create({
     profileView: {
         alignItems: 'center',
         justifyContent: 'center',
-        width: scale(45),
-        height: scale(45),
+        width: 45,
+        height: 45,
         borderRadius: 50,
         borderWidth: 3,
         borderColor: COLORS.primary,
-        marginRight: scale(15),
+        marginRight: 15,
     },
     profileImg: {
-        width: scale(35),
-        height: scale(35),
+        width: 35,
+        height: 35,
         borderRadius: 50,
     },
     title: {
-        fontSize: scale(12),
-        marginBottom: scale(5),
+        fontSize: 16,
+        marginBottom: 5,
         color: '#333',
     },
     breed: {
-        fontSize: scale(10),
+        fontSize: 12,
     },
     dropdown: {
         backgroundColor: '#fff',
         borderWidth: 2,
         borderColor: COLORS.sub,
-        borderRadius: scale(15),
+        borderRadius: 15,
         zIndex: 10,
-        paddingHorizontal: scale(10),
-        paddingTop: scale(10),
+        paddingHorizontal: 10,
+        paddingTop: 10,
     },
     option: {
-        paddingVertical: scale(10),
-        paddingHorizontal: scale(15),
-        marginBottom: scale(10),
+        paddingVertical: 10,
+        paddingHorizontal: 15,
+        marginBottom: 10,
     },
     optionRow: {
         flexDirection: 'row',
         alignItems: 'center',
     },
     optionImg: {
-        width: scale(35),
-        height: scale(35),
+        width: 35,
+        height: 35,
         borderRadius: 50,
-        marginRight: scale(20),
+        marginRight: 20,
     },
     optionText: {
-        fontSize: scale(14),
+        fontSize: 15,
         color: '#333',
     },
     optionSelected: {
         backgroundColor: '#fed7aa56',
-        borderRadius: scale(15)
+        borderRadius: 15
     }
 });
 

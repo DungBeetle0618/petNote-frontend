@@ -26,11 +26,11 @@ export const MODAL_COLORS = {
 }
 
 export const PX_SIZE = {
-  xs: scale(12),    
-  sm: scale(14),   
-  md: scale(16),    
-  lg: scale(20),     
-  xl: scale(24),    
+  xs: 12,    
+  sm: 14,   
+  md: 16,    
+  lg: 20,     
+  xl: 24,    
 };
 
 const globalStyles = StyleSheet.create({
@@ -39,7 +39,7 @@ const globalStyles = StyleSheet.create({
     // flex: 1,
     backgroundColor: COLORS.background,
     paddingHorizontal: PX_SIZE.lg, 
-    paddingVertical: scale(30),
+    paddingVertical: 30,
   },
 
   /* 제목 텍스트 */
@@ -47,7 +47,7 @@ const globalStyles = StyleSheet.create({
     fontSize: PX_SIZE.xl,
     // fontWeight: '700',
     color: COLORS.textPrimary,
-    marginBottom: scale(10),
+    marginBottom: 10,
     letterSpacing: -2,
   },
 
@@ -56,12 +56,12 @@ const globalStyles = StyleSheet.create({
     fontSize: PX_SIZE.sm,
     // fontWeight: '500',
     color: COLORS.textSecondary,
-    marginBottom: scale(20), 
+    marginBottom: 20, 
   },
 
   /* 일반 본문 텍스트 */
   text: {
-    fontSize: scale(15),
+    fontSize: 15,
     color: '#555555',
     lineHeight: 22,
   },
