@@ -1,18 +1,22 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { View, Text, ScrollView, StyleSheet, Image, Pressable, Dimensions } from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
+import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import { BottomModal } from './common';
 import { TextInput } from 'react-native-gesture-handler';
 import { useSelector } from 'react-redux';
 import NoComment from './NoComment';
 import Comment from './Comment';
+import DismissKeyboardView from './DismissKeyboardView';
 const { width, height } = Dimensions.get('window');
 
 const FeedCard = () => {
 
+	const inputRef = useRef();
 	const [visible, setVisible] = useState(false);
+	const [userRender, setUserRender] = useState(false);
 	const modalHeight = height-90;
 	const viewWidth = width;
 
@@ -21,10 +25,24 @@ const FeedCard = () => {
 
 	const onCloseCommnet = () => {
 		setVisible(false);
+		setUserRender(false);
 	}
 
 	const onOpenComment = () => {
 		setVisible(true);
+	}
+
+	const onPressAnswer = () => {
+		
+		const name = `@TEST`;
+
+		setUserRender(name);
+		setTimeout(() => {
+			inputRef.current?.focus();
+			inputRef.current?.setNativeProps({
+				selection: { start: name.length, end: name.length },
+			});
+		}, 50);
 	}
 
 	useEffect(()=>{
@@ -34,67 +52,84 @@ const FeedCard = () => {
 
 
   return (
-	<>
-	<View style={styles.card}>
-			<View style={styles.cardHeader}>
-			<View style={{flexDirection:'row'}}>
-				<View style={styles.cardHeaderImg}><Text style={{fontSize:21}}>🐶</Text></View>
-				<View style={styles.cardHeaderTextWrap}>
-					<Text style={styles.cardHeaderText}>Sarah Kim</Text>
-					<Text style={styles.cardHeaderText}>2h ago</Text>
-				</View>
-			</View>
-			<View><Text><AntDesign name="book" size={15} color="#333" /></Text></View>
-			</View>
-			<View style={styles.cardBody}>
-			<Image source={require('../assets/images/feed1.jpg')} style={styles.cardImg} />
-			</View>
-			<View style={styles.cardFoot}>
-			<View style={{flexDirection:'row', alignContent:'center',  marginBottom:25, justifyContent:'space-between'}}>
+		<>
+			<View style={styles.card}>
+				<View style={styles.cardHeader}>
 				<View style={{flexDirection:'row'}}>
-					<View style={{flexDirection:'row', marginRight:25, alignItems:'center'}}>
-						<FontAwesome name="heart-o" size={14} color="#000" backgroundColor="#fff"/>
-						<Text style={{marginLeft:5}}>234</Text>
-					</View>
-					<View>
-						<Pressable onPress={onOpenComment} style={{flexDirection:'row', marginRight:25, alignItems:'center'}}>
-							<Text><Feather name="message-circle" size={14} color="#000" /></Text>
-							<Text>18</Text>
-						</Pressable>
+					<View style={styles.cardHeaderImg}><Text style={{fontSize:21}}>🐶</Text></View>
+					<View style={styles.cardHeaderTextWrap}>
+						<Text style={styles.cardHeaderText}>Sarah Kim</Text>
+						<Text style={styles.cardHeaderText}>2h ago</Text>
 					</View>
 				</View>
-				<View style={{flexDirection:'row', alignItems:'center'}}>
-					<Text><Feather name="share-2" size={13} color="#000" /></Text>
+				<View><Text><AntDesign name="book" size={15} color="#333" /></Text></View>
+				</View>
+				<View style={styles.cardBody}>
+				<Image source={require('../assets/images/feed1.jpg')} style={styles.cardImg} />
+				</View>
+				<View style={styles.cardFoot}>
+				<View style={{flexDirection:'row', alignContent:'center',  marginBottom:25, justifyContent:'space-between'}}>
+					<View style={{flexDirection:'row'}}>
+						<View style={{flexDirection:'row', marginRight:25, alignItems:'center'}}>
+							<FontAwesome name="heart-o" size={14} color="#000" backgroundColor="#fff"/>
+							<Text style={{marginLeft:5}}>234</Text>
+						</View>
+						<View>
+							<Pressable onPress={onOpenComment} style={{flexDirection:'row', marginRight:25, alignItems:'center'}}>
+								<Text><Feather name="message-circle" size={14} color="#000" /></Text>
+								<Text>18</Text>
+							</Pressable>
+						</View>
+					</View>
+					<View style={{flexDirection:'row', alignItems:'center'}}>
+						<Text><Feather name="share-2" size={13} color="#000" /></Text>
+					</View>
+				</View>
+				<View style={styles.cardFootMarign}>
+					<Text style={styles.cardFootText}>Morning walk with Coco! She's loving the autumn weather 🍂</Text>
+				</View>
+				<View style={[styles.cardFootMarign, {flexDirection:'row'}]}>
+					<Text style={styles.cardFootTextHash}>#Bicho</Text>
+					<Text style={styles.cardFootTextHash}>#MorningWalk #PetLife</Text>
+					<Text style={styles.cardFootTextHash}>#PetLife</Text>
+				</View>
 				</View>
 			</View>
-			<View style={styles.cardFootMarign}>
-				<Text style={styles.cardFootText}>Morning walk with Coco! She's loving the autumn weather 🍂</Text>
-			</View>
-			<View style={[styles.cardFootMarign, {flexDirection:'row'}]}>
-				<Text style={styles.cardFootTextHash}>#Bicho</Text>
-				<Text style={styles.cardFootTextHash}>#MorningWalk #PetLife</Text>
-				<Text style={styles.cardFootTextHash}>#PetLife</Text>
-			</View>
-			</View>
-		</View>
 
-		<BottomModal  visible={visible} onClose={onCloseCommnet} title={false} maxHeight={modalHeight}>
-			<View style={modal.commnetLayOutTitle}>
-				<Text style={modal.commnetLayOutTitleText}>댓글</Text>
-			</View>
+			<BottomModal  visible={visible} onClose={onCloseCommnet} title={false} maxHeight={modalHeight}>
+				<View style={modal.commnetLayOutTitle}>
+					<Text style={modal.commnetLayOutTitleText}>댓글</Text>
+				</View>
 
-			<View style={{height:modalHeight-140, flexDirection:'column', alignItems:'flex-start', justifyContent:'flex-start', position:'relative'}}>
-					<Comment />
-			</View>
+				<View style={{paddingLeft:24,paddingRight:24, height:modalHeight-120, flexDirection:'column', alignItems:'flex-start', justifyContent:'flex-start', position:'relative', paddingVertical:10,}}>
+					<DismissKeyboardView>
+						<Comment onPressAnswer={onPressAnswer}/>
+						<Comment onPressAnswer={onPressAnswer}/>
+						<Comment onPressAnswer={onPressAnswer}/>
+					</DismissKeyboardView>
+				</View>
 
-			<View style={modal.commnetLayOutFooter}>
-				<View style={{width:40,height:40,backgroundColor:'#7ecc89ff', borderRadius:50, alignItems:'center', justifyContent:'center', marginRight:7}}><Text style={{fontSize:21}}>🐶</Text></View>
-				<TextInput style={modal.commnetLayOutFooterInput} placeholder='유건의 님에게 댓글 추가..'></TextInput>
-				<Pressable><Feather name="send" size={23} color="#000" /></Pressable>
-			</View>
-		</BottomModal>
-
-	 </>
+				
+				<View style={{position:'relative'}}>
+					{userRender && 
+						<View>
+							<View style={{flexDirection:'row', backgroundColor:'#000', position:'absolute', width:'100%', top:-40, height:40, backgroundColor:'#f1f1f1',alignItems:'center', justifyContent:'space-between',paddingLeft:15, paddingRight:15}}>
+								<Text style={{fontSize:12}}>{userRender && userRender} 님에게 남기는 답글</Text>
+								<Pressable><AntDesign name="close" size={12} color="#000" /></Pressable>
+							</View>
+						</View>
+					}
+					<View style={modal.commnetLayOutFooter}>
+						<View style={{width:40,height:40,backgroundColor:'#7ecc89ff', borderRadius:50, alignItems:'center', justifyContent:'center', marginRight:7}}><Text style={{fontSize:21}}>🐶</Text></View>
+						<View style={{flexDirection:'row', alignItems:'center', justifyContent:'center', height:45, flex:1}}>
+							<View>{userRender && (<View><Text style={{fontSize:12}}>{userRender}</Text></View>)}</View>
+							<TextInput style={modal.commnetLayOutFooterInput} placeholder='답글 추가' ref={inputRef}></TextInput>
+						</View>
+						<Pressable><Feather name="send" size={21} color="#000" /></Pressable>
+					</View>
+				</View>
+			</BottomModal>
+		</>
   )
 }
 
@@ -167,6 +202,9 @@ const modal = StyleSheet.create({
 		alignItems:'center',
 		justifyContent:'center',
 		paddingBottom:20,
+		paddingTop:24,
+		paddingLeft:24,
+		paddingRight:24,
 		borderBlockColor:'#ccc',
 		borderBottomWidth:StyleSheet.hairlineWidth
 	},
@@ -181,19 +219,21 @@ const modal = StyleSheet.create({
 	commnetLayOutFooter : {
 		flexDirection:'row',
 		textAlign:'center',
-		zIndex:1,
 		width:'100%',
 		alignItems:'center',
 		justifyContent:'center',
 		paddingTop:5,
-		borderBlockColor:'#ccc',
 		borderTopWidth:StyleSheet.hairlineWidth,
+		paddingLeft:24,
+		paddingRight:24,
+		backgroundColor:'#fff'
 	},
 	commnetLayOutFooterInput:{
 		flexGrow:1,
 		fontWeight:700,
 		color:'#000',
-		fontSize:14,
+		fontSize:12,
+		height:45,
 	}
 });
 
