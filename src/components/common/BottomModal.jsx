@@ -47,7 +47,6 @@ const styles = StyleSheet.create({
     backgroundColor: MODAL_COLORS.background,
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
-    padding: 24,
     shadowColor: MODAL_COLORS.primary,
     shadowOpacity: 0.2,
     shadowOffset: { width: 0, height: -6 },
