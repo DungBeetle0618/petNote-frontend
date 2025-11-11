@@ -18,7 +18,7 @@ const MealsDetailScreen = () => {
     const [modiData, setModiData] = useState(null);
 
     const handleSubmit = () => {
-            console.log('식사량:', data);
+        console.log('식사량:', data);
         setOpen(false);
     };
 
