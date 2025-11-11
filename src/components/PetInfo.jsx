@@ -96,7 +96,7 @@ const PetInfo = ({ data }) => {
                         contentContainerStyle={{ paddingVertical: 20, paddingHorizontal: 25 }}
                         shadowHorizontalScrollIndicator={false}
                     >
-                        <View style={[styles.infoSub, {width: 90}]}>
+                        <View style={[styles.infoSub, {width: 100}]}>
                             <EBoldTextN style={{fontSize: 12, marginBottom: 6}}>생일</EBoldTextN>
                             <LightTextN styles={styles.subContent}>{data.birth}</LightTextN>
                         </View>
@@ -234,7 +234,7 @@ const styles = StyleSheet.create({
     memoContent: {
         lineHeight: 20,
         flexShrink: 1,
-        fontSize: 13,
+        fontSize: 14,
         color: '#555',
     }
     

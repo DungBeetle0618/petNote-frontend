@@ -53,7 +53,7 @@ const globalStyles = StyleSheet.create({
 
   /* 부제목 */
   subtitle: {
-    fontSize: PX_SIZE.sm,
+    fontSize: PX_SIZE.md,
     // fontWeight: '500',
     color: COLORS.textSecondary,
     marginBottom: 20, 

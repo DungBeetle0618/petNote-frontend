@@ -17,14 +17,14 @@ const MypageScreen = () => {
         <EBoldText style={gs.title}>마이페이지입니다.</EBoldText>
 
 
-        <Pressable onPress={()=>{navigation.navigate('Reminder')}}>
-          <Text>리마인더</Text>
+        <Pressable style={{marginBlock: 20}} onPress={()=>{navigation.navigate('Reminder')}}>
+          <Text>리마인더 페이지 가기</Text>
         </Pressable>
-        <Pressable onPress={()=>{navigation.navigate('Challenge')}}>
-          <Text>챌린지</Text>
+        <Pressable style={{marginBlock: 20}} onPress={()=>{navigation.navigate('Challenge')}}>
+          <Text>챌린지 페이지 가기</Text>
         </Pressable>
-        <Pressable onPress={()=>{navigation.navigate('Product')}}>
-          <Text>상품</Text>
+        <Pressable style={{marginBlock: 20}} onPress={()=>{navigation.navigate('Product')}}>
+          <Text>상품 페이지 가기</Text>
         </Pressable>
 
       </ScrollView>
