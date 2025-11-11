@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { View, Text, ScrollView, StyleSheet, Image, Pressable, Dimensions } from 'react-native';
+import {Modal, View, Text, ScrollView, StyleSheet, Image, Pressable, Dimensions, Animated } from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
@@ -10,6 +10,8 @@ import { useSelector } from 'react-redux';
 import NoComment from './NoComment';
 import Comment from './Comment';
 import DismissKeyboardView from './DismissKeyboardView';
+import { MODAL_COLORS } from '../assets/styles/globalStyles';
+
 const { width, height } = Dimensions.get('window');
 
 const FeedCard = () => {
@@ -19,6 +21,8 @@ const FeedCard = () => {
 	const [userRender, setUserRender] = useState(false);
 	const modalHeight = height-90;
 	const viewWidth = width;
+
+	const maxHeight = '95%';
 
 	//리덕스로 전역상태값 불러오는거
 	const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
@@ -45,8 +49,15 @@ const FeedCard = () => {
 		}, 50);
 	}
 
-	useEffect(()=>{
 
+	const [translateY] = useState(new Animated.Value(400));
+	
+	useEffect(() => {
+	Animated.timing(translateY, {
+		toValue: visible ? 0 : 400,
+		duration: visible ? 250 : 200,
+		useNativeDriver: true,
+	}).start();
 	}, [visible]);
 
 
@@ -96,39 +107,49 @@ const FeedCard = () => {
 				</View>
 			</View>
 
-			<BottomModal  visible={visible} onClose={onCloseCommnet} title={false} maxHeight={modalHeight}>
-				<View style={modal.commnetLayOutTitle}>
-					<Text style={modal.commnetLayOutTitleText}>댓글</Text>
-				</View>
 
-				<View style={{paddingLeft:24,paddingRight:24, height:modalHeight-120, flexDirection:'column', alignItems:'flex-start', justifyContent:'flex-start', position:'relative', paddingVertical:10,}}>
-					<DismissKeyboardView>
-						<Comment onPressAnswer={onPressAnswer}/>
-						<Comment onPressAnswer={onPressAnswer}/>
-						<Comment onPressAnswer={onPressAnswer}/>
-					</DismissKeyboardView>
-				</View>
 
-				
-				<View style={{position:'relative'}}>
-					{userRender && 
+
+
+			<Modal transparent visible={visible} animationType="fade" onRequestClose={onCloseCommnet}>
+				<Pressable style={styles.overlay} onPress={onCloseCommnet} />
+				<Animated.View style={[styles.sheetContainer, { height: maxHeight, transform: [{ translateY }], maxHeight }]}>
+
+					<View style={modal.commnetLayOutTitle}>
+						<Text style={modal.commnetLayOutTitleText}>댓글</Text>
+					</View>
+
+					<ScrollView contentContainerStyle={{ flexGrow: 1 }} showsVerticalScrollIndicator={false}>
 						<View>
-							<View style={{flexDirection:'row', backgroundColor:'#000', position:'absolute', width:'100%', top:-40, height:40, backgroundColor:'#f1f1f1',alignItems:'center', justifyContent:'space-between',paddingLeft:15, paddingRight:15}}>
-								<Text style={{fontSize:12}}>{userRender && userRender} 님에게 남기는 답글</Text>
-								<Pressable><AntDesign name="close" size={12} color="#000" /></Pressable>
+							<View style={{paddingLeft:24,paddingRight:24, flexDirection:'column', alignItems:'flex-start', justifyContent:'flex-start', position:'relative', paddingVertical:10,}}>
+									<Comment onPressAnswer={onPressAnswer}/>
+									<Comment onPressAnswer={onPressAnswer}/>
+									<Comment onPressAnswer={onPressAnswer}/>
 							</View>
 						</View>
-					}
-					<View style={modal.commnetLayOutFooter}>
-						<View style={{width:40,height:40,backgroundColor:'#7ecc89ff', borderRadius:50, alignItems:'center', justifyContent:'center', marginRight:7}}><Text style={{fontSize:21}}>🐶</Text></View>
-						<View style={{flexDirection:'row', alignItems:'center', justifyContent:'center', height:45, flex:1}}>
-							<View>{userRender && (<View><Text style={{fontSize:12}}>{userRender}</Text></View>)}</View>
-							<TextInput style={modal.commnetLayOutFooterInput} placeholder='답글 추가' ref={inputRef}></TextInput>
+					</ScrollView>
+
+					<View style={{position:'relative'}}>
+						{userRender && 
+							<View>
+								<View style={{flexDirection:'row', backgroundColor:'#000', position:'absolute', width:'100%', top:-40, height:40, backgroundColor:'#f1f1f1',alignItems:'center', justifyContent:'space-between',paddingLeft:15, paddingRight:15}}>
+									<Text style={{fontSize:12}}>{userRender && userRender} 님에게 남기는 답글</Text>
+									<Pressable><AntDesign name="close" size={12} color="#000" /></Pressable>
+								</View>
+							</View>
+						}
+						<View style={modal.commnetLayOutFooter}>
+							<View style={{width:40,height:40,backgroundColor:'#7ecc89ff', borderRadius:50, alignItems:'center', justifyContent:'center', marginRight:7}}><Text style={{fontSize:21}}>🐶</Text></View>
+							<View style={{flexDirection:'row', alignItems:'center', justifyContent:'center', height:45, flex:1}}>
+								<View>{userRender && (<View><Text style={{fontSize:12}}>{userRender}</Text></View>)}</View>
+								<TextInput style={modal.commnetLayOutFooterInput} placeholder='답글 추가' ref={inputRef}></TextInput>
+							</View>
+							<Pressable><Feather name="send" size={21} color="#000" /></Pressable>
 						</View>
-						<Pressable><Feather name="send" size={21} color="#000" /></Pressable>
 					</View>
-				</View>
-			</BottomModal>
+
+				</Animated.View>
+			</Modal>
 		</>
   )
 }
@@ -189,7 +210,25 @@ const styles = StyleSheet.create({
         color:'#f54a00',
         marginRight:8,
         fontSize: 13,
-    }
+    },
+	overlay: {
+		position: 'absolute',
+		top: 0, left: 0, right: 0, bottom: 0,
+		backgroundColor: 'rgba(0,0,0,0.4)',
+	},
+	sheetContainer: {
+		position: 'absolute',
+		bottom: 0,
+		width: '100%',
+		backgroundColor: MODAL_COLORS.background,
+		borderTopLeftRadius: 30,
+		borderTopRightRadius: 30,
+		shadowColor: MODAL_COLORS.primary,
+		shadowOpacity: 0.2,
+		shadowOffset: { width: 0, height: -6 },
+		shadowRadius: 12,
+		elevation: 10,
+	},
 });
 
 
@@ -222,7 +261,6 @@ const modal = StyleSheet.create({
 		width:'100%',
 		alignItems:'center',
 		justifyContent:'center',
-		paddingTop:5,
 		borderTopWidth:StyleSheet.hairlineWidth,
 		paddingLeft:24,
 		paddingRight:24,
