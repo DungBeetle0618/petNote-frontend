@@ -1,40 +1,226 @@
-import React from 'react'
-
-import { View, Text, TextInput, Button, TouchableOpacity } from 'react-native';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import { useAuth } from '../auth/AuthProvider';
+import React, { useState } from 'react';
+import {
+  View, Text, TextInput, TouchableOpacity, StyleSheet,
+  KeyboardAvoidingView, Platform, StatusBar, Alert, Image
+} from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useNavigation } from '@react-navigation/native';
+import { useAuth } from '../auth/AuthProvider'
+
+const COLORS = {
+  bg: '#FFF4EA',
+  card: '#FFFFFF',
+  text: '#1F2937',
+  subText: '#6B7280',
+  primary: '#F15A24',
+  primaryPressed: '#E24F1E',
+  inputBorder: '#E5E7EB',
+  link: '#F15A24',
+  shadow: '#000',
+  kakao: '#FEE500',
+  naver: '#03C75A'
+};
+
+const SIZES = { radiusLg: 20, radiusXl: 24 };
 
 export default function LoginScreen() {
-  const { signIn } = useAuth();
-  const [userId, setUserId] = React.useState('');
-  const [password, setPassword] = React.useState('');
   const navigation = useNavigation();
+  const { signIn } = useAuth();
+  const [userId, setUserId] = useState('');
+  const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const onLogin = async () => {
+    try {
+      if (!userId.trim() || !password) {
+        Alert.alert('입력 확인', '아이디와 비밀번호를 입력해 주세요.');
+        return;
+      }
+      setLoading(true);
+      signIn(userId, password);
+      // TODO: 실제 API 연동
+    } catch (e) {
+      setLoading(false);
+      Alert.alert('로그인 실패', '아이디 또는 비밀번호를 다시 확인해 주세요.');
+    }
+  };
+
+  // 소셜 로그인 (실연동 전 임시)
+  const onKakaoLogin = () => {
+    // TODO: 실제 OAuth 연동
+    Alert.alert('카카오 로그인', '카카오 로그인 플로우를 연결하세요.');
+  };
+  const onNaverLogin = () => {
+    // TODO: 실제 OAuth 연동
+    Alert.alert('네이버 로그인', '네이버 로그인 플로우를 연결하세요.');
+  };
 
   return (
-    <View style={{ padding: 16, gap: 12 }}>
-      <Text style={{ fontSize: 20, fontWeight: '600' }}>로그인</Text>
-      <TextInput
-        placeholder="ID"
-        value={userId}
-        onChangeText={setUserId}
-        style={{ borderWidth: 1, padding: 10, borderRadius: 8 }}
-        autoCapitalize="none"
-      />
-      <TextInput
-        placeholder="Password"
-        value={password}
-        onChangeText={setPassword}
-        secureTextEntry
-        style={{ borderWidth: 1, padding: 10, borderRadius: 8 }}
-      />
-      <Button title="Login" onPress={() => signIn(userId, password)} />
-      <Button title="회원가입" onPress={()=>navigation.navigate('signUp')} />
-      <TouchableOpacity
-        title='회원가입 화면으로'
-        onPress={()=>navigation.navigate('signUp')}>
-          <Text>회원가입</Text>
-      </TouchableOpacity>
-    </View>
+    <SafeAreaView style={styles.safe}>
+      <StatusBar barStyle="dark-content" />
+      <KeyboardAvoidingView style={styles.flex} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
+        <View style={styles.container}>
+          {/* 로고/타이틀 */}
+          <View style={styles.logoWrap}>
+            <View style={styles.logoCircle}>
+              <Ionicons name="heart" size={30} color="#fff" />
+            </View>
+            <Text style={styles.title}>PetNote에 오신 걸 환영합니다</Text>
+            <Text style={styles.subtitle}>반려동물 케어 동반자</Text>
+          </View>
+
+          {/* 카드 */}
+          <View style={styles.card}>
+            {/* 아이디 */}
+            <Text style={styles.label}>아이디</Text>
+            <View style={styles.inputWrap}>
+              <MaterialCommunityIcons name="account-outline" size={20} color={COLORS.subText} style={styles.inputIcon} />
+              <TextInput
+                value={userId}
+                onChangeText={setUserId}
+                placeholder="아이디를 입력하세요"
+                autoCapitalize="none"
+                autoCorrect={false}
+                style={styles.input}
+                placeholderTextColor="#9CA3AF"
+                returnKeyType="next"
+              />
+            </View>
+
+            {/* 비밀번호 */}
+            <Text style={[styles.label, { marginTop: 14 }]}>비밀번호</Text>
+            <View style={styles.inputWrap}>
+              <Ionicons name="lock-closed-outline" size={20} color={COLORS.subText} style={styles.inputIcon} />
+              <TextInput
+                value={password}
+                onChangeText={setPassword}
+                placeholder="비밀번호를 입력하세요"
+                secureTextEntry
+                style={styles.input}
+                placeholderTextColor="#9CA3AF"
+                returnKeyType="done"
+                onSubmitEditing={onLogin}
+              />
+            </View>
+
+            {/* 비밀번호 찾기 */}
+            <TouchableOpacity onPress={() => navigation.navigate('Forgot')} hitSlop={8}>
+              <Text style={styles.forgot}>비밀번호를 잊으셨나요?</Text>
+            </TouchableOpacity>
+
+            {/* 로그인 버튼 */}
+            <TouchableOpacity
+              style={[styles.button, loading && { opacity: 0.7 }]}
+              onPress={onLogin}
+              activeOpacity={0.85}
+              disabled={loading}
+            >
+              <Ionicons name="log-in-outline" size={18} color="#fff" />
+              <Text style={styles.buttonText}>{loading ? '로그인 중…' : '로그인'}</Text>
+            </TouchableOpacity>
+
+            {/* 소셜 로그인 구분선 */}
+            <View style={styles.hr} />
+            <Text style={styles.socialTitle}>또는 소셜 계정으로 계속하기</Text>
+
+            {/* 카카오 로그인 */}
+            <TouchableOpacity style={styles.kakaoBtn} onPress={onKakaoLogin} activeOpacity={0.9}>
+              {/* 로고 이미지 쓰려면 주석 해제하고 assets에 파일 추가
+              <Image source={require('../../assets/kakao.png')} style={styles.socialIconImg} />
+              */}
+              <Ionicons name="chatbubble-ellipses-outline" size={18} color="#000" style={styles.socialIcon} />
+              <Text style={styles.kakaoText}>카카오로 로그인</Text>
+            </TouchableOpacity>
+
+            {/* 네이버 로그인 */}
+            <TouchableOpacity style={styles.naverBtn} onPress={onNaverLogin} activeOpacity={0.9}>
+              {/* <Image source={require('../../assets/naver.png')} style={styles.socialIconImg} /> */}
+              <Ionicons name="leaf-outline" size={18} color="#fff" style={styles.socialIcon} />
+              <Text style={styles.naverText}>네이버로 로그인</Text>
+            </TouchableOpacity>
+
+            {/* 구분선 */}
+            <View style={[styles.hr, { marginTop: 18 }]} />
+
+            {/* 회원가입 링크 */}
+            <Text style={styles.signupText}>
+              아직 계정이 없나요?{' '}
+              <Text style={styles.signupLink} onPress={() => navigation.navigate('SignUp')}>
+                회원가입
+              </Text>
+            </Text>
+          </View>
+
+          {/* 약관 안내 */}
+          <Text style={styles.legal}>
+            계속 진행하면 PetNote의 <Text style={styles.link}>서비스 이용약관</Text>과{' '}
+            <Text style={styles.link}>개인정보 처리방침</Text>에 동의한 것으로 간주됩니다.
+          </Text>
+        </View>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 }
+
+const styles = StyleSheet.create({
+  safe: { flex: 1, backgroundColor: COLORS.bg },
+  flex: { flex: 1 },
+  container: { flex: 1, alignItems: 'center', paddingHorizontal: 20, backgroundColor: COLORS.bg },
+
+  logoWrap: { alignItems: 'center', marginTop: 24, marginBottom: 16 },
+  logoCircle: {
+    width: 84, height: 84, borderRadius: 42, backgroundColor: COLORS.primary,
+    alignItems: 'center', justifyContent: 'center',
+    shadowColor: COLORS.shadow, shadowOpacity: 0.16, shadowRadius: 8, shadowOffset: { width: 0, height: 4 }, elevation: 6
+  },
+  title: { marginTop: 16, fontSize: 20, fontWeight: '700', color: COLORS.text },
+  subtitle: { marginTop: 6, fontSize: 14, color: COLORS.subText },
+
+  card: {
+    width: '100%', backgroundColor: COLORS.card, borderRadius: SIZES.radiusXl, padding: 22, marginTop: 10,
+    shadowColor: COLORS.shadow, shadowOpacity: 0.09, shadowRadius: 12, shadowOffset: { width: 0, height: 8 }, elevation: 3
+  },
+
+  label: { color: COLORS.text, marginBottom: 8, fontWeight: '600' },
+  inputWrap: {
+    height: 48, borderWidth: 1, borderColor: COLORS.inputBorder, borderRadius: 12,
+    flexDirection: 'row', alignItems: 'center', paddingHorizontal: 12, backgroundColor: '#FFF'
+  },
+  inputIcon: { marginRight: 8 },
+  input: { flex: 1, fontSize: 16, color: COLORS.text },
+
+  forgot: { alignSelf: 'flex-start', marginTop: 10, color: COLORS.link, fontWeight: '600' },
+
+  button: {
+    marginTop: 14, height: 52, borderRadius: 14, backgroundColor: COLORS.primary,
+    alignItems: 'center', justifyContent: 'center', flexDirection: 'row', gap: 8
+  },
+  buttonText: { color: '#FFF', fontWeight: '700', fontSize: 16 },
+
+  hr: { height: 1, backgroundColor: '#F3F4F6', marginVertical: 18 },
+
+  socialTitle: { textAlign: 'center', color: COLORS.subText, marginBottom: 10 },
+
+  kakaoBtn: {
+    height: 48, borderRadius: 12, backgroundColor: COLORS.kakao,
+    flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginBottom: 10
+  },
+  kakaoText: { color: '#000', fontWeight: '700' },
+
+  naverBtn: {
+    height: 48, borderRadius: 12, backgroundColor: COLORS.naver,
+    flexDirection: 'row', alignItems: 'center', justifyContent: 'center'
+  },
+  naverText: { color: '#fff', fontWeight: '700' },
+
+  socialIcon: { position: 'absolute', left: 14 },
+  socialIconImg: { width: 18, height: 18, position: 'absolute', left: 14, resizeMode: 'contain' },
+
+  signupText: { textAlign: 'center', color: COLORS.subText },
+  signupLink: { color: COLORS.link, fontWeight: '700' },
+
+  legal: { marginTop: 16, marginBottom: 10, textAlign: 'center', color: COLORS.subText, fontSize: 12, lineHeight: 18, paddingHorizontal: 20 },
+  link: { color: COLORS.link, fontWeight: '700' }
+});

@@ -17,7 +17,7 @@ export const api = axios.create({
 (async () => {
   try {
     const ip = await NetworkInfo.getIPAddress(); // 기기의 현재 IP
-
+    
     let base;
     if (Platform.OS === 'android') {
       // AVD 에뮬레이터는 10.0.2.2로 PC localhost 접근
@@ -42,7 +42,12 @@ const REFRESH_PATH = '/auth/refresh';
 // -----------------------------------------
 // 3) 요청 인터셉터: 액세스 토큰 자동 첨부 (auth/* 는 제외)
 api.interceptors.request.use(async (config) => {
-  if (config.url?.includes('/auth/')) return config; // 로그인/리프레시 자기 자신은 제외
+  console.log('11111')
+  if (config.url?.includes('/auth')){
+    console.log('222222222')
+    console.log(config.url)
+    return config; // 로그인/리프레시 자기 자신은 제외
+  } 
 
   const token = await getAccessToken();
   if (token) config.headers.Authorization = `Bearer ${token}`;
@@ -95,7 +100,7 @@ api.interceptors.response.use(
     if (url.includes('/auth/refresh')) return Promise.reject(err);
 
     // 인증 관련 엔드포인트는 refresh 시도 X (그 자리에서 안내)
-    if (url.includes('/auth/login') || url.includes('/auth/signup') || url.includes('/auth/logout')) {
+    if (url.includes('/auth/')) {
       if (status >= 500) Alert.alert('서버 오류', '잠시 후 다시 시도해주세요.');
       else if (status === 404) Alert.alert('요청 실패', '요청하신 경로를 찾을 수 없습니다.');
       else if (data?.message) Alert.alert('요청 오류', String(data.message));

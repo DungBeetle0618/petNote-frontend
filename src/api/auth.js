@@ -11,3 +11,6 @@ export const logout = () =>
 
 export const refresh = () =>
     api.post('/auth/login', {})
+
+export const checkUserId = (userId) =>
+    api.get(`/auth/check-userId?userId=${userId}`)
