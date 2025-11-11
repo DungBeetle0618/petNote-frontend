@@ -15,7 +15,7 @@ import EBoldTextN from '../components/font/EBoldText_n';
 
 import PetSelectBox from '../components/PetSelectBox';
 import PetInfo from '../components/PetInfo';
-import TabMenu from '../components/TabMenu';
+import TabMenu from '../components/common/TabMenu';
 import WeightComponent from '../components/WeightComponent';
 import MealsComponent from '../components/MealsComponent';
 import ActivityComponent from '../components/ActivityComponent';
@@ -35,10 +35,10 @@ const PetManageScreen = () => {
         setPetModalVisible(false);
     };
 
-    const [activeTabName, setActiveTabName] = useState('몸무게');
-    const [weightRender, setWeightRender] = useState(true);
+    const [activeTabName, setActiveTabName] = useState('활동');
+    const [weightRender, setWeightRender] = useState(false);
     const [mealsRender, setMealsRender] = useState(false);
-    const [activityRender, setActivityRender] = useState(false);
+    const [activityRender, setActivityRender] = useState(true);
 
     const onPressHandler = (renderName) => {
         // scrollRef.current?.scrollTo({
@@ -46,23 +46,23 @@ const PetManageScreen = () => {
         //     y: tabMenuRef.current
         // })
 
-        if (renderName == '몸무게') {
+        if (renderName == '건강') {
             setWeightRender(true);
             setMealsRender(false);
             setActivityRender(false);
-            setActiveTabName('몸무게');
+            setActiveTabName('건강');
         }
-        if (renderName == '식사량') {
+        if (renderName == '식사/배변') {
             setWeightRender(false);
             setMealsRender(true);
             setActivityRender(false);
-            setActiveTabName('식사량');
+            setActiveTabName('식사/배변');
         }
-        if (renderName == '활동량') {
+        if (renderName == '활동') {
             setWeightRender(false);
             setMealsRender(false);
             setActivityRender(true);
-            setActiveTabName('활동량');
+            setActiveTabName('활동');
         }
     }
 
@@ -127,7 +127,7 @@ const PetManageScreen = () => {
                         scrollRef.current?.scrollTo({y: tabMenuRef.current, animated: true});
                         onPressHandler(name);
                     }} 
-                    menuList={['몸무게', '식사량', '활동량']} 
+                    menuList={['건강', '식사/배변', '활동']} 
                     activeTab={activeTabName} 
                 />
                 {weightRender && <WeightComponent />}

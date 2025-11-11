@@ -16,7 +16,7 @@ import gs from '../assets/styles/globalStyles';
 import FeedScreen from './FeedScreen';
 import ColumnsScreen from './ColumnsScreen';
 import ReviewScreen from './ReviewScreen';
-import TabMenu from '../components/TabMenu';
+import TabMenu from '../components/common/TabMenu';
 
 const CommunityScreen = () => {
 
