@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useEffect, useState, useCallback } from 'react';
+import { Alert } from 'react-native'
 import { api } from '../net/api';
 import { saveAccessToken, getAccessToken, clearAccessToken } from '../secure/tokenStorage';
 
@@ -30,9 +31,13 @@ export function AuthProvider({ children }) {
   }, []);
 
   const signIn = useCallback(async (userId, password) => {
+    try {
     const { data } = await api.post('/auth/login', { userId, password });
     await saveAccessToken(data.accessToken);
     setState('authenticated');
+    } catch (e) {
+      Alert.alert('실패','로그인 실패')
+    }
   }, []);
 
   const signOut = useCallback(async () => {
