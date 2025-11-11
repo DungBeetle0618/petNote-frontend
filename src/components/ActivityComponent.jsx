@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import AntDesign from 'react-native-vector-icons/AntDesign';
 import Feather from 'react-native-vector-icons/Feather';
 import gs, { COLORS } from '../assets/styles/globalStyles';
 import { scale } from 'react-native-size-matters';
+import { useNavigation } from '@react-navigation/native';
 
 const ActivityComponent = () => {
+    const navigation = useNavigation();
+
     const [open, setOpen] = useState(false);
 
     return (
@@ -24,6 +26,14 @@ const ActivityComponent = () => {
                 </TouchableOpacity>
             </View>
 
+            <View style={{marginTop: 40}}>
+                <View>
+                    <Text>하루 총 걸음수, 총 산책시간</Text>
+                </View>
+                <View>
+                    <Text>산책 별 시간, 걸음수</Text>
+                </View>
+            </View>
         
 
         </View>
@@ -35,8 +45,8 @@ const styles = StyleSheet.create({
     container: {
         borderWidth: 1,
         borderColor: COLORS.sub,
-        borderRadius: scale(20),
-        padding: scale(20)
+        borderRadius: 20,
+        padding: 20
     },
     titleView: {
         flexDirection: 'row',
@@ -45,8 +55,8 @@ const styles = StyleSheet.create({
     },
     titleIcon: {
         backgroundColor: COLORS.primary,
-        padding: scale(10),
-        borderRadius: scale(10),
+        padding: 10,
+        borderRadius: 10,
         fontSize: 20,
         color: '#fff',
         marginRight: 10,

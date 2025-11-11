@@ -16,10 +16,10 @@ import EBoldTextN from '../components/font/EBoldText_n';
 import PetSelectBox from '../components/PetSelectBox';
 import PetInfo from '../components/PetInfo';
 import TabMenu from '../components/common/TabMenu';
-import WeightComponent from '../components/WeightComponent';
-import MealsComponent from '../components/MealsComponent';
 import ActivityComponent from '../components/ActivityComponent';
 import PetRegistModal from '../components/PetRegistModal';
+import HealthComponent from '../components/HealthComponent';
+import ConditionsComponent from '../components/ConditionsComponent';
 
 const PetManageScreen = () => {
     const [selected, setSelected] = useState(null);
@@ -130,8 +130,8 @@ const PetManageScreen = () => {
                     menuList={['건강', '식사/배변', '활동']} 
                     activeTab={activeTabName} 
                 />
-                {weightRender && <WeightComponent />}
-                {mealsRender && <MealsComponent />}
+                {weightRender && <HealthComponent />}
+                {mealsRender && <ConditionsComponent />}
                 {activityRender && <ActivityComponent />}
             </View>
 

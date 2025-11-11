@@ -56,11 +56,11 @@ const MealsComponent = () => {
                     </TouchableOpacity>
                 </View>
 
-                <View style={{ marginTop: scale(16) }}>
+                <View style={{ marginTop: 40 }}>
                     <MealStatusListComponent list={mealStatus} text='아직 오늘의 식사를 기록하지 않았어요!' />
                 </View>
 
-                <View style={{ marginTop: scale(16) }}>
+                <View style={{ marginTop: 20 }}>
                     <TouchableOpacity style={styles.addBtn} activeOpacity={0.8} onPress={() => { setModiData(null); setOpen(true); }}>
                         <Text style={styles.addBtnText}>식사로그 기록</Text>
                     </TouchableOpacity>
@@ -78,8 +78,8 @@ const styles = StyleSheet.create({
     container: {
         borderWidth: 1,
         borderColor: COLORS.sub,
-        borderRadius: scale(20),
-        padding: scale(20)
+        borderRadius: 20,
+        padding: 20
     },
     titleView: {
         flexDirection: 'row',
@@ -88,8 +88,8 @@ const styles = StyleSheet.create({
     },
     titleIcon: {
         backgroundColor: COLORS.primary,
-        padding: scale(10),
-        borderRadius: scale(10),
+        padding: 10,
+        borderRadius: 10,
         fontSize: 20,
         color: '#fff',
         marginRight: 10,
@@ -153,9 +153,9 @@ const styles = StyleSheet.create({
     },
     addBtn: {
         width: '100%',
-        paddingBlock: scale(8),
+        paddingBlock: 8,
         backgroundColor: COLORS.primary,
-        borderRadius: scale(20)
+        borderRadius: 20
     },
     addBtnText: {
         color: '#fff',
@@ -170,7 +170,7 @@ const styles = StyleSheet.create({
         // backgroundColor: COLORS.primary,
         // paddingBlock: 6,
         // width: 55,
-        // borderRadius: scale(18)
+        // borderRadius: 18
     },
     mealPlusText: {
         color: '#fff',
@@ -180,7 +180,7 @@ const styles = StyleSheet.create({
     },
     noLogs: {
         color: COLORS.textSecondary,
-        marginBlock: scale(20),
+        marginBlock: 20,
         textAlign: 'center'
     },
     cancelBtn: { paddingVertical: 8 },

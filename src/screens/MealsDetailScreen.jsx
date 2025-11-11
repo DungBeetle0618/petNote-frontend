@@ -49,15 +49,14 @@ const MealsDetailScreen = () => {
         <ScrollView style={gs.screen}>
             <AppCalendar selected={daySelected} setSelected={(day) => daySelectHandle(day)} />
 
-            <View style={{ marginTop: scale(30) }}>
-                <View style={{ marginBottom: 10, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+            <View style={{ marginTop: 40 }}>
+                <View style={{ marginBottom: 20, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
                     <Text style={styles.calTitle}>{kor}</Text>
                     <TouchableOpacity
-                        style={styles.mealPlus}
                         hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}
                         onPress={() => { setModiData(null); setOpen(true); }}
                     >
-                        <AntDesign name='pluscircle' style={{color: COLORS.primary, fontSize: scale(20)}}/>
+                        <AntDesign name='pluscircle' style={{color: COLORS.primary, fontSize: 22}}/>
                     </TouchableOpacity>
                 </View>
                 <MealStatusListComponent list={mealStatus} />
@@ -121,9 +120,9 @@ const styles = StyleSheet.create({
     },
     addBtn: {
         width: '100%',
-        paddingBlock: scale(8),
+        paddingBlock: 8,
         backgroundColor: COLORS.primary,
-        borderRadius: scale(20)
+        borderRadius: 20
     },
     addBtnText: {
         color: '#fff',
@@ -142,7 +141,7 @@ const styles = StyleSheet.create({
     },
     noLogs: {
         color: COLORS.textSecondary,
-        marginBlock: scale(20),
+        marginBlock: 20,
         textAlign: 'center'
     }
 
