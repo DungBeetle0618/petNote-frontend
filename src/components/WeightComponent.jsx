@@ -10,10 +10,9 @@ import { AppSelect, AnimateLineChart } from './common';
 import dayjs from 'dayjs';
 
 const WeightComponent = () => {
-  const [open, setOpen] = useState(false);
-  
-
   const navigation = useNavigation();
+  
+  const [open, setOpen] = useState(false);
 
   /**
    * 몸무게 등록
@@ -96,7 +95,7 @@ const WeightComponent = () => {
             <FontAwesome name='calendar' style={{ fontSize: 20, color: '#381600ff' }} />
           </TouchableOpacity>
         </View>
-        <View style={{ marginTop: scale(25) }}>
+        <View style={{ marginTop: 35 }}>
           {latest && (
             <>
               <Text style={styles.curWeight}>{latest.weight} kg</Text>
@@ -110,7 +109,7 @@ const WeightComponent = () => {
 
           )}
         </View>
-        <View style={{ marginTop: 12 }}>
+        <View style={{ marginTop: 20 }}>
 
           <AppSelect options={rangeOptions} selected={range} onSelect={(v) => { setRange(v) }} />
 
@@ -123,7 +122,7 @@ const WeightComponent = () => {
           />
 
         </View>
-        <View style={{ marginTop: scale(20) }}>
+        <View style={{ marginTop: 20 }}>
           <TouchableOpacity style={styles.addBtn} activeOpacity={0.8} onPress={() => { setOpen(true) }}>
             <Text style={styles.addBtnText}>몸무게 기록</Text>
           </TouchableOpacity>
@@ -138,8 +137,8 @@ const styles = StyleSheet.create({
   container: {
     borderWidth: 1,
     borderColor: COLORS.sub,
-    borderRadius: scale(20),
-    padding: scale(20),
+    borderRadius: 20,
+    padding: 20,
   },
   titleView: {
     flexDirection: 'row',
@@ -148,8 +147,8 @@ const styles = StyleSheet.create({
   },
   titleIcon: {
     backgroundColor: COLORS.primary,
-    padding: scale(10),
-    borderRadius: scale(10),
+    padding: 10,
+    borderRadius: 10,
     fontSize: 20,
     color: '#fff',
     marginRight: 10,
@@ -176,9 +175,9 @@ const styles = StyleSheet.create({
   },
   addBtn: {
     width: '100%',
-    paddingBlock: scale(8),
+    paddingBlock: 8,
     backgroundColor: COLORS.primary,
-    borderRadius: scale(20)
+    borderRadius: 20
   },
   addBtnText: {
     color: '#fff',

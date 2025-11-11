@@ -5,7 +5,7 @@ import {
     StyleSheet,
     Pressable,
 } from 'react-native';
-import BoldTextN from '../components/font/BoldText_n';
+import BoldTextN from '../font/BoldText_n';
 import { scale } from 'react-native-size-matters';
 
 

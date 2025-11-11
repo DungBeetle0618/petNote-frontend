@@ -96,6 +96,13 @@ const globalStyles = StyleSheet.create({
   },
   mt40: {
     marginTop: scale(40)
+  },
+
+  bar: {
+    height: 1,
+    backgroundColor: '#ececec',
+    marginBlock: 12,
+    width: '70%'
   }
 });
 

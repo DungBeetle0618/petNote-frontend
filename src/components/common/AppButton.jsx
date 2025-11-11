@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
   button: {
     backgroundColor: MODAL_COLORS.primary,
     borderRadius: 20,
-    paddingVertical: 12,
+    paddingVertical: 10,
     alignItems: 'center',
     marginTop: 8,
   },
