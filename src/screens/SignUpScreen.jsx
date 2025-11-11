@@ -4,7 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import { signUp } from "../api/auth"
 
 const SignUpScreen = () => {
-    const [id, setId] = useState('');
+    const [userId, setUserId] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [email, setEmail] = useState('');
@@ -17,7 +17,7 @@ const SignUpScreen = () => {
     const submit = async () => {
         console.log('클릭')
         try {
-            const payload = { id, password, confirmPassword, email, phone, nickname };
+            const payload = { userId, password, confirmPassword, email, phone, nickname };
             const { data } = await signUp(payload);
             Alert.alert('가입 완료', '로그인 화면으로 이동합니다.');
             navigation.navigate('login');
@@ -32,8 +32,8 @@ const SignUpScreen = () => {
         <View>
             <Text>아이디</Text>
             <TextInput
-                value={id}
-                onChangeText={setId}
+                value={userId}
+                onChangeText={setUserId}
                 onSubmitEditing={()=>inputRef.current.focus()}
             />
             <Text>비밀번호</Text>

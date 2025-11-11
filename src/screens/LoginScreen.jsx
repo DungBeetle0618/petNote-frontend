@@ -7,8 +7,8 @@ import { useNavigation } from '@react-navigation/native';
 
 export default function LoginScreen() {
   const { signIn } = useAuth();
-  const [id, setId] = React.useState('');
-  const [pw, setPw] = React.useState('');
+  const [userId, setUserId] = React.useState('');
+  const [password, setPassword] = React.useState('');
   const navigation = useNavigation();
 
   return (
@@ -16,19 +16,19 @@ export default function LoginScreen() {
       <Text style={{ fontSize: 20, fontWeight: '600' }}>로그인</Text>
       <TextInput
         placeholder="ID"
-        value={id}
-        onChangeText={setId}
+        value={userId}
+        onChangeText={setUserId}
         style={{ borderWidth: 1, padding: 10, borderRadius: 8 }}
         autoCapitalize="none"
       />
       <TextInput
         placeholder="Password"
-        value={pw}
-        onChangeText={setPw}
+        value={password}
+        onChangeText={setPassword}
         secureTextEntry
         style={{ borderWidth: 1, padding: 10, borderRadius: 8 }}
       />
-      <Button title="Login" onPress={() => signIn(id, pw)} />
+      <Button title="Login" onPress={() => signIn(userId, password)} />
       <Button title="회원가입" onPress={()=>navigation.navigate('signUp')} />
       <TouchableOpacity
         title='회원가입 화면으로'

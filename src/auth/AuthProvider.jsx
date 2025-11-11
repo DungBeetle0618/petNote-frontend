@@ -29,8 +29,8 @@ export function AuthProvider({ children }) {
     })();
   }, []);
 
-  const signIn = useCallback(async (id, password) => {
-    const { data } = await api.post('/auth/login', { id, password });
+  const signIn = useCallback(async (userId, password) => {
+    const { data } = await api.post('/auth/login', { userId, password });
     await saveAccessToken(data.accessToken);
     setState('authenticated');
   }, []);
