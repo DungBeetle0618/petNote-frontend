@@ -183,7 +183,7 @@ function Navigator({ onRouteChange }) {
   if (state !== 'authenticated') {
     return (
       <NavigationContainer>
-        <AuthStack.Navigator initialRouteName="login">
+        <AuthStack.Navigator initialRouteName="login" screenOptions={{headerShown: false}}>
           <AuthStack.Screen name="login" component={LoginScreen} />
           <AuthStack.Screen name="signUp" component={SignUpScreen} />
         </AuthStack.Navigator>
