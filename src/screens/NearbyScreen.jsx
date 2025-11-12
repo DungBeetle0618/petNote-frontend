@@ -2,19 +2,24 @@
  * 위치기반 추천 화면
  */
 import React from 'react';
-import { View, Text, ScrollView } from 'react-native';
+import { View, Text, ScrollView, StyleSheet } from 'react-native';
+
+import KakaoMapView from '../components/KakaoMapView';
 
 import EBoldText from '../components/font/EBoldText';
 import gs from '../assets/styles/globalStyles';
 
 const NearbyScreen = () => {
   return (
-    <ScrollView contentContainerStyle={gs.screen}>
-
-        <EBoldText style={gs.title}>위치기반 추천 화면입니다.</EBoldText>
-
-      </ScrollView>
+    <View style={styles.container}>
+      <KakaoMapView style={styles.map} />
+    </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: { flex: 1 },
+  map: { flex: 1 }
+});
 
 export default NearbyScreen;
