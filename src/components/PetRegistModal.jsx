@@ -148,7 +148,7 @@ export default function PetRegistModal({ visible, onClose, onSubmit }) {
 
                 <AppSelect
                     label="성별"
-                    options={[{code: 'M', title: '수컷'}, {code: 'F', title: '암컷'}]}
+                    options={[{code: 'M', title: '남'}, {code: 'F', title: '여'}]}
                     selected={data.gender}
                     onSelect={(v) => handleChange('gender', v)}
                 />

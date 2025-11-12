@@ -68,10 +68,10 @@ const PetManageScreen = () => {
 
     //예시데이터
     const options = [
-        { no: 1, name: '뭉치', species: '강아지', breed: '노바 스코샤 덕 톨링 리트리버', profile: require('../assets/images/golden_retriever_sample.png'), birth: '2023.12.25', age: '3살', gender: '수컷' },
-        { no: 2, name: '아치', species: '고양이', breed: '코리안 숏헤어', profile: '', birth: '2023.12.25', age: '3살', gender: '암컷' },
-        { no: 4, name: '흰둥이', species: '강아지', breed: '비숑', profile: require('../assets/images/siro.jpg'), birth: '2023.12.25', age: '3살', gender: '수컷', main: true },
-        { no: 3, name: '마루', species: '강아지', breed: '푸들', profile: '', birth: '2023.12.25', age: '3살', gender: '암컷' },
+        { no: 1, name: '뭉치', species: '강아지', breed: '노바 스코샤 덕 톨링 리트리버', profile: require('../assets/images/golden_retriever_sample.png'), birth: '2023.12.25', age: '3살', gender: '남' },
+        { no: 2, name: '아치', species: '고양이', breed: '코리안 숏헤어', profile: '', birth: '2023.12.25', age: '3살', gender: '여' },
+        { no: 4, name: '흰둥이', species: '강아지', breed: '비숑', profile: require('../assets/images/siro.jpg'), birth: '2023.12.25', age: '3살', gender: '남', main: true },
+        { no: 3, name: '마루', species: '강아지', breed: '푸들', profile: '', birth: '2023.12.25', age: '3살', gender: '여' },
     ];
 
     useEffect(() => {
@@ -129,7 +129,9 @@ const PetManageScreen = () => {
                     }} 
                     menuList={['건강', '식사/배변', '활동']} 
                     activeTab={activeTabName} 
+                    color={'#fff'}
                 />
+                {/* TODO: 선택한 동물 값 넘겨주기 & 선택한 동물이 없을때(초기) 처리 */}
                 {weightRender && <HealthComponent />}
                 {mealsRender && <ConditionsComponent />}
                 {activityRender && <ActivityComponent />}
