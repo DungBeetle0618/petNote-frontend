@@ -11,6 +11,7 @@ import NoComment from './NoComment';
 import Comment from './Comment';
 import DismissKeyboardView from './DismissKeyboardView';
 import { MODAL_COLORS } from '../assets/styles/globalStyles';
+import Swiper from 'react-native-swiper';
 
 const { width, height } = Dimensions.get('window');
 
@@ -73,10 +74,42 @@ const FeedCard = () => {
 						<Text style={styles.cardHeaderText}>2h ago</Text>
 					</View>
 				</View>
-				<View><Text><AntDesign name="book" size={15} color="#333" /></Text></View>
+				<View style={styles.btn}><Text style={styles.btnText}>+ 팔로우</Text></View>
 				</View>
 				<View style={styles.cardBody}>
-				<Image source={require('../assets/images/feed1.jpg')} style={styles.cardImg} />
+					<Swiper
+							showsPagination={true}   // 기본 dot 숨기기
+							loop={false}
+							renderPagination={(index, total, context) => {
+							return (
+								<View style={{
+									position: 'absolute',
+									right: 10,
+									top: 10,
+									zIndex: 9999,
+									elevation: 5,
+									paddingHorizontal: 8,
+									paddingVertical: 3,
+									backgroundColor: 'rgba(0,0,0,0.5)',
+									borderRadius: 5,
+								}}>
+									<Text style={{ color: '#fff' }}>
+										{index + 1} / {total}
+									</Text>
+								</View>
+							);
+						}}
+						>
+						<View style={styles.slide1}>
+							<Image source={require('../assets/images/feed1.jpg')} style={styles.cardImg} />
+						</View>
+						<View style={styles.slide2}>
+							<Image source={require('../assets/images/feed1.jpg')} style={styles.cardImg} />
+						</View>
+						<View style={styles.slide3}>
+							<Image source={require('../assets/images/feed1.jpg')} style={styles.cardImg} />
+						</View>
+					</Swiper>
 				</View>
 				<View style={styles.cardFoot}>
 				<View style={{flexDirection:'row', alignContent:'center',  marginBottom:25, justifyContent:'space-between'}}>
@@ -155,7 +188,7 @@ const FeedCard = () => {
 }
 
 const styles = StyleSheet.create({
-    card:{
+    card: {
         backgroundColor: '#f9f9f9',
         borderRadius: 10,
         marginBottom: 50,
@@ -164,71 +197,91 @@ const styles = StyleSheet.create({
         shadowRadius: 4,
         elevation: 5, // Android 그림자
     },
-    cardHeader:{
-        paddingRight:15,
-        paddingLeft:15,
-        paddingTop:15,
-        paddingBottom:30,
-        flexDirection:'row',
-        display:'flex',
-        justifyContent:'space-between',
-        alignItems:'center'
+    cardHeader: {
+        paddingRight: 15,
+        paddingLeft: 15,
+        paddingTop: 15,
+        paddingBottom: 30,
+        flexDirection: 'row',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center'
     },
-    cardHeaderImg:{
-        backgroundColor:'#ab86ff',
+    cardHeaderImg: {
+        backgroundColor: '#ab86ff',
         width: 33,
         height: 33,
-        borderRadius:100,
-        display:'flex',
-        alignItems:'center',
-        justifyContent:'center'
+        borderRadius: 100,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center'
     },
-    cardHeaderTextWrap:{
-        paddingLeft:10,
+    cardHeaderTextWrap: {
+        paddingLeft: 10
     },
-    cardHeaderText:{
-        fontSize:12,
+    cardHeaderText: {
+        fontSize: 12
     },
-    cardBody:{
-        marginBottom:30,
+    cardBody: {
+	position:'relative',
+	   height:300,
+        marginBottom: 30,
+	   overflow: 'visible'
     },
-    cardImg:{
+    cardImg: {
         width: '100%',
-        height: 300,
+        height: 300
     },
-    cardFoot:{
-        paddingRight:15,
-        paddingLeft:15,
+    cardFoot: {
+        paddingRight: 15,
+        paddingLeft: 15
     },
-    cardFootMarign:{
-        marginBottom: 10,
+    cardFootMarign: {
+        marginBottom: 10
     },
-    cardFootText:{
-        fontSize: 13,
+    cardFootText: {
+        fontSize: 13
     },
-    cardFootTextHash:{
-        color:'#f54a00',
-        marginRight:8,
-        fontSize: 13,
+    cardFootTextHash: {
+        color: '#f54a00',
+        marginRight: 8,
+        fontSize: 13
     },
-	overlay: {
-		position: 'absolute',
-		top: 0, left: 0, right: 0, bottom: 0,
-		backgroundColor: 'rgba(0,0,0,0.4)',
-	},
-	sheetContainer: {
-		position: 'absolute',
-		bottom: 0,
-		width: '100%',
-		backgroundColor: MODAL_COLORS.background,
-		borderTopLeftRadius: 30,
-		borderTopRightRadius: 30,
-		shadowColor: MODAL_COLORS.primary,
-		shadowOpacity: 0.2,
-		shadowOffset: { width: 0, height: -6 },
-		shadowRadius: 12,
-		elevation: 10,
-	},
+    overlay: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        backgroundColor: 'rgba(0,0,0,0.4)'
+    },
+    sheetContainer: {
+        position: 'absolute',
+        bottom: 0,
+        width: '100%',
+        backgroundColor: MODAL_COLORS.background,
+        borderTopLeftRadius: 30,
+        borderTopRightRadius: 30,
+        shadowColor: MODAL_COLORS.primary,
+        shadowOpacity: 0.2,
+        shadowOffset: {
+            width: 0,
+            height: -6
+        },
+        shadowRadius: 12,
+        elevation: 10
+    },
+    btn:{
+	borderWidth:StyleSheet.hairlineWidth,
+	borderRadius:5,
+	paddingVertical:3,
+	paddingHorizontal:5,
+	borderColor:'#555',
+    },
+    btnText:{
+	color:'#222',
+	fontSize:13,
+    }
 });
 
 
