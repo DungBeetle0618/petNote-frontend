@@ -19,6 +19,7 @@ import MealsDetailScreen from '../screens/MealsDetailScreen';
 import ActivityDetailScreen from '../screens/ActivityDetailScreen';
 import WeightDetailScreen from '../screens/WeightDetailScreen';
 import SignUpScreen from '../screens/SignUpScreen';
+import { COLORS } from '../assets/styles/globalStyles';
 
 const Tab = createBottomTabNavigator();
 const AuthStack = createNativeStackNavigator();
@@ -141,7 +142,7 @@ function Navigator({ onRouteChange }) {
             );
           },
 
-          tabBarActiveTintColor: '#FF6600',
+          tabBarActiveTintColor: COLORS.primary,
           tabBarInactiveTintColor: 'gray',
           tabBarStyle: isHiddenTab ? { display: 'none' } : {},
         };

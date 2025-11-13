@@ -2,16 +2,13 @@
  * 반려동물 관리 화면 
  */
 import React, { useState, useEffect, useRef } from 'react';
-import { View, Text, ScrollView, Button, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, ScrollView, Button, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
 
-import { scale } from 'react-native-size-matters';
 import gs, { COLORS } from '../assets/styles/globalStyles';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import EBoldText from '../components/font/EBoldText';
 import BoldText from '../components/font/BoldText';
-import RegularText from '../components/font/RegularText';
-import EBoldTextN from '../components/font/EBoldText_n';
 
 import PetSelectBox from '../components/PetSelectBox';
 import PetInfo from '../components/PetInfo';
@@ -20,8 +17,12 @@ import ActivityComponent from '../components/ActivityComponent';
 import PetRegistModal from '../components/PetRegistModal';
 import HealthComponent from '../components/HealthComponent';
 import ConditionsComponent from '../components/ConditionsComponent';
+import PagerView from 'react-native-pager-view';
+
 
 const PetManageScreen = () => {
+    const { height } = Dimensions.get('window');
+
     const [selected, setSelected] = useState(null);
     const [dropdownVisible, setDropdownVisible] = useState(false);
 
@@ -29,22 +30,23 @@ const PetManageScreen = () => {
 
     const scrollRef = useRef(null);
     const tabMenuRef = useRef(0);
+    const pagerRef = useRef(null);
 
     const handleSubmit = data => {
         console.log('등록된 동물 정보:', data);
         setPetModalVisible(false);
     };
 
-    const [activeTabName, setActiveTabName] = useState('활동');
-    const [weightRender, setWeightRender] = useState(false);
-    const [mealsRender, setMealsRender] = useState(false);
-    const [activityRender, setActivityRender] = useState(true);
+    const tabs = ['건강', '식사/배변', '활동'];
+    const [page, setPage] = useState(0);
+
+    const handleTabPress = (index) => {
+        setPage(index);
+        pagerRef.current?.setPage(index);
+    };
+
 
     const onPressHandler = (renderName) => {
-        // scrollRef.current?.scrollTo({
-        //     animated: true,
-        //     y: tabMenuRef.current
-        // })
 
         if (renderName == '건강') {
             setWeightRender(true);
@@ -96,8 +98,8 @@ const PetManageScreen = () => {
                     <FontAwesome name='plus' style={[styles.whiteFont, { marginLeft: 5 }]} />
                 </TouchableOpacity>
                 <PetRegistModal visible={petModalVisible}
-                                onClose={() => setPetModalVisible(false)}
-                                onSubmit={handleSubmit} 
+                    onClose={() => setPetModalVisible(false)}
+                    onSubmit={handleSubmit}
                 />
 
                 {/* 동물 선택 드롭박스 */}
@@ -120,23 +122,36 @@ const PetManageScreen = () => {
                 {selected && <PetInfo data={selected} />}
             </View>
 
-            <View style={gs.mt40} onLayout={(e)=>{
+
+            <View style={gs.mt40} onLayout={(e) => {
                 tabMenuRef.current = e.nativeEvent.layout.y;
             }} collapsable={false}>
-                <TabMenu onPressHandler={(name)=>{
-                        scrollRef.current?.scrollTo({y: tabMenuRef.current, animated: true});
-                        onPressHandler(name);
-                    }} 
-                    menuList={['건강', '식사/배변', '활동']} 
-                    activeTab={activeTabName} 
+                <TabMenu onPressHandler={(name) => {
+                    scrollRef.current?.scrollTo({ y: tabMenuRef.current - 10, animated: true });
+                    // onPressHandler(name);
+                    handleTabPress(tabs.indexOf(name))
+                }}
+                    menuList={tabs}
+                    activeTab={tabs[page]}
                     color={'#fff'}
                 />
-                {/* TODO: 선택한 동물 값 넘겨주기 & 선택한 동물이 없을때(초기) 처리 */}
-                {weightRender && <HealthComponent />}
-                {mealsRender && <ConditionsComponent />}
-                {activityRender && <ActivityComponent />}
-            </View>
 
+                <View style={{ flex: 1, height: height * 1 }}>
+                    {/* TODO: 선택한 동물 값 넘겨주기 & 선택한 동물이 없을때(초기) 처리 */}
+                    <PagerView
+                        ref={pagerRef}
+                        style={{ flex: 1, }}
+                        initialPage={0}
+                        onPageSelected={(e) => setPage(e.nativeEvent.position)}
+
+                    >
+                        <View key={'health'}><HealthComponent /></View>
+                        <View key={'conditions'}><ConditionsComponent /></View>
+                        <View key={'activity'}><ActivityComponent /></View>
+                    </PagerView>
+
+                </View>
+            </View>
 
         </ScrollView>
     );

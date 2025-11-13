@@ -79,7 +79,7 @@ const DayWalkCard = ({ item, index, isFirst, isLast }) => {
 
 const ActivityComponent = () => {
     const navigation = useNavigation();
-    const [open, setOpen] = useState(false);
+    
     const [totalSteps, setTotalSteps] = useState(0);
     const [totalMinutes, setTotalMinutes] = useState(0);
 
@@ -151,7 +151,7 @@ const ActivityComponent = () => {
                         <Text style={styles.subTitle}>오늘의 산책 기록을 확인하세요</Text>
                     </View>
                 </View>
-                <TouchableOpacity onPress={() => setOpen(true)} style={styles.calendar}>
+                <TouchableOpacity onPress={() => navigation.navigate("activityDetail", { headerTitle: '활동 기록' })} style={styles.calendar}>
                     <FontAwesome name="calendar" style={{ fontSize: 20, color: '#381600ff' }} />
                 </TouchableOpacity>
             </View>
