@@ -4,7 +4,7 @@ import { api } from '../net/api';
 import { saveAccessToken, getAccessToken, clearAccessToken } from '../secure/tokenStorage';
 
 const AuthContext = createContext(null);
-const DEV_BYPASS_AUTH = __DEV__ && true;
+const DEV_BYPASS_AUTH = __DEV__ && false;
 export function AuthProvider({ children }) {
   const [state, setState] = useState('loading'); // 'loading' | 'authenticated' | 'unauthenticated'
 
@@ -35,8 +35,10 @@ export function AuthProvider({ children }) {
       const { data } = await api.post('/auth/login', { userId, password });
       await saveAccessToken(data.accessToken);
       setState('authenticated');
+      return true;
     } catch (e) {
-      Alert.alert('실패','로그인 실패')
+      Alert.alert('실패','아이디 또는 비밀번호를 다시 확인해 주세요.');
+      return false;
     }
   }, []);
 

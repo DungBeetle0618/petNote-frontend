@@ -3,6 +3,7 @@ import {
   View, Text, TextInput, TouchableOpacity, StyleSheet,
   KeyboardAvoidingView, Platform, StatusBar, Alert, Image
 } from 'react-native';
+import ForgotHelperSheet from '../components/ForgotHelperSheet';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -31,20 +32,18 @@ export default function LoginScreen() {
   const [userId, setUserId] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
-
+  const [helpOpen, setHelpOpen] = useState(false);
+  
   const onLogin = async () => {
-    try {
       if (!userId.trim() || !password) {
         Alert.alert('입력 확인', '아이디와 비밀번호를 입력해 주세요.');
         return;
       }
       setLoading(true);
-      signIn(userId, password);
-      // TODO: 실제 API 연동
-    } catch (e) {
-      setLoading(false);
-      Alert.alert('로그인 실패', '아이디 또는 비밀번호를 다시 확인해 주세요.');
-    }
+      const result = await signIn(userId, password);
+      if(!result){
+        setLoading(false);
+      }
   };
 
   // 소셜 로그인 (실연동 전 임시)
@@ -105,10 +104,14 @@ export default function LoginScreen() {
               />
             </View>
 
-            {/* 비밀번호 찾기 */}
-            <TouchableOpacity onPress={() => navigation.navigate('Forgot')} hitSlop={8}>
-              <Text style={styles.forgot}>비밀번호를 잊으셨나요?</Text>
+            {/* 로그인 정보 찾기 */}
+            <TouchableOpacity onPress={() => setHelpOpen(true)}>
+              <Text style={{ color: '#F15A24', fontWeight: '700', marginTop: 12 }}>
+                로그인 정보가 기억나지 않나요?
+              </Text>
             </TouchableOpacity>
+
+            <ForgotHelperSheet visible={helpOpen} onClose={() => setHelpOpen(false)} />
 
             {/* 로그인 버튼 */}
             <TouchableOpacity

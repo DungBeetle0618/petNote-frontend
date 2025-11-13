@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import {
   View, Text, TextInput, TouchableOpacity, StyleSheet,
   KeyboardAvoidingView, Platform, StatusBar, Alert, ScrollView
@@ -33,6 +33,8 @@ export default function SignUpScreen() {
   const [loading, setLoading]     = useState(false);
   const [isUserIdChecked, setIsUserIdChecked] = useState(false)
 
+  const passwordRef = useRef(null);
+
   const validateEmail = (v='') => /\S+@\S+\.\S+/.test(v);
   const validatePhone = (v='') => /^01[0-9]{8,9}$/.test(v.replace(/[^0-9]/g, ''));
 
@@ -46,11 +48,10 @@ export default function SignUpScreen() {
       if(status){
         setIsUserIdChecked(true);
         Alert.alert('사용 가능한 아이디입니다.');
-        return;
+        passwordRef.current.focus();
       }else{
         setIsUserIdChecked(false);
         Alert.alert('사용 중인 아이디입니다.');
-        return;
       }
     } catch (e) {
       setIsUserIdChecked(false);
@@ -62,17 +63,23 @@ export default function SignUpScreen() {
     if (!userId.trim()) {
       Alert.alert('입력 확인', '아이디를 입력해 주세요.'); return;
     }
-    if (!validatePhone(phone)) {
-      Alert.alert('입력 확인', '올바른 휴대폰 번호를 입력해 주세요.'); return;
+    if(userId.length < 4) {
+      Alert.alert('입력 확인', '아이디는 4자 이상으로 입력해 주세요.'); return;
     }
-    if (!validateEmail(email)) {
-      Alert.alert('입력 확인', '올바른 이메일을 입력해 주세요.'); return;
+    if(!isUserIdChecked){
+      Alert.alert('입력 확인', '아이디 중복확인을 진행해 주세요.'); return;
     }
     if (password.length < 8) {
       Alert.alert('입력 확인', '비밀번호는 8자 이상으로 설정해 주세요.'); return;
     }
     if (password !== confirmPassword) {
       Alert.alert('입력 확인', '비밀번호 확인이 일치하지 않습니다.'); return;
+    }
+    if (!validateEmail(email)) {
+      Alert.alert('입력 확인', '올바른 이메일을 입력해 주세요.'); return;
+    }
+    if (!validatePhone(phone)) {
+      Alert.alert('입력 확인', '올바른 휴대폰 번호를 입력해 주세요.'); return;
     }
         console.log('클릭')
     try {
@@ -85,7 +92,7 @@ export default function SignUpScreen() {
     } catch(e) {
         setLoading(false);
         console.log(e)
-        Alert.alert('회원가입 실패', '잠시 후 다시 시도해 주세요.');
+        Alert.alert('회원가입 실패', '' || '잠시 후 다시 시도해 주세요.');
     }
   };
 
@@ -135,44 +142,12 @@ export default function SignUpScreen() {
               </TouchableOpacity>
             </View>
 
-            {/* 휴대폰 */}
-            <Text style={[styles.label, { marginTop: 12 }]}>휴대폰 번호</Text>
-            <View style={styles.inputWrap}>
-              <MaterialCommunityIcons name="cellphone" size={20} color={COLORS.subText} style={styles.inputIcon}/>
-              <TextInput
-                value={phone}
-                onChangeText={setPhone}
-                placeholder="01012345678"
-                keyboardType="phone-pad"
-                maxLength={11}
-                style={styles.input}
-                placeholderTextColor="#9CA3AF"
-                returnKeyType="next"
-              />
-            </View>
-
-            {/* 이메일 */}
-            <Text style={[styles.label, { marginTop: 12 }]}>이메일</Text>
-            <View style={styles.inputWrap}>
-              <MaterialCommunityIcons name="email-outline" size={20} color={COLORS.subText} style={styles.inputIcon}/>
-              <TextInput
-                value={email}
-                onChangeText={setEmail}
-                placeholder="your.email@example.com"
-                keyboardType="email-address"
-                autoCapitalize="none"
-                autoCorrect={false}
-                style={styles.input}
-                placeholderTextColor="#9CA3AF"
-                returnKeyType="next"
-              />
-            </View>
-
             {/* 비밀번호 */}
             <Text style={[styles.label, { marginTop: 12 }]}>비밀번호</Text>
             <View style={styles.inputWrap}>
               <Ionicons name="lock-closed-outline" size={20} color={COLORS.subText} style={styles.inputIcon}/>
               <TextInput
+                ref={passwordRef}
                 value={password}
                 onChangeText={setPassword}
                 placeholder="비밀번호를 입력하세요"
@@ -192,6 +167,40 @@ export default function SignUpScreen() {
                 onChangeText={setconfirmPassword}
                 placeholder="비밀번호를 다시 입력하세요"
                 secureTextEntry
+                style={styles.input}
+                placeholderTextColor="#9CA3AF"
+                returnKeyType="next"
+              />
+            </View>
+
+
+            {/* 이메일 */}
+            <Text style={[styles.label, { marginTop: 12 }]}>이메일</Text>
+            <View style={styles.inputWrap}>
+              <MaterialCommunityIcons name="email-outline" size={20} color={COLORS.subText} style={styles.inputIcon}/>
+              <TextInput
+                value={email}
+                onChangeText={setEmail}
+                placeholder="your.email@example.com"
+                keyboardType="email-address"
+                autoCapitalize="none"
+                autoCorrect={false}
+                style={styles.input}
+                placeholderTextColor="#9CA3AF"
+                returnKeyType="next"
+              />
+            </View>
+
+            {/* 휴대폰 */}
+            <Text style={[styles.label, { marginTop: 12 }]}>휴대폰 번호</Text>
+            <View style={styles.inputWrap}>
+              <MaterialCommunityIcons name="cellphone" size={20} color={COLORS.subText} style={styles.inputIcon}/>
+              <TextInput
+                value={phone}
+                onChangeText={setPhone}
+                placeholder="01012345678"
+                keyboardType="phone-pad"
+                maxLength={11}
                 style={styles.input}
                 placeholderTextColor="#9CA3AF"
                 returnKeyType="done"
