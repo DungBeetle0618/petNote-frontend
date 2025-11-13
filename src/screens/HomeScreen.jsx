@@ -6,7 +6,7 @@ import { View, Text, ScrollView, Dimensions, StyleSheet } from 'react-native';
 import { VictoryChart, VictoryLine, VictoryVoronoiContainer, VictoryTooltip, VictoryAxis, VictoryScatter, VictoryGroup } from "victory-native";
 
 import PetSelectBox from '../components/PetSelectBox';
-import MagazineSlider from "../components/Slider";
+import Slider from "../components/Slider";
 import { useEffect } from 'react';
 import EBoldText from '../components/font/EBoldText';
 import BoldText from '../components/font/BoldText';
@@ -16,6 +16,15 @@ import LightText from '../components/font/LightText';
 import gs, { COLORS } from '../assets/styles/globalStyles';
 
 const styles = StyleSheet.create({
+  
+  TopBg: { 
+    position: "absolute",
+    top: 0, 
+    left: 0, 
+    right: 0, 
+    height: "22%",
+    backgroundColor: COLORS.sub,
+  },
    cardContainer: {
     flexDirection: "row",
     flexWrap: "wrap",
@@ -133,161 +142,17 @@ const styles = StyleSheet.create({
 });
 
 const HomeScreen = () => {
-  const [selected, setSelected] = useState(null);
-  const [dropdownVisible, setDropdownVisible] = useState(false);
-
-  const options = [
-    { no: 1, name: '레오나르도', breed: '골든리트리버', weight: 12.3, weightChangeThisWeek: 0.2, stepsToday: 5500, healthStatus: "Excellent", profile: require('../assets/images/golden_retriever_sample.png') },
-    { no: 2, name: '아치', breed: '코리안 숏헤어', profile: '', weight: 4.7, weightChangeThisWeek: 0, stepsToday: 0, healthStatus: "bad" },
-    { no: 3, name: '마루', breed: '푸들', profile: '',weight: 6.7, weightChangeThisWeek: 0.0, stepsToday: 1231, healthStatus: "Excellent" }
-  ];
-
-  
-  // 주간 데이터 예시
-  const activityData = [
-    { day: "Mon", steps: 2300 },
-    { day: "Tue", steps: 4500 },
-    { day: "Wed", steps: 5200 },
-    { day: "Thu", steps: 7000 },
-    { day: "Fri", steps: 8000 },
-    { day: "Sat", steps: 6500 },
-    { day: "Sun", steps: 20000 },
-  ];
-
-  const screenWidth = Dimensions.get("window").width;
-
-    useEffect(()=>{
-        //대표동물 기본 선택
-        setSelected(options[0]);
-    }, [])
-
   return (
+      
       <ScrollView contentContainerStyle={gs.screen}>
-        {/* 상단 주황색 영역 */}
-        <View >
-           <EBoldText style={gs.title}>오늘의 {selected?.name}</EBoldText>
-           <BoldText style={gs.subtitle}>10월 29일 수요일</BoldText>
-
-          <View>
-                <PetSelectBox 
-                    visible={dropdownVisible}
-                    onOpen={() => setDropdownVisible(true)}
-                    onClose={() => setDropdownVisible(false)}
-                    onSelect={(pet) => {
-                        setSelected(pet);
-                        setDropdownVisible(false);
-                    }}
-                    options={options}
-                    selectedValue={selected}
-                />
-          </View>
-
-          {/* Weight Card */}
-          <View style={styles.cardContainer}>
-            <View style={styles.card}>
-              <Text style={styles.cardTitle}>Weight</Text>
-              <Text style={styles.cardValue}>{selected?.weight} kg</Text>
-              <Text style={styles.cardChange}>
-                +{selected?.weightChangeThisWeek} kg this week
-              </Text>
-            </View>
-
-            {/* Health Card */}
-            <View style={styles.card}>
-              <Text style={styles.cardTitle}>Health</Text>
-              <Text style={styles.cardValue}>{selected?.healthStatus}</Text>
-              <Text style={styles.cardChange}>Status</Text>
-            </View>
-
-            {/* Meals */}
-            <View style={styles.card}>
-              <Text style={styles.cardTitle}>Meals Today</Text>
-              <Text style={styles.cardValue}>2/3 fed</Text>
-              <Text style={styles.cardChange}>Dinner pending</Text>
-            </View>
-
-            {/* Walks */}
-            <View style={styles.card}>
-              <Text style={styles.cardTitle}>Steps</Text>
-              <Text style={styles.cardValue}>{selected?.stepsToday}</Text>
-              <Text style={styles.cardChange}>Today's Steps</Text>
-            </View>
-          </View>
-        </View>
+        <View style={styles.TopBg} />
+        <Slider flag="petcard"/>
         
-        
-        {/* Activity Chart */}
-        <View style={{ marginTop: 20 }}>
-          <RegularText style={gs.text}>Weekly Activity</RegularText>
-          <VictoryChart 
-           width={screenWidth - 40}
-            height={200}
-            padding={{ top: 20, bottom: 40, left: 40, right: 20 }}
-            containerComponent={
-              <VictoryVoronoiContainer
-                voronoiBlacklist={["scatter"]}
-                labels={({ datum }) => `${datum.y} steps`}
-                labelComponent={
-                  <VictoryTooltip
-                    flyoutStyle={{
-                      stroke: COLORS.primary,
-                      fill: "#fff"
-                    }}
-                    style={{ fontSize: 12, fill: "#4A2800" }}
-                    cornerRadius={6}
-                    pointerLength={6}
-                  />
-                }
-              />
-            }
-          >
-            <VictoryAxis
-              style={{
-                axis: { stroke: "#E5E5E5" },
-                tickLabels: { fill: "#4A2800", fontSize: 11, padding: 5 },
-                grid: { stroke: "transparent" }
-              }}
-            />
 
-            {/* Y축 스타일 */}
-            <VictoryAxis
-              dependentAxis
-              style={{
-                axis: { stroke: "transparent" },
-                tickLabels: { fill: "#4A2800", fontSize: 11, padding: 5 },
-                grid: { stroke: "#F2F2F2" }
-              }}
-            />
-
-            <VictoryGroup data={activityData.map(d => ({ x: d.day, y: d.steps }))}>
-              <VictoryLine
-                interpolation="monotoneX"
-                style={{ data: { stroke: COLORS.primary, strokeWidth: 2 } }}
-              />
-
-              {/* ✅ scatter는 보이기만, 이벤트 비활성화 */}
-              <VictoryScatter
-                name="scatter" 
-                size={4}
-                style={{
-                  data: {
-                    fill: COLORS.primary,
-                    stroke: "#fff",
-                    strokeWidth: 1
-                  }
-                }}
-              />
-          </VictoryGroup>
-
-
-
-          </VictoryChart>
-        </View>
-
-        {/* 진행중인 챌린지 */}
+        {/* 다가오는 일정 */}
         <View style={styles.cardContainer1}>
           <View style={styles.header}>
-            <RegularText style={gs.text}>진행중인 챌린지</RegularText>
+            <RegularText style={gs.text}>다가오는 일정</RegularText>
             <Text style={styles.calendarIcon}>📅</Text>
           </View>
 
@@ -321,7 +186,8 @@ const HomeScreen = () => {
 
         {/* Challenge */}
         <View style={{ marginTop: 20 }}>
-          <RegularText style={gs.text}>Challenge</RegularText>
+          <RegularText style={gs.text}>진행중인 챌린지
+          </RegularText>
           <View style={gs.card}>
             <EBoldText>Extra Bold 폰트사이즈</EBoldText>
             <LightText style={gs.text}>Light 폰트사이즈</LightText>
@@ -335,7 +201,7 @@ const HomeScreen = () => {
         {/* 매거진 */}
         <View style={{ marginTop: 20 }}>
           <RegularText style={gs.text}>매거진</RegularText>
-           <MagazineSlider flag="magazine"/>
+           <Slider flag="magazine"/>
         </View>
 
         
