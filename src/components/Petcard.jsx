@@ -85,7 +85,7 @@ const Petcard = ({ item }) => {
                 <Text style={styles.cardTitle3}>산책하기</Text>
                 <Text style={styles.cardValue3}>0분</Text>
                 {/* <Image
-                    source={require("../assets/images/heart.png")}
+                    source={require("../assets/images/heart.png")} // ❤️ 하트 이미지 추가
                     style={styles.iconImage3}
                 /> */}
                 </View>
