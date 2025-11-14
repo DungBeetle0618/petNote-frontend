@@ -4,13 +4,13 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
-import { BottomModal } from './common';
+import { BottomModal } from '../common';
 import { TextInput } from 'react-native-gesture-handler';
 import { useSelector } from 'react-redux';
 import NoComment from './NoComment';
 import Comment from './Comment';
-import DismissKeyboardView from './DismissKeyboardView';
-import { MODAL_COLORS } from '../assets/styles/globalStyles';
+import DismissKeyboardView from '../DismissKeyboardView';
+import { MODAL_COLORS } from '../../assets/styles/globalStyles';
 import Swiper from 'react-native-swiper';
 
 const { width, height } = Dimensions.get('window');
@@ -101,13 +101,13 @@ const FeedCard = () => {
 						}}
 						>
 						<View style={styles.slide1}>
-							<Image source={require('../assets/images/feed1.jpg')} style={styles.cardImg} />
+							<Image source={require('../../assets/images/feed1.jpg')} style={styles.cardImg} />
 						</View>
 						<View style={styles.slide2}>
-							<Image source={require('../assets/images/feed1.jpg')} style={styles.cardImg} />
+							<Image source={require('../../assets/images/feed1.jpg')} style={styles.cardImg} />
 						</View>
 						<View style={styles.slide3}>
-							<Image source={require('../assets/images/feed1.jpg')} style={styles.cardImg} />
+							<Image source={require('../../assets/images/feed1.jpg')} style={styles.cardImg} />
 						</View>
 					</Swiper>
 				</View>

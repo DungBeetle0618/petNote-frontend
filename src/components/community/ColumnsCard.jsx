@@ -75,7 +75,6 @@ const styles = StyleSheet.create({
          marginBottom:'30',
     },
     columnsBodyText:{
-        width:310,
         fontSize:13,
         letterSpacing:0.5,
         color:'#333'
