@@ -3,15 +3,13 @@
  */
 import React, { useState } from 'react'
 import { View, Text, ScrollView, Dimensions, StyleSheet } from 'react-native';
-import { VictoryChart, VictoryLine, VictoryVoronoiContainer, VictoryTooltip, VictoryAxis, VictoryScatter, VictoryGroup } from "victory-native";
 
-import PetSelectBox from '../components/PetSelectBox';
 import Slider from "../components/Slider";
-import { useEffect } from 'react';
 import EBoldText from '../components/font/EBoldText';
 import BoldText from '../components/font/BoldText';
 import RegularText from '../components/font/RegularText';
 import LightText from '../components/font/LightText';
+import PetRegistModal from '../components/PetRegistModal';
 
 import gs, { COLORS } from '../assets/styles/globalStyles';
 
@@ -22,7 +20,7 @@ const styles = StyleSheet.create({
     top: 0, 
     left: 0, 
     right: 0, 
-    height: "22%",
+    height: "20%",
     backgroundColor: COLORS.sub,
   },
    cardContainer: {
@@ -142,11 +140,26 @@ const styles = StyleSheet.create({
 });
 
 const HomeScreen = () => {
+  const [petModalVisible, setPetModalVisible] = useState(false);
+
+  const handleSubmit = data => {
+    console.log('등록된 동물 정보:', data);
+    setPetModalVisible(false);
+  };
+
   return (
-      
       <ScrollView contentContainerStyle={gs.screen}>
         <View style={styles.TopBg} />
-        <Slider flag="petcard"/>
+        <Slider flag="petcard" onAddPetPress={() => setPetModalVisible(true)}/>
+        
+        {/* 동물등록 모달 */}
+        <PetRegistModal 
+          visible={petModalVisible}
+          onClose={() => setPetModalVisible(false)}
+          onSubmit={handleSubmit}
+          transparent={true}
+          animationType="slide"
+        />
         
 
         {/* 다가오는 일정 */}

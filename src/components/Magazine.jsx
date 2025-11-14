@@ -28,6 +28,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#FCD9A3",
     overflow: "hidden",
+    marginVertical: 12,
+    marginHorizontal: Dimensions.get("window").width * 0.05,
   },
   imageBox: {
     height: Dimensions.get("window").width * 0.4,

@@ -85,7 +85,7 @@ const Petcard = ({ item }) => {
                 <Text style={styles.cardTitle3}>산책하기</Text>
                 <Text style={styles.cardValue3}>0분</Text>
                 {/* <Image
-                    source={require("../assets/images/heart.png")} // ❤️ 하트 이미지 추가
+                    source={require("../assets/images/heart.png")}
                     style={styles.iconImage3}
                 /> */}
                 </View>
@@ -177,7 +177,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFF",
     borderRadius: 16,
     padding: 16,
-
+    width: Dimensions.get("window").width * 0.9,
+    marginRight: 2
   },
   title: { fontSize: 18, fontWeight: "700", color: "#4A2800" },
   subtitle: { fontSize: 14, color: "#A86E3B", marginBottom: 12 },

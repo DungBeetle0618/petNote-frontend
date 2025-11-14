@@ -1,11 +1,33 @@
 import React, { useEffect, useState } from "react";
-import { View, FlatList, Dimensions } from "react-native";
+import { View, FlatList, Dimensions, StyleSheet, Text, TouchableOpacity } from "react-native";
 import Magazine from "./Magazine";
 import Petcard from "./Petcard";
 
-const Slider = ({ flag }) => {
+
+import gs, { COLORS } from '../assets/styles/globalStyles';
+
+const Slider = ({ flag, onAddPetPress  }) => {
   const { width } = Dimensions.get("window");
   const [data, setData] = useState([]);
+  const [page, setPage] = useState(0);
+  const [heights, setHeights] = useState({}); // 카드별 높이 저장
+  const [sliderHeight, setSliderHeight] = useState(0); // 현재 카드 높이
+  
+  const onScroll = (e) => {
+    const offsetX = e.nativeEvent.contentOffset.x;
+    const currentIndex = Math.round(offsetX / width);
+    setPage(currentIndex);
+
+    // 현재 페이지 높이로 슬라이더 높이 업데이트
+    if (heights[currentIndex]) {
+      setSliderHeight(heights[currentIndex]);
+    }
+  };
+
+  const finalData = flag === "petcard" && data.length === 0
+  ? [{ id: "add", type: "add" }]
+  : data;
+
 
   useEffect(() => {
     if (flag == "magazine") {
@@ -69,33 +91,121 @@ const Slider = ({ flag }) => {
       .catch((err) => console.log(err));
   }, [flag]);
 */}
-  const renderCard = ({ item }) => {
-    switch (flag) {
-      case "magazine":
-        return <Magazine item={item} />;
-      case "petcard":
-        return <Petcard item={item}/>;
-      default:
-        return null;
+
+  const AddPetCard = ({ onPress }) => (
+     <TouchableOpacity 
+        activeOpacity={0.9}
+        style={[styles.addCard, { zIndex: 999 }]} 
+        onPress={onPress}
+    >
+        <Text style={styles.addIcon}>＋</Text>
+        <Text style={styles.addText}>반려동물 추가</Text>
+    </TouchableOpacity>
+  );
+  
+  const renderCard = ({ item, index }) => {
+    const onCardLayout = (e) => {
+      const h = e.nativeEvent.layout.height;
+      setHeights((prev) => ({ ...prev, [index]: h }));
+
+      // 현재 페이지라면 바로 높이 적용
+      if (page === index) setSliderHeight(h);
+    };
+
+    if (flag === "petcard") {
+      if (item.type === "add"){
+        return <AddPetCard onLayout={onCardLayout} onPress={onAddPetPress} />
+      }
+      return (
+        <View onLayout={onCardLayout}>
+          <Petcard item={item} />
+        </View>
+      );
     }
+
+    if (flag === "magazine") return <Magazine item={item} />;
+    return null;
   };
 
   
   return (
-    <FlatList
-      data={data}
-      horizontal
-      pagingEnabled
-      showsHorizontalScrollIndicator={false}
-      keyExtractor={(item, index) => item.id?.toString() ?? index.toString()}
-      renderItem={({item}) => (
-        <View style={{ width: width * 0.9, marginRight: 3, marginTop: 12,marginBottom: 12}}>
-          {renderCard({ item })}
+    <View style={{ height: sliderHeight || undefined }}>
+      <FlatList
+        data={finalData}
+        horizontal
+        pagingEnabled
+        showsHorizontalScrollIndicator={false}
+        keyExtractor={(item, index) => item.id?.toString() ?? index.toString()}
+        onScroll={onScroll}
+        scrollEventThrottle={16}
+        renderItem={renderCard}
+        contentContainerStyle={{ paddingBottom: 0 }}
+      />
+
+      
+
+      {/* Magazine일 때만 페이지 표시 */}
+      {flag == "magazine" && (
+        <View style={styles.dotContainer}>
+          {data.map((_, index) => (
+            <View
+              key={index}
+              style={[
+                styles.dot,
+                page === index ? styles.activeDot : styles.inactiveDot,
+              ]}
+            />
+          ))}
         </View>
       )}
-
-    />
+    </View>
   );
 };
+
+const styles = StyleSheet.create({
+  dotContainer: {
+    position: "absolute",
+    bottom: -10,
+    left: 0,
+    right: 0,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  dot: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    marginHorizontal: 4,
+  },
+  activeDot: {
+    backgroundColor: COLORS.primary,
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+  },
+  inactiveDot: {
+    backgroundColor: "rgba(148, 148, 148, 1)",
+  },
+
+   addCard: {
+    width: Dimensions.get("window").width * 0.9,
+    height: 200,
+    borderRadius: 16,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#f3f3f3ff",
+  },
+  addIcon: {
+    fontSize: 30,
+    color: "#979797ff",
+    marginBottom: 4,
+  },
+  addText: {
+    fontSize: 16,
+    color: "#8b8b8bff",
+    fontWeight: "400",
+  },
+});
 
 export default Slider;
