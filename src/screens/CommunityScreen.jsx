@@ -13,9 +13,9 @@ import {
 
 import EBoldText from '../components/font/EBoldText';
 import gs from '../assets/styles/globalStyles';
-import FeedScreen from '../components/community/FeedScreen';
-import ColumnsScreen from '../components/community/ColumnsScreen';
-import ReviewScreen from '../components/community/ReviewScreen';
+import Feed from '../components/community/Feed';
+import Columns from '../components/community/Columns';
+import Review from '../components/community/Review';
 import TabMenu from '../components/common/TabMenu';
 
 const CommunityScreen = () => {
@@ -59,9 +59,9 @@ const CommunityScreen = () => {
 
             <TabMenu onPressHandler={onPressHandler} menuList={['Feed', 'Columns', 'Reviews']} activeTab={activeTabName}/>
 
-            {feedRender && <FeedScreen />}
-            {columnsRender && <ColumnsScreen />}
-            {reviewsRender && <ReviewScreen />}
+            {feedRender && <Feed />}
+            {columnsRender && <Columns />}
+            {reviewsRender && <Review />}
 
         </ScrollView>
     );

@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, ScrollView, StyleSheet, Image } from 'react-native';
 import FeedCard from './FeedCard';
 
-const FeedScreen = () => {
+const Feed = () => {
 
     return (
         <>
@@ -18,4 +18,4 @@ const FeedScreen = () => {
 
 
 
-export default FeedScreen;
+export default Feed;

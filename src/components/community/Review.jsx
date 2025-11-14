@@ -2,7 +2,7 @@ import React from 'react';
 import ReviewCard from './ReviewCard';
 
 
-const ReviewScreen = () => {
+const Review = () => {
 
     return (
         <>
@@ -17,4 +17,4 @@ const ReviewScreen = () => {
 
 
 
-export default ReviewScreen;
+export default Review;

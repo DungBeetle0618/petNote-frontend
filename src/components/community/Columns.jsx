@@ -3,7 +3,7 @@ import { View, Text, ScrollView, StyleSheet, Pressable } from 'react-native';
 
 import ColumnsCard from './ColumnsCard';
 
-const ColumnsScreen = () => {
+const Columns = () => {
 
     return (
         <>
@@ -17,4 +17,4 @@ const ColumnsScreen = () => {
 
 
 
-export default ColumnsScreen;
+export default Columns;
