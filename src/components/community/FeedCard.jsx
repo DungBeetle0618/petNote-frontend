@@ -78,27 +78,39 @@ const FeedCard = () => {
 				</View>
 				<View style={styles.cardBody}>
 					<Swiper
-							showsPagination={true}   // 기본 dot 숨기기
+					  	dot={
+							<View
+								style={{
+								backgroundColor: 'rgba(255,255,255,0.3)', 
+								width: 8,
+								height: 8,
+								borderRadius: 4,
+								marginLeft: 3,
+								marginRight: 3,
+								marginTop: 3,
+								marginBottom: 3,
+								}}
+							/>
+							}
+							  activeDot={
+							<View
+								style={{
+								backgroundColor: 'rgba(255,255,255,0.9)',
+								width: 8,
+								height: 8,
+								borderRadius: 4,
+								marginLeft: 3,
+								marginRight: 3,
+								marginTop: 3,
+								marginBottom: 3,
+								}}
+							/>
+							}
+							showsPagination={true} 
 							loop={false}
-							renderPagination={(index, total, context) => {
-							return (
-								<View style={{
-									position: 'absolute',
-									right: 10,
-									top: 10,
-									zIndex: 9999,
-									elevation: 5,
-									paddingHorizontal: 8,
-									paddingVertical: 3,
-									backgroundColor: 'rgba(0,0,0,0.5)',
-									borderRadius: 5,
-								}}>
-									<Text style={{ color: '#fff' }}>
-										{index + 1} / {total}
-									</Text>
-								</View>
-							);
-						}}
+							showsButtons={true}
+							nextButton={<Text style={{fontSize: 40, color: 'rgba(255,255,255,0.8)'}}>›</Text>}
+							prevButton={<Text style={{fontSize: 40, color: 'rgba(255,255,255,0.8)'}}>‹</Text>}
 						>
 						<View style={styles.slide1}>
 							<Image source={require('../../assets/images/feed1.jpg')} style={styles.cardImg} />
@@ -183,6 +195,8 @@ const FeedCard = () => {
 
 				</Animated.View>
 			</Modal>
+
+
 		</>
   )
 }
@@ -327,6 +341,7 @@ const modal = StyleSheet.create({
 		height:45,
 	}
 });
+
 
 
 export default FeedCard

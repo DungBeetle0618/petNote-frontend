@@ -1,7 +1,7 @@
 /**
  * 커뮤니티 화면
  */
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
     View,
     Text,
@@ -17,8 +17,9 @@ import Feed from '../components/community/Feed';
 import Columns from '../components/community/Columns';
 import Review from '../components/community/Review';
 import TabMenu from '../components/common/TabMenu';
+import Feather from 'react-native-vector-icons/Feather';
 
-const CommunityScreen = () => {
+const CommunityScreen = ({navigation}) => {
 
     const [feedRender, setFeedRender] = useState(true);
     const [columnsRender, setColumnsRender] = useState(false);
@@ -48,7 +49,14 @@ const CommunityScreen = () => {
         }
     }
 
+     const onBoardAdd = useCallback(() => {
+		navigation.navigate('CommunityAdd');
+	});
+
+
+
     return (
+	<View>
         <ScrollView contentContainerStyle={gs.screen}>
             <View>
                 <EBoldText style={gs.title}>Community</EBoldText>
@@ -64,8 +72,32 @@ const CommunityScreen = () => {
             {reviewsRender && <Review />}
 
         </ScrollView>
+
+
+
+		<Pressable style={communityDot.addBox} onPress={onBoardAdd}>
+			<Text><Feather name="plus" size={14} color="#fff"/></Text>
+		</Pressable>
+
+	</View>
     );
 };
 
+
+
+const communityDot = StyleSheet.create({
+	addBox:{
+		position:'absolute',
+		bottom:20,
+		right:20,
+		width:50,
+		height:50,
+		backgroundColor:'#9a8fff',
+		alignItems:'center',
+		justifyContent:'center',
+		borderRadius:50,
+		opacity:100,
+	},
+});
 
 export default CommunityScreen;

@@ -20,12 +20,14 @@ import ActivityDetailScreen from '../screens/ActivityDetailScreen';
 import WeightDetailScreen from '../screens/WeightDetailScreen';
 import SignUpScreen from '../screens/SignUpScreen';
 import { COLORS } from '../assets/styles/globalStyles';
+import CommunityAdd from '../components/community/CommunityAdd';
 
 const Tab = createBottomTabNavigator();
 const AuthStack = createNativeStackNavigator();
 
 const MenuStack = createNativeStackNavigator();
 const PetManageStack = createNativeStackNavigator();
+const CommunityStack = createNativeStackNavigator();
 
 function Navigator({ onRouteChange }) {
   const { state } = useAuth(); // 'loading' | 'authenticated' | 'unauthenticated'
@@ -79,6 +81,16 @@ function Navigator({ onRouteChange }) {
       <MenuStack.Screen name="Challenge" component={ChallengeScreen} />
       <MenuStack.Screen name="Product" component={ProductScreen} />
     </MenuStack.Navigator>
+  )
+
+  /**
+   * 커뮤니티 스택 (커뮤니티 홈, 글작성)
+   */
+  const CommunityNavigator = ({ router }) => (
+    <CommunityStack.Navigator initialRouteName="CommunityScreen" screenOptions={() => ({ headerShown: false })}>
+      <CommunityStack.Screen name="CommunityScreen" component={CommunityScreen} />
+	 <CommunityStack.Screen name="CommunityAdd" component={CommunityAdd} />
+    </CommunityStack.Navigator>
   )
 
 
@@ -151,7 +163,7 @@ function Navigator({ onRouteChange }) {
       <Tab.Screen name="Home" component={HomeScreen} />
       <Tab.Screen name="PetManage" component={PetManageNavigator} />
       <Tab.Screen name="Nearby" component={NearbyScreen} />
-      <Tab.Screen name="Community" component={CommunityScreen} />
+      <Tab.Screen name="Community" component={CommunityNavigator} />
       <Tab.Screen name="Menu" component={MenuNavigator} listeners={({ navigation, route }) => ({
         tabPress: (e) => {
           const state = route.state;
