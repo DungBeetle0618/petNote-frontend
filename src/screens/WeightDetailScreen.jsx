@@ -6,7 +6,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import FontAwesome5Icon from "react-native-vector-icons/FontAwesome5";
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import gs from '../assets/styles/globalStyles';
-import WeightAddModal from "../components/WeightAddModal";
+import WeightAddModal from "../components/petManage/WeightAddModal";
 
 const WeightDetailScreen = () => {
     const [weightData, setWeightData] = useState([

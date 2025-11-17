@@ -6,9 +6,9 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import { BottomModal } from '../components/common';
 import AppCalendar from '../components/common/AppCalendar';
-import MealsAddModal from '../components/MealsAddModal';
+import MealsAddModal from '../components/petManage/MealsAddModal';
 import dayjs from 'dayjs';
-import MealStatusCard from '../components/MealStatusCard';
+import MealStatusCard from '../components/petManage/MealStatusCard';
 
 const MealsDetailScreen = () => {
     const [daySelected, setDaySelected] = useState(dayjs().format('YYYY-MM-DD'));

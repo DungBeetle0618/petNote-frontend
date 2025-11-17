@@ -21,6 +21,7 @@ import WeightDetailScreen from '../screens/WeightDetailScreen';
 import SignUpScreen from '../screens/SignUpScreen';
 import { COLORS } from '../assets/styles/globalStyles';
 import CommunityAdd from '../components/community/CommunityAdd';
+import PetSelectScreen from '../screens/PetSelectScreen';
 
 const Tab = createBottomTabNavigator();
 const AuthStack = createNativeStackNavigator();
@@ -63,7 +64,8 @@ function Navigator({ onRouteChange }) {
    * 펫 관리 스택
    */
   const PetManageNavigator = ({ route }) => (
-    <PetManageStack.Navigator initialRouteName="PetManageScreen" screenOptions={() => ({ headerShown: false })}>
+    <PetManageStack.Navigator initialRouteName="PetselectScreen" screenOptions={() => ({ headerShown: false })}>
+      <PetManageStack.Screen name="PetselectScreen" component={PetSelectScreen} />
       <PetManageStack.Screen name="PetManageScreen" component={PetManageScreen} />
       <PetManageStack.Screen name="weightDetail" component={WeightDetailScreen} options={headerOptions} />
       <PetManageStack.Screen name="mealsDetail" component={MealsDetailScreen} options={headerOptions} />

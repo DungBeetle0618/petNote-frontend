@@ -15,9 +15,9 @@ import {
     AppTextArea,
     AppImagePicker,
     AppButton,
-} from '../components/common';
+} from '../common';
 import DatePicker from 'react-native-date-picker';
-import { MODAL_COLORS } from '../assets/styles/globalStyles';
+import { MODAL_COLORS } from '../../assets/styles/globalStyles';
 
 export default function PetRegistModal({ visible, onClose, onSubmit }) {
     const [data, setData] = useState({

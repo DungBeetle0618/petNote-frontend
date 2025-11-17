@@ -1,17 +1,19 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import WeightComponent from './WeightComponent';
+import HospitalComponent from './HospitalComponent';
 
-const HealthComponent = () => {
+const HealthTab = () => {
   
   return (
-    <>
+    <View style={{marginBottom: 30}}>
         <WeightComponent />
-        {/* TODO: 진료정보 컴포넌트 */}
-    </>
+        <View style={{marginBlock: 20}} />
+        <HospitalComponent />
+    </View>
   );
 };
 const styles = StyleSheet.create({
   
 });
-export default HealthComponent;
+export default HealthTab;

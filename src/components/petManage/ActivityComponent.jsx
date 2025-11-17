@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import gs, { COLORS } from '../assets/styles/globalStyles';
+import gs, { COLORS } from '../../assets/styles/globalStyles';
 import { useNavigation } from '@react-navigation/native';
 
 const DayWalkCard = ({ item, index, isFirst, isLast }) => {
@@ -166,7 +166,7 @@ const ActivityComponent = () => {
                     <View style={[styles.statCard, {backgroundColor: '#fffbe9ff',}]}>
                         <View style={styles.iconBox}>
                             <Image
-                                source={require('../assets/images/icon/dogwalk.png')}
+                                source={require('../../assets/images/icon/dogwalk.png')}
                                 style={styles.iconImage}
                                 resizeMode="contain"
                             />
@@ -181,7 +181,7 @@ const ActivityComponent = () => {
                     <View style={[styles.statCard, {backgroundColor: '#fff7f7ff',}]}>
                         <View style={styles.iconBox}>
                             <Image
-                                source={require('../assets/images/icon/walktime.png')}
+                                source={require('../../assets/images/icon/walktime.png')}
                                 style={styles.iconImage}
                                 resizeMode="contain"
                             />

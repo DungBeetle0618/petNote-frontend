@@ -12,20 +12,20 @@ import {
     Text,
     Alert
 } from 'react-native';
-import gs, { COLORS } from '../assets/styles/globalStyles';
+import gs, { COLORS } from '../../assets/styles/globalStyles';
 import { scale } from 'react-native-size-matters';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Material from 'react-native-vector-icons/MaterialIcons';
 import { Shadow } from 'react-native-shadow-2';
 
-import RegularText from './font/RegularText';
-import BoldText from './font/BoldText';
-import LightText from './font/LightText';
-import EBoldText from './font/EBoldText';
-import EBoldTextN from './font/EBoldText_n';
-import LightTextN from './font/LightText_n';
-import ChevronIcon from './ChevronIcon';
+import RegularText from '../font/RegularText';
+import BoldText from '../font/BoldText';
+import LightText from '../font/LightText';
+import EBoldText from '../font/EBoldText';
+import EBoldTextN from '../font/EBoldText_n';
+import LightTextN from '../font/LightText_n';
+import ChevronIcon from '../common/ChevronIcon';
 
 const PetInfo = ({ data }) => {
     const [main, setMain] = useState(data.main);

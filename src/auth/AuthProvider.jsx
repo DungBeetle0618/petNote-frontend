@@ -4,7 +4,7 @@ import { api } from '../net/api';
 import { saveAccessToken, getAccessToken, clearAccessToken } from '../secure/tokenStorage';
 
 const AuthContext = createContext(null);
-const DEV_BYPASS_AUTH = __DEV__ && false;
+const DEV_BYPASS_AUTH = __DEV__ && true;
 export function AuthProvider({ children }) {
   const [state, setState] = useState('loading'); // 'loading' | 'authenticated' | 'unauthenticated'
 

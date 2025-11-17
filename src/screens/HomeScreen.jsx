@@ -9,7 +9,7 @@ import EBoldText from '../components/font/EBoldText';
 import BoldText from '../components/font/BoldText';
 import RegularText from '../components/font/RegularText';
 import LightText from '../components/font/LightText';
-import PetRegistModal from '../components/PetRegistModal';
+import PetRegistModal from '../components/petManage/PetRegistModal';
 
 import gs, { COLORS } from '../assets/styles/globalStyles';
 

@@ -56,7 +56,7 @@ const globalStyles = StyleSheet.create({
   subtitle: {
     fontSize: PX_SIZE.md,
     // fontWeight: '500',
-    color: COLORS.textSecondary,
+    color: COLORS.textPrimary,
     marginBottom: 20, 
   },
 

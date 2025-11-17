@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, } from 'react-native';
-import gs, { COLORS } from '../assets/styles/globalStyles';
+import gs, { COLORS } from '../../assets/styles/globalStyles';
 import { scale } from 'react-native-size-matters';
-import { BottomModal, AppInput, AppSelect, AppButton, AppDropdown, AppTextArea } from './common';
+import { BottomModal, AppInput, AppSelect, AppButton, AppDropdown, AppTextArea } from '../common';
 
 const WeightAddModal = ({visible, onClose, onSubmit, modiData, day }) => {
     const [data, setData] = useState({

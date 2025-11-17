@@ -3,17 +3,17 @@ import { View, Text, StyleSheet } from 'react-native';
 import MealsComponent from './MealsComponent';
 import ToiletComponent from './ToiletComponent';
 
-const ConditionsComponent = () => {
+const ConditionsTab = () => {
   
   return (
-    <>
+    <View style={{marginBottom: 30}}>
         <MealsComponent />
         <View style={{marginBlock: 20}} />
         <ToiletComponent />
-    </>
+    </View>
   );
 };
 const styles = StyleSheet.create({
   
 });
-export default ConditionsComponent;
+export default ConditionsTab;

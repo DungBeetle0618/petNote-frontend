@@ -2,11 +2,11 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import gs, { COLORS } from '../assets/styles/globalStyles';
+import gs, { COLORS } from '../../assets/styles/globalStyles';
 import { scale } from 'react-native-size-matters';
 import { useNavigation } from '@react-navigation/native';
 import WeightAddModal from './WeightAddModal';
-import { AppSelect, AnimateLineChart } from './common';
+import { AppSelect, AnimateLineChart } from '../common';
 import dayjs from 'dayjs';
 
 const WeightComponent = () => {
@@ -182,7 +182,7 @@ const styles = StyleSheet.create({
   addBtnText: {
     color: '#fff',
     textAlign: 'center',
-    fontWeight: 800
+    fontWeight: 700
   },
 });
 export default WeightComponent;

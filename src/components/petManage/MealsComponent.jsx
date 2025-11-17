@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, } from 'react-native';
-import gs, { COLORS } from '../assets/styles/globalStyles';
+import gs, { COLORS } from '../../assets/styles/globalStyles';
 import { scale } from 'react-native-size-matters';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import { BottomModal, AppInput, AppSelect, AppButton } from './common';
+import { BottomModal, AppInput, AppSelect, AppButton } from '../common';
 import { useNavigation } from '@react-navigation/native';
 import MealsAddModal from './MealsAddModal';
 import MealStatusCard from './MealStatusCard';
@@ -160,7 +160,7 @@ const styles = StyleSheet.create({
     addBtnText: {
         color: '#fff',
         textAlign: 'center',
-        fontWeight: 800
+        fontWeight: 700
     },
     calTitle: {
         fontSize: 16,

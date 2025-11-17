@@ -1,174 +1,333 @@
 /**
- * 반려동물 관리 화면 
+ * 반려동물 관리 화면
  */
-import React, { useState, useEffect, useRef } from 'react';
-import { View, Text, ScrollView, Button, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
+import React, { useState, useRef } from 'react';
+import {
+    View,
+    Text,
+    Dimensions,
+    StyleSheet,
+    Animated,
+    ImageBackground,
+    Pressable,
+} from 'react-native';
 
-import gs, { COLORS } from '../assets/styles/globalStyles';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import Feather from 'react-native-vector-icons/Feather';
+import Material from 'react-native-vector-icons/MaterialIcons';
 
-import EBoldText from '../components/font/EBoldText';
-import BoldText from '../components/font/BoldText';
-
-import PetSelectBox from '../components/PetSelectBox';
-import PetInfo from '../components/PetInfo';
+import EBoldTextN from '../components/font/EBoldText_n';
 import TabMenu from '../components/common/TabMenu';
-import ActivityComponent from '../components/ActivityComponent';
-import PetRegistModal from '../components/PetRegistModal';
-import HealthComponent from '../components/HealthComponent';
-import ConditionsComponent from '../components/ConditionsComponent';
+
+import PetInfo from '../components/petManage/PetInfo';
+import HealthTab from '../components/petManage/HealthTab';
+import ConditionsTab from '../components/petManage/ConditionsTab';
+import ActivityTab from '../components/petManage/ActivityTab';
+
 import PagerView from 'react-native-pager-view';
 
+const HEADER_HEIGHT = 320;
+const TABBAR_HEIGHT = 33;
+const MIN_Y = 350;
 
-const PetManageScreen = () => {
-    const { height } = Dimensions.get('window');
+const PetManageScreen = ({ route, navigation }) => {
+    const { pet } = route.params;
 
-    const [selected, setSelected] = useState(null);
-    const [dropdownVisible, setDropdownVisible] = useState(false);
-
-    const [petModalVisible, setPetModalVisible] = useState(false);
-
+    const scrollY = useRef(new Animated.Value(0)).current;
     const scrollRef = useRef(null);
-    const tabMenuRef = useRef(0);
     const pagerRef = useRef(null);
 
-    const handleSubmit = data => {
-        console.log('등록된 동물 정보:', data);
-        setPetModalVisible(false);
-    };
+    const { height, width } = Dimensions.get('window');
 
-    const tabs = ['건강', '식사/배변', '활동'];
+    const tabs = ['정보', '건강', '식사/배변', '활동'];
     const [page, setPage] = useState(0);
+
+    const [parentLocked, setParentLocked] = useState(false);
+    const [lock, setLock] = useState(false);
+    const [childCanScroll, setChildCanScroll] = useState(false);
+
+    const [childScrollable, setChildScrollable] = useState(false);  
+    // 자식 컨텐츠가 스크롤 가능할 때만 true
 
     const handleTabPress = (index) => {
         setPage(index);
         pagerRef.current?.setPage(index);
     };
 
+    /** 부모 스크롤 */
+    const onParentScroll = Animated.event(
+        [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+        {
+            useNativeDriver: true,
+            listener: (e) => {
+                if (lock) return;
 
-    const onPressHandler = (renderName) => {
+                const y = e.nativeEvent.contentOffset.y;
 
-        if (renderName == '건강') {
-            setWeightRender(true);
-            setMealsRender(false);
-            setActivityRender(false);
-            setActiveTabName('건강');
+                if (!parentLocked) {
+                    if (y >= MIN_Y) {
+                        setParentLocked(true);
+                        setChildCanScroll(true);
+
+                        setLock(true);
+                        scrollRef.current?.scrollTo({ y: MIN_Y, animated: false });
+                        setTimeout(() => setLock(false), 0);
+                    }
+                } else {
+                    if (y < MIN_Y) {
+                        setLock(true);
+                        scrollRef.current?.scrollTo({ y: MIN_Y, animated: false });
+                        setTimeout(() => setLock(false), 0);
+                    }
+                }
+            },
         }
-        if (renderName == '식사/배변') {
-            setWeightRender(false);
-            setMealsRender(true);
-            setActivityRender(false);
-            setActiveTabName('식사/배변');
-        }
-        if (renderName == '활동') {
-            setWeightRender(false);
-            setMealsRender(false);
-            setActivityRender(true);
-            setActiveTabName('활동');
-        }
-    }
+    );
 
-    //예시데이터
-    const options = [
-        { no: 1, name: '뭉치', species: '강아지', breed: '노바 스코샤 덕 톨링 리트리버', profile: require('../assets/images/golden_retriever_sample.png'), birth: '2023.12.25', age: '3살', gender: '남' },
-        { no: 2, name: '아치', species: '고양이', breed: '코리안 숏헤어', profile: '', birth: '2023.12.25', age: '3살', gender: '여' },
-        { no: 4, name: '흰둥이', species: '강아지', breed: '비숑', profile: require('../assets/images/siro.jpg'), birth: '2023.12.25', age: '3살', gender: '남', main: true },
-        { no: 3, name: '마루', species: '강아지', breed: '푸들', profile: '', birth: '2023.12.25', age: '3살', gender: '여' },
-    ];
+    /** 자식 스크롤 top 감지 → 부모 unlock */
+    const onChildScroll = (e) => {
+        const y = e.nativeEvent.contentOffset.y;
 
-    useEffect(() => {
-        //대표동물 기본 선택
-        setSelected(options[0]);
-    }, [])
+        if (y <= 0 && parentLocked) {
+            setParentLocked(false);
+            setChildCanScroll(false);
+
+            scrollRef.current?.scrollTo({ y: MIN_Y, animated: false });
+        }
+    };
+
+    /** 자식 content 크기 체크 → 스크롤 여부 자동 판단 */
+    const onChildContentSizeChange = (w, h) => {
+        const availableHeight = height - HEADER_HEIGHT;
+
+        if (h > availableHeight) {
+            if (!childScrollable) setChildScrollable(true);
+        } else {
+            if (childScrollable) setChildScrollable(false);
+
+            // 자식 스크롤이 필요 없으면 부모를 항상 움직이도록
+            if (parentLocked) {
+                setParentLocked(false);
+                setChildCanScroll(false);
+                scrollRef.current?.scrollTo({ y: MIN_Y, animated: false });
+            }
+        }
+    };
+
+    /** BottomSheet 애니메이션 */
+    const sheetTranslateY = scrollY.interpolate({
+        inputRange: [0, HEADER_HEIGHT],
+        outputRange: [0, TABBAR_HEIGHT],
+        extrapolate: 'clamp',
+    });
+
+    /** Sticky TabMenu */
+    const tabTranslateY = scrollY.interpolate({
+        inputRange: [0, HEADER_HEIGHT],
+        outputRange: [HEADER_HEIGHT, TABBAR_HEIGHT - 20],
+        extrapolate: 'clamp',
+    });
 
     return (
-        <ScrollView contentContainerStyle={gs.screen} ref={scrollRef} >
-
-            <EBoldText style={gs.title}>Pet</EBoldText>
-            <Text style={gs.subtitle}>반려동물의 건강정보를 한눈에 확인하세요!</Text>
-
-            <View>
-                {/* 동물 추가 버튼 */}
-                <TouchableOpacity
-                    activeOpacity={0.8}
-                    style={[styles.addBtn, gs.flexRow, { justifyContent: 'center', alignItems: 'center' }]}
-                    onPress={() => { setPetModalVisible(true) }}
+        <View style={{ flex: 1 }}>
+            {/* HEADER */}
+            <Animated.View style={[styles.headerImageWrapper]}>
+                <ImageBackground
+                    source={pet.profile}
+                    resizeMode="cover"
+                    style={styles.bgImage}
                 >
-                    <BoldText style={styles.whiteFont}>등록</BoldText>
-                    <FontAwesome name='plus' style={[styles.whiteFont, { marginLeft: 5 }]} />
-                </TouchableOpacity>
-                <PetRegistModal visible={petModalVisible}
-                    onClose={() => setPetModalVisible(false)}
-                    onSubmit={handleSubmit}
-                />
+                    <Pressable
+                        style={styles.backBtn}
+                        onPress={() => navigation.goBack()}
+                    >
+                        <Feather
+                            name="arrow-left"
+                            style={{ color: 'white', fontSize: 40 }}
+                        />
+                    </Pressable>
 
-                {/* 동물 선택 드롭박스 */}
-                <PetSelectBox
-                    visible={dropdownVisible}
-                    onOpen={() => setDropdownVisible(true)}
-                    onClose={() => setDropdownVisible(false)}
-                    onSelect={(pet) => {
-                        setSelected(pet);
-                        setDropdownVisible(false);
-                    }}
-                    options={options}
-                    selectedValue={selected}
-                />
+                    <View>
+                        <EBoldTextN style={[styles.petName, styles.textShadow]}>
+                            {pet.name}
+                        </EBoldTextN>
 
-            </View>
+                        <Text style={[styles.petBreed, styles.textShadow]}>
+                            <Material name="pets" /> {pet.species} • {pet.breed}
+                        </Text>
+                    </View>
+                </ImageBackground>
+            </Animated.View>
 
-            <View style={gs.mt25}>
-                {/* 동물 상세 */}
-                {selected && <PetInfo data={selected} />}
-            </View>
-
-
-            <View style={gs.mt40} onLayout={(e) => {
-                tabMenuRef.current = e.nativeEvent.layout.y;
-            }} collapsable={false}>
-                <TabMenu onPressHandler={(name) => {
-                    scrollRef.current?.scrollTo({ y: tabMenuRef.current - 10, animated: true });
-                    // onPressHandler(name);
-                    handleTabPress(tabs.indexOf(name))
-                }}
+            {/* Sticky Tab */}
+            <Animated.View
+                style={[styles.tabBar, { transform: [{ translateY: tabTranslateY }] }]}
+            >
+                <TabMenu
                     menuList={tabs}
                     activeTab={tabs[page]}
+                    onPressHandler={(name) =>
+                        handleTabPress(tabs.indexOf(name))
+                    }
                     color={'#fff'}
                 />
+            </Animated.View>
 
-                <View style={{ flex: 1, height: height * 1 }}>
-                    {/* TODO: 선택한 동물 값 넘겨주기 & 선택한 동물이 없을때(초기) 처리 */}
-                    <PagerView
-                        ref={pagerRef}
-                        style={{ flex: 1, }}
-                        initialPage={0}
-                        onPageSelected={(e) => setPage(e.nativeEvent.position)}
+            {/* 부모 스크롤 */}
+            <Animated.ScrollView
+                ref={scrollRef}
+                nestedScrollEnabled={true}
+                scrollEnabled={!parentLocked}
+                onScroll={onParentScroll}
+                scrollEventThrottle={16}
+                bounces={false}
+                overScrollMode="never"
+                contentContainerStyle={{ paddingTop: 300 }}
+            >
+                <Animated.View
+                    style={[
+                        styles.bottomSheet,
+                        { transform: [{ translateY: sheetTranslateY }] },
+                    ]}
+                >
+                    {/* Pager */}
+                    <View style={{ flex: 1, height: height * 1 }}>
+                        <PagerView
+                            ref={pagerRef}
+                            style={{ flex: 1 }}
+                            initialPage={0}
+                            onPageSelected={(e) =>
+                                setPage(e.nativeEvent.position)
+                            }
+                        >
+                            {/* INFO 탭 */}
+                            <Animated.ScrollView
+                                key={'info'}
+                                nestedScrollEnabled={true}
+                                scrollEnabled={childCanScroll && childScrollable}
+                                onScroll={onChildScroll}
+                                onContentSizeChange={onChildContentSizeChange}
+                                contentContainerStyle={{
+                                    paddingBottom: 150,
+                                    minHeight: height * 0.6,
+                                }}
+                            >
+                                <PetInfo data={pet} />
+                            </Animated.ScrollView>
 
-                    >
-                        <View key={'health'}><HealthComponent /></View>
-                        <View key={'conditions'}><ConditionsComponent /></View>
-                        <View key={'activity'}><ActivityComponent /></View>
-                    </PagerView>
+                            {/* HEALTH 탭 */}
+                            <Animated.ScrollView
+                                key={'health'}
+                                nestedScrollEnabled={true}
+                                scrollEnabled={childCanScroll && childScrollable}
+                                onScroll={onChildScroll}
+                                onContentSizeChange={onChildContentSizeChange}
+                                contentContainerStyle={{
+                                    paddingBottom: 150,
+                                    minHeight: height * 0.6,
+                                }}
+                            >
+                                <HealthTab />
+                            </Animated.ScrollView>
 
-                </View>
-            </View>
+                            {/* CONDITIONS 탭 */}
+                            <Animated.ScrollView
+                                key={'conditions'}
+                                nestedScrollEnabled={true}
+                                scrollEnabled={childCanScroll && childScrollable}
+                                onScroll={onChildScroll}
+                                onContentSizeChange={onChildContentSizeChange}
+                                contentContainerStyle={{
+                                    paddingBottom: 150,
+                                    minHeight: height * 0.6,
+                                }}
+                            >
+                                <ConditionsTab />
+                            </Animated.ScrollView>
 
-        </ScrollView>
+                            {/* ACTIVITY 탭 */}
+                            <Animated.ScrollView
+                                key={'activity'}
+                                nestedScrollEnabled={true}
+                                scrollEnabled={childCanScroll && childScrollable}
+                                onScroll={onChildScroll}
+                                onContentSizeChange={onChildContentSizeChange}
+                                contentContainerStyle={{
+                                    paddingBottom: 150,
+                                    minHeight: height * 0.6,
+                                }}
+                            >
+                                <ActivityTab />
+                            </Animated.ScrollView>
+                        </PagerView>
+                    </View>
+                </Animated.View>
+            </Animated.ScrollView>
+        </View>
     );
 };
 
 const styles = StyleSheet.create({
-    addBtn: {
-        width: '100%',
-        height: 30,
-        borderRadius: 8,
-        backgroundColor: COLORS.primary,
-        marginBottom: 10,
+    headerImageWrapper: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        height: HEADER_HEIGHT,
+        zIndex: -99,
     },
-    whiteFont: {
-        fontSize: 12,
-        color: 'white'
-    }
+
+    bgImage: {
+        justifyContent: 'flex-end',
+        height: HEADER_HEIGHT,
+        width: '100%',
+    },
+
+    backBtn: {
+        position: 'absolute',
+        top: 10,
+        left: 10,
+        zIndex: 10,
+    },
+
+    petName: {
+        fontSize: 30,
+        marginBottom: 8,
+        color: 'white',
+        textAlign: 'center',
+    },
+
+    petBreed: {
+        color: 'white',
+        fontSize: 14,
+        textAlign: 'center',
+        marginBottom: 40,
+    },
+
+    tabBar: {
+        position: 'absolute',
+        top: 10,
+        left: 0,
+        right: 0,
+        height: TABBAR_HEIGHT,
+        paddingHorizontal: 20,
+        justifyContent: 'center',
+        zIndex: 20,
+    },
+
+    bottomSheet: {
+        backgroundColor: '#fff',
+        borderTopLeftRadius: 30,
+        borderTopRightRadius: 30,
+        paddingHorizontal: 20,
+        paddingTop: 70,
+        minHeight: 300,
+    },
+
+    textShadow: {
+        textShadowColor: 'rgba(0, 0, 0, 0.75)',
+        textShadowOffset: { width: -0.3, height: 0.3 },
+        textShadowRadius: 10,
+    },
 });
 
 export default PetManageScreen;
