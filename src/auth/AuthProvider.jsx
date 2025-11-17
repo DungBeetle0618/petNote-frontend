@@ -4,7 +4,7 @@ import { api } from '../net/api';
 import { saveAccessToken, getAccessToken, clearAccessToken } from '../secure/tokenStorage';
 
 const AuthContext = createContext(null);
-const DEV_BYPASS_AUTH = __DEV__ && true;
+const DEV_BYPASS_AUTH = __DEV__ && false;
 export function AuthProvider({ children }) {
   const [state, setState] = useState('loading'); // 'loading' | 'authenticated' | 'unauthenticated'
 
@@ -30,6 +30,14 @@ export function AuthProvider({ children }) {
     })();
   }, []);
 
+    const socialLoginKakao = useCallback(async (accessToken) => {
+      await api.post('/auth/social/kakao/login', accessToken)
+    }, [])
+
+    const socialLoginNaver = () => {
+
+    }
+
   const signIn = useCallback(async (userId, password) => {
     try {
       const { data } = await api.post('/auth/login', { userId, password });
@@ -54,7 +62,7 @@ export function AuthProvider({ children }) {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ state, signIn, signOut, reloadSession }}>
+    <AuthContext.Provider value={{ state, signIn, signOut, socialLoginKakao, socialLoginNaver, reloadSession }}>
       {children}
     </AuthContext.Provider>
   );

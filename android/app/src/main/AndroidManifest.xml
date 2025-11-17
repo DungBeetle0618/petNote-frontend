@@ -24,8 +24,20 @@
             <category android:name="android.intent.category.LAUNCHER" />
         </intent-filter>
       </activity>
-      <!-- Kakao 지도 SDK API Key -->
-      <meta-data android:name="com.kakao.app.AppKey" android:value="d825712a1ab71730b82cbe61f4f9e233" />
-
+      <activity 
+        android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"
+        android:exported="true">
+        <intent-filter>
+            <action android:name="android.intent.action.VIEW" />
+            <category android:name="android.intent.category.DEFAULT" />
+            <category android:name="android.intent.category.BROWSABLE" />
+            <data
+            android:scheme="kakaof31999f7812f5a1aef17da7a8e212b30"
+            android:host="oauth" />
+        </intent-filter>
+      </activity>
+      <meta-data
+        android:name="com.kakao.sdk.AppKey"
+        android:value="@string/kakao_app_key" />
     </application>
 </manifest>

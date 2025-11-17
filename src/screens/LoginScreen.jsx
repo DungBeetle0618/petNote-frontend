@@ -3,13 +3,15 @@ import {
   View, Text, TextInput, TouchableOpacity, StyleSheet,
   KeyboardAvoidingView, Platform, StatusBar, Alert, Image
 } from 'react-native';
+import { loginWithKakaoAccount as KaKaoLogin , login as KaKaoLoginWeb } from "@react-native-seoul/kakao-login";
+import NaverLogin from '@react-native-seoul/naver-login';
 import ForgotHelperSheet from '../components/ForgotHelperSheet';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useNavigation } from '@react-navigation/native';
 import { useAuth } from '../auth/AuthProvider'
-
+import * as KakaoLogins from '@react-native-seoul/kakao-login';
 const COLORS = {
   bg: '#FFF4EA',
   card: '#FFFFFF',
@@ -28,11 +30,12 @@ const SIZES = { radiusLg: 20, radiusXl: 24 };
 
 export default function LoginScreen() {
   const navigation = useNavigation();
-  const { signIn } = useAuth();
+  const { signIn, socialLoginKakao } = useAuth();
   const [userId, setUserId] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [helpOpen, setHelpOpen] = useState(false);
+
   
   const onLogin = async () => {
       if (!userId.trim() || !password) {
@@ -47,9 +50,14 @@ export default function LoginScreen() {
   };
 
   // 소셜 로그인 (실연동 전 임시)
-  const onKakaoLogin = () => {
-    // TODO: 실제 OAuth 연동
-    Alert.alert('카카오 로그인', '카카오 로그인 플로우를 연결하세요.');
+  const onKakaoLogin = async () => {
+  try {
+    const  { accessToken } = await KaKaoLoginWeb();
+    console.log(accessToken);
+    const kakaoLogin = await socialLoginKakao(accessToken);
+  } catch (e) {
+    console.log(e);
+  }
   };
   const onNaverLogin = () => {
     // TODO: 실제 OAuth 연동
@@ -129,19 +137,25 @@ export default function LoginScreen() {
             <Text style={styles.socialTitle}>또는 소셜 계정으로 계속하기</Text>
 
             {/* 카카오 로그인 */}
-            <TouchableOpacity style={styles.kakaoBtn} onPress={onKakaoLogin} activeOpacity={0.9}>
-              {/* 로고 이미지 쓰려면 주석 해제하고 assets에 파일 추가
-              <Image source={require('../../assets/kakao.png')} style={styles.socialIconImg} />
-              */}
-              <Ionicons name="chatbubble-ellipses-outline" size={18} color="#000" style={styles.socialIcon} />
-              <Text style={styles.kakaoText}>카카오로 로그인</Text>
+            <TouchableOpacity
+              style={styles.kakaoBtn}
+              onPress={onKakaoLogin}
+              activeOpacity={0.9}
+            >
+              <Image
+                source={require('../assets/images/icon/login/kakao_login_large_wide.png')}
+                style={styles.kakaoImg}
+                resizeMode="contain"
+              />
             </TouchableOpacity>
 
             {/* 네이버 로그인 */}
             <TouchableOpacity style={styles.naverBtn} onPress={onNaverLogin} activeOpacity={0.9}>
-              {/* <Image source={require('../../assets/naver.png')} style={styles.socialIconImg} /> */}
-              <Ionicons name="leaf-outline" size={18} color="#fff" style={styles.socialIcon} />
-              <Text style={styles.naverText}>네이버로 로그인</Text>
+              <Image
+                source={require('../assets/images/icon/login/naver_logo.png')}
+                style={styles.kakaoImg}
+                resizeMode="contain"
+              />
             </TouchableOpacity>
 
             {/* 구분선 */}
@@ -207,10 +221,19 @@ const styles = StyleSheet.create({
   socialTitle: { textAlign: 'center', color: COLORS.subText, marginBottom: 10 },
 
   kakaoBtn: {
-    height: 48, borderRadius: 12, backgroundColor: COLORS.kakao,
-    flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginBottom: 10
+    width: '100%',
+    height: 48,
+    borderRadius: 8,
+    overflow: 'hidden',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 12,
   },
-  kakaoText: { color: '#000', fontWeight: '700' },
+
+  kakaoImg: {
+    width: '100%',
+    height: '100%',
+  },
 
   naverBtn: {
     height: 48, borderRadius: 12, backgroundColor: COLORS.naver,

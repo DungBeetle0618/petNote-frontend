@@ -119,7 +119,10 @@ dependencies {
     // The version of react-native is set by the React Native Gradle Plugin
     implementation("com.facebook.react:react-android")
     // 카카오 지도 SDK
-    implementation("com.kakao.maps.open:android:2.12.14") 
+    implementation("com.kakao.maps.open:android:2.12.14")
+    // 카카오 로그인 API 모듈
+    implementation("com.kakao.sdk:v2-user:2.20.1")
+ 
 
     if (hermesEnabled.toBoolean()) {
         implementation("com.facebook.react:hermes-android")

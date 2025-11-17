@@ -7,6 +7,7 @@ import com.facebook.react.ReactHost
 import com.facebook.react.ReactNativeApplicationEntryPoint.loadReactNative
 import com.facebook.react.defaults.DefaultReactHost.getDefaultReactHost
 import com.petnote.kakaomap.KakaoMapViewPackage
+import com.kakao.sdk.common.util.Utility
 
 class MainApplication : Application(), ReactApplication {
 
