@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 
 import EBoldText from '../components/font/EBoldText';
-import gs from '../assets/styles/globalStyles';
+import gs, { COLORS } from '../assets/styles/globalStyles';
 import Feed from '../components/community/Feed';
 import Columns from '../components/community/Columns';
 import Review from '../components/community/Review';
@@ -93,7 +93,7 @@ const communityDot = StyleSheet.create({
 		right:20,
 		width:50,
 		height:50,
-		backgroundColor:'#9a8fff',
+		backgroundColor: COLORS.primary,
 		alignItems:'center',
 		justifyContent:'center',
 		borderRadius:50,

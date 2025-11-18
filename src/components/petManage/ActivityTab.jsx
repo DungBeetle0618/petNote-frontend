@@ -5,7 +5,7 @@ import ActivityComponent from './ActivityComponent';
 const ActivityTab = () => {
   
   return (
-    <View style={{marginBottom: 30}}>
+    <View style={{marginBottom: 120}}>
         <ActivityComponent />
         {/* <View style={{marginBlock: 20}} /> */}
     </View>

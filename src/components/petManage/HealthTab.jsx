@@ -6,7 +6,7 @@ import HospitalComponent from './HospitalComponent';
 const HealthTab = () => {
   
   return (
-    <View style={{marginBottom: 30}}>
+    <View style={{marginBottom: 120}}>
         <WeightComponent />
         <View style={{marginBlock: 20}} />
         <HospitalComponent />

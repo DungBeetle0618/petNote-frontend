@@ -6,7 +6,7 @@ import ToiletComponent from './ToiletComponent';
 const ConditionsTab = () => {
   
   return (
-    <View style={{marginBottom: 30}}>
+    <View style={{marginBottom: 120}}>
         <MealsComponent />
         <View style={{marginBlock: 20}} />
         <ToiletComponent />

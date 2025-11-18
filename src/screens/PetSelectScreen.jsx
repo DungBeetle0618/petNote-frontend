@@ -27,10 +27,10 @@ const PetSelectScreen = () => {
 
     //예시데이터
     const options = [
-        { no: 1, name: '뭉치', species: '강아지', breed: '노바 스코샤 덕 톨링 리트리버', profile: require('../assets/images/golden_retriever_sample.png'), birth: '2023.12.25', age: '3살', gender: '남' },
-        { no: 2, name: '아치', species: '고양이', breed: '코리안 숏헤어', profile: '', birth: '2023.12.25', age: '3살', gender: '여' },
-        { no: 4, name: '흰둥이', species: '강아지', breed: '비숑', profile: require('../assets/images/siro.jpg'), birth: '2023.12.25', age: '3살', gender: '남', main: true },
-        { no: 3, name: '마루', species: '강아지', breed: '푸들', profile: '', birth: '2023.12.25', age: '3살', gender: '여' },
+        { no: 1, name: '뭉치', species: '강아지', breed: '노바 스코샤 덕 톨링 리트리버', profile: require('../assets/images/golden_retriever_sample.png'), birth: '2023.12.25', age: '3살', gender: '남', info: '인절미같은 우리집 왕자님' },
+        { no: 2, name: '아치', species: '고양이', breed: '코리안 숏헤어', profile: '', birth: '2023.12.25', age: '3살', gender: '여', info: '혜지씨네 고양이' },
+        { no: 4, name: '흰둥이', species: '강아지', breed: '비숑', profile: require('../assets/images/siro.jpg'), birth: '2023.12.25', age: '3살', gender: '남', main: true, info: '솜사탕' },
+        { no: 3, name: '마루', species: '강아지', breed: '푸들', profile: '', birth: '2023.12.25', age: '3살', gender: '여', info: '마루는 강쥐' },
     ];
 
 
@@ -50,7 +50,7 @@ const PetSelectScreen = () => {
             <TouchableOpacity
                 activeOpacity={0.8}
                 style={styles.addBtn}
-                onPress={() => { setPetModalVisible(true) }}
+                onPress={() => { setPetModalVisible(true); console.log('dd') }}
             >
                 <FontAwesome6 name='plus' style={styles.whiteFont} />
             </TouchableOpacity>

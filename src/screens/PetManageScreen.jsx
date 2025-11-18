@@ -1,333 +1,289 @@
-/**
- * 반려동물 관리 화면
- */
-import React, { useState, useRef } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import {
     View,
     Text,
-    Dimensions,
     StyleSheet,
-    Animated,
     ImageBackground,
     Pressable,
+    Alert,
+    Dimensions
 } from 'react-native';
 
 import Feather from 'react-native-vector-icons/Feather';
-import Material from 'react-native-vector-icons/MaterialIcons';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+
+import { useAnimatedReaction, runOnJS } from 'react-native-reanimated';
+import { Tabs } from 'react-native-collapsible-tab-view';
 
 import EBoldTextN from '../components/font/EBoldText_n';
 import TabMenu from '../components/common/TabMenu';
+import { COLORS } from '../assets/styles/globalStyles';
 
 import PetInfo from '../components/petManage/PetInfo';
 import HealthTab from '../components/petManage/HealthTab';
 import ConditionsTab from '../components/petManage/ConditionsTab';
 import ActivityTab from '../components/petManage/ActivityTab';
 
-import PagerView from 'react-native-pager-view';
-
-const HEADER_HEIGHT = 320;
-const TABBAR_HEIGHT = 33;
-const MIN_Y = 350;
+const HEADER_HEIGHT = 300;
+const {height} = Dimensions.get("window");
 
 const PetManageScreen = ({ route, navigation }) => {
     const { pet } = route.params;
+    const [main, setMain] = useState(pet.main);
 
-    const scrollY = useRef(new Animated.Value(0)).current;
-    const scrollRef = useRef(null);
-    const pagerRef = useRef(null);
+    console.log(height)
 
-    const { height, width } = Dimensions.get('window');
+    useEffect(() => {
+        setMain(pet.main)
+    }, [pet])
+
+    /**
+         * 대표설정
+         */
+    function setMainPet(main) {
+
+        Alert.alert(
+            'PetNote',
+            '대표 동물로 설정하시겠습니까?',
+            [
+                { text: '취소', onPress: () => { }, style: 'cancel' },
+                { text: '확인', onPress: () => { setMain(!main) }, style: 'default' },
+            ],
+            {
+                cancelable: true,
+                onDismiss: () => { }
+            }
+        )
+    }
 
     const tabs = ['정보', '건강', '식사/배변', '활동'];
-    const [page, setPage] = useState(0);
 
-    const [parentLocked, setParentLocked] = useState(false);
-    const [lock, setLock] = useState(false);
-    const [childCanScroll, setChildCanScroll] = useState(false);
+    const Header = ({ pet, navigation }) => (
+        <View style={styles.headerImageWrapper}>
+            <ImageBackground
+                source={pet.profile}
+                resizeMode="cover"
+                style={styles.bgImage}
+            >
+                <Pressable
+                    style={styles.backBtn}
+                    onPress={() => navigation.goBack()}
+                >
+                    <Feather name="arrow-left" style={{ color: 'white', fontSize: 40 }} />
+                </Pressable>
 
-    const [childScrollable, setChildScrollable] = useState(false);  
-    // 자식 컨텐츠가 스크롤 가능할 때만 true
+                <View>
+                    <EBoldTextN style={[styles.petName, styles.textShadow]}>
+                        {pet.name}
+                    </EBoldTextN>
 
-    const handleTabPress = (index) => {
-        setPage(index);
-        pagerRef.current?.setPage(index);
-    };
-
-    /** 부모 스크롤 */
-    const onParentScroll = Animated.event(
-        [{ nativeEvent: { contentOffset: { y: scrollY } } }],
-        {
-            useNativeDriver: true,
-            listener: (e) => {
-                if (lock) return;
-
-                const y = e.nativeEvent.contentOffset.y;
-
-                if (!parentLocked) {
-                    if (y >= MIN_Y) {
-                        setParentLocked(true);
-                        setChildCanScroll(true);
-
-                        setLock(true);
-                        scrollRef.current?.scrollTo({ y: MIN_Y, animated: false });
-                        setTimeout(() => setLock(false), 0);
-                    }
-                } else {
-                    if (y < MIN_Y) {
-                        setLock(true);
-                        scrollRef.current?.scrollTo({ y: MIN_Y, animated: false });
-                        setTimeout(() => setLock(false), 0);
-                    }
-                }
-            },
-        }
+                    <Text style={[styles.petBreed, styles.textShadow]}>
+                        {pet.info}
+                    </Text>
+                </View>
+            </ImageBackground>
+            {/* <View style={styles.blankView}></View> */}
+        </View>
     );
 
-    /** 자식 스크롤 top 감지 → 부모 unlock */
-    const onChildScroll = (e) => {
-        const y = e.nativeEvent.contentOffset.y;
 
-        if (y <= 0 && parentLocked) {
-            setParentLocked(false);
-            setChildCanScroll(false);
 
-            scrollRef.current?.scrollTo({ y: MIN_Y, animated: false });
-        }
-    };
+    const CustomTabBar = ({ tabs, index, onTabPress }) => {
+        const [active, setActive] = useState(0);
 
-    /** 자식 content 크기 체크 → 스크롤 여부 자동 판단 */
-    const onChildContentSizeChange = (w, h) => {
-        const availableHeight = height - HEADER_HEIGHT;
+        useAnimatedReaction(
+            () => index.value,
+            (val) => {
+                runOnJS(setActive)(val);
+            },
+            [index]
+        );
 
-        if (h > availableHeight) {
-            if (!childScrollable) setChildScrollable(true);
-        } else {
-            if (childScrollable) setChildScrollable(false);
-
-            // 자식 스크롤이 필요 없으면 부모를 항상 움직이도록
-            if (parentLocked) {
-                setParentLocked(false);
-                setChildCanScroll(false);
-                scrollRef.current?.scrollTo({ y: MIN_Y, animated: false });
-            }
-        }
-    };
-
-    /** BottomSheet 애니메이션 */
-    const sheetTranslateY = scrollY.interpolate({
-        inputRange: [0, HEADER_HEIGHT],
-        outputRange: [0, TABBAR_HEIGHT],
-        extrapolate: 'clamp',
-    });
-
-    /** Sticky TabMenu */
-    const tabTranslateY = scrollY.interpolate({
-        inputRange: [0, HEADER_HEIGHT],
-        outputRange: [HEADER_HEIGHT, TABBAR_HEIGHT - 20],
-        extrapolate: 'clamp',
-    });
-
-    return (
-        <View style={{ flex: 1 }}>
-            {/* HEADER */}
-            <Animated.View style={[styles.headerImageWrapper]}>
-                <ImageBackground
-                    source={pet.profile}
-                    resizeMode="cover"
-                    style={styles.bgImage}
-                >
-                    <Pressable
-                        style={styles.backBtn}
-                        onPress={() => navigation.goBack()}
-                    >
-                        <Feather
-                            name="arrow-left"
-                            style={{ color: 'white', fontSize: 40 }}
-                        />
-                    </Pressable>
-
-                    <View>
-                        <EBoldTextN style={[styles.petName, styles.textShadow]}>
-                            {pet.name}
-                        </EBoldTextN>
-
-                        <Text style={[styles.petBreed, styles.textShadow]}>
-                            <Material name="pets" /> {pet.species} • {pet.breed}
-                        </Text>
-                    </View>
-                </ImageBackground>
-            </Animated.View>
-
-            {/* Sticky Tab */}
-            <Animated.View
-                style={[styles.tabBar, { transform: [{ translateY: tabTranslateY }] }]}
-            >
+        return (
+            <View style={styles.tabBarWrapper}>
                 <TabMenu
                     menuList={tabs}
-                    activeTab={tabs[page]}
-                    onPressHandler={(name) =>
-                        handleTabPress(tabs.indexOf(name))
-                    }
+                    activeTab={tabs[active]}
+                    onPressHandler={(name) => {
+                        onTabPress(name);  // string 전달
+                    }}
                     color={'#fff'}
                 />
-            </Animated.View>
+            </View>
+        );
+    };
 
-            {/* 부모 스크롤 */}
-            <Animated.ScrollView
-                ref={scrollRef}
-                nestedScrollEnabled={true}
-                scrollEnabled={!parentLocked}
-                onScroll={onParentScroll}
-                scrollEventThrottle={16}
-                bounces={false}
-                overScrollMode="never"
-                contentContainerStyle={{ paddingTop: 300 }}
+    const ModiPetInfoBtn = () => {
+        return (
+            <View style={styles.modiView}>
+                <Pressable onPress={() => { alert('수정') }} activeOpacity={1} style={styles.modiBtn}>
+                    <Text style={styles.modiText}>수정하기  <FontAwesome name="pencil" style={{ fontSize: 16 }} /></Text>
+                </Pressable>
+                <Pressable style={styles.setMainBtn} onPress={() => setMainPet(main)} activeOpacity={1}>
+                    {
+                        main ? <FontAwesome name='star' style={{ fontSize: 20, color: 'white' }} />
+                            : <FontAwesome name='star-o' style={{ fontSize: 20, color: 'white' }} />
+                    }
+                </Pressable>
+            </View>
+        )
+    }
+
+
+    return (
+        <View style={{flex: 1}}>
+            <Tabs.Container
+                headerHeight={HEADER_HEIGHT}
+                revealHeaderOnScroll={false}
+                headerContainerStyle={{
+                    shadowColor: 'transparent',
+                    shadowOpacity: 0,
+                    shadowRadius: 0,
+                    elevation: 0,
+                }}
+                renderHeader={() => <Header pet={pet} navigation={navigation} />}
+                renderTabBar={(props) => (
+                    <CustomTabBar
+                        tabs={tabs}
+                        index={props.index}
+                        onTabPress={props.onTabPress}
+                    />
+                )}
+                containerStyle={{ paddingTop: 0 }}   // ← 중요
             >
-                <Animated.View
-                    style={[
-                        styles.bottomSheet,
-                        { transform: [{ translateY: sheetTranslateY }] },
-                    ]}
-                >
-                    {/* Pager */}
-                    <View style={{ flex: 1, height: height * 1 }}>
-                        <PagerView
-                            ref={pagerRef}
-                            style={{ flex: 1 }}
-                            initialPage={0}
-                            onPageSelected={(e) =>
-                                setPage(e.nativeEvent.position)
-                            }
-                        >
-                            {/* INFO 탭 */}
-                            <Animated.ScrollView
-                                key={'info'}
-                                nestedScrollEnabled={true}
-                                scrollEnabled={childCanScroll && childScrollable}
-                                onScroll={onChildScroll}
-                                onContentSizeChange={onChildContentSizeChange}
-                                contentContainerStyle={{
-                                    paddingBottom: 150,
-                                    minHeight: height * 0.6,
-                                }}
-                            >
-                                <PetInfo data={pet} />
-                            </Animated.ScrollView>
+                <Tabs.Tab name="정보">
+                    <Tabs.ScrollView style={[styles.bottomSheet, {paddingHorizontal:0}]} >
+                        <PetInfo data={pet} />
+                    </Tabs.ScrollView>
+                    <ModiPetInfoBtn />
+                </Tabs.Tab>
 
-                            {/* HEALTH 탭 */}
-                            <Animated.ScrollView
-                                key={'health'}
-                                nestedScrollEnabled={true}
-                                scrollEnabled={childCanScroll && childScrollable}
-                                onScroll={onChildScroll}
-                                onContentSizeChange={onChildContentSizeChange}
-                                contentContainerStyle={{
-                                    paddingBottom: 150,
-                                    minHeight: height * 0.6,
-                                }}
-                            >
-                                <HealthTab />
-                            </Animated.ScrollView>
+                <Tabs.Tab name="건강">
+                    <Tabs.ScrollView style={styles.bottomSheet}>
+                        <HealthTab />
+                    </Tabs.ScrollView>
+                </Tabs.Tab>
 
-                            {/* CONDITIONS 탭 */}
-                            <Animated.ScrollView
-                                key={'conditions'}
-                                nestedScrollEnabled={true}
-                                scrollEnabled={childCanScroll && childScrollable}
-                                onScroll={onChildScroll}
-                                onContentSizeChange={onChildContentSizeChange}
-                                contentContainerStyle={{
-                                    paddingBottom: 150,
-                                    minHeight: height * 0.6,
-                                }}
-                            >
-                                <ConditionsTab />
-                            </Animated.ScrollView>
+                <Tabs.Tab name="식사/배변">
+                    <Tabs.ScrollView style={styles.bottomSheet}>
+                        <ConditionsTab />
+                    </Tabs.ScrollView>
+                </Tabs.Tab>
 
-                            {/* ACTIVITY 탭 */}
-                            <Animated.ScrollView
-                                key={'activity'}
-                                nestedScrollEnabled={true}
-                                scrollEnabled={childCanScroll && childScrollable}
-                                onScroll={onChildScroll}
-                                onContentSizeChange={onChildContentSizeChange}
-                                contentContainerStyle={{
-                                    paddingBottom: 150,
-                                    minHeight: height * 0.6,
-                                }}
-                            >
-                                <ActivityTab />
-                            </Animated.ScrollView>
-                        </PagerView>
-                    </View>
-                </Animated.View>
-            </Animated.ScrollView>
+                <Tabs.Tab name="활동">
+                    <Tabs.ScrollView style={styles.bottomSheet}>
+                        <ActivityTab />
+                    </Tabs.ScrollView>
+                </Tabs.Tab>
+            </Tabs.Container>
         </View>
     );
 };
 
+
 const styles = StyleSheet.create({
     headerImageWrapper: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        height: HEADER_HEIGHT,
-        zIndex: -99,
-    },
-
-    bgImage: {
-        justifyContent: 'flex-end',
         height: HEADER_HEIGHT,
         width: '100%',
+        position: 'relative',
+        backgroundColor: '#ececec'
     },
-
+    bgImage: {
+        height: HEADER_HEIGHT,
+        width: '100%',
+        justifyContent: 'flex-end'
+    },
     backBtn: {
         position: 'absolute',
         top: 10,
         left: 10,
         zIndex: 10,
     },
-
     petName: {
         fontSize: 30,
         marginBottom: 8,
         color: 'white',
         textAlign: 'center',
     },
-
     petBreed: {
         color: 'white',
         fontSize: 14,
         textAlign: 'center',
-        marginBottom: 40,
+        marginBottom: 30,
     },
-
-    tabBar: {
-        position: 'absolute',
-        top: 10,
-        left: 0,
-        right: 0,
-        height: TABBAR_HEIGHT,
-        paddingHorizontal: 20,
-        justifyContent: 'center',
-        zIndex: 20,
-    },
-
-    bottomSheet: {
-        backgroundColor: '#fff',
-        borderTopLeftRadius: 30,
-        borderTopRightRadius: 30,
-        paddingHorizontal: 20,
-        paddingTop: 70,
-        minHeight: 300,
-    },
-
     textShadow: {
-        textShadowColor: 'rgba(0, 0, 0, 0.75)',
+        textShadowColor: 'rgba(0,0,0,0.75)',
         textShadowOffset: { width: -0.3, height: 0.3 },
         textShadowRadius: 10,
     },
+    bottomSheet: {
+        backgroundColor: '#fff',
+        padding: 20,
+        paddingTop: 75,
+        // borderTopLeftRadius: 20,
+        // borderTopRightRadius: 20,
+    },
+    tabBarWrapper: {
+        position: 'absolute',
+        top: 20,
+        left: 20,
+        right: 20,
+
+        // height: 48,
+        borderRadius: 24,
+        backgroundColor: '#fff',
+
+        justifyContent: 'center',
+
+        ...Platform.select({
+            ios: {
+                shadowColor: '#000',
+                shadowOpacity: 0.12,
+                shadowRadius: 8,
+                shadowOffset: { width: 0, height: 4 },
+            },
+            android: {
+                elevation: 8,
+            },
+        }),
+
+        zIndex: 9999,
+        overflow: 'hidden',
+    },
+
+    modiView: {
+        position: 'absolute',
+        bottom: 20,
+        left: 0,
+        right: 0,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        zIndex: 999,
+        paddingHorizontal: 20
+    },
+    modiBtn: {
+        width: '82%',
+        height: 50,
+        backgroundColor: COLORS.primary,
+        borderRadius: 10,
+        paddingBlock: 12
+    },
+    modiText: {
+        color: '#fff',
+        textAlign: 'center',
+        fontSize: 16,
+        fontWeight: 500
+    },
+    setMainBtn: {
+        width: 50,
+        height: 50,
+        borderRadius: 50 / 2,
+        backgroundColor: COLORS.primary,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+
 });
 
 export default PetManageScreen;

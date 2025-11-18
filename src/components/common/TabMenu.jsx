@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 3,
     bottom: 3,
-    borderRadius: 10,
+    borderRadius: 12,
     backgroundColor: '#fff',
     zIndex: 1,
     ...Platform.select({
