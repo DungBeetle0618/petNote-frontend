@@ -71,7 +71,7 @@ const TabMenu = ({ onPressHandler, menuList, activeTab, color }) => {
 const styles = StyleSheet.create({
   wrapper: {
     width: '100%',
-    marginBottom: 20,
+    // marginBottom: 20,
   },
   container: {
     flexDirection: 'row',
