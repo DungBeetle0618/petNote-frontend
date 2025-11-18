@@ -51,13 +51,12 @@ export default function LoginScreen() {
 
   // 소셜 로그인 (실연동 전 임시)
   const onKakaoLogin = async () => {
-  try {
-    const  { accessToken } = await KaKaoLoginWeb();
-    console.log(accessToken);
-    const kakaoLogin = await socialLoginKakao(accessToken);
-  } catch (e) {
-    console.log(e);
-  }
+    try {
+      const  { accessToken } = await KaKaoLoginWeb();
+      const kakaoLogin = await socialLoginKakao(accessToken);
+    } catch (e) {
+      console.log(e);
+    }
   };
   const onNaverLogin = () => {
     // TODO: 실제 OAuth 연동
