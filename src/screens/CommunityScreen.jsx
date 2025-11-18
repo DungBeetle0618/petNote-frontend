@@ -17,7 +17,8 @@ import Feed from '../components/community/Feed';
 import Columns from '../components/community/Columns';
 import Review from '../components/community/Review';
 import TabMenu from '../components/common/TabMenu';
-import Feather from 'react-native-vector-icons/Feather';
+import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
+
 
 const CommunityScreen = ({navigation}) => {
 
@@ -54,7 +55,6 @@ const CommunityScreen = ({navigation}) => {
 	});
 
 
-
     return (
 	<View>
         <ScrollView contentContainerStyle={gs.screen}>
@@ -66,17 +66,18 @@ const CommunityScreen = ({navigation}) => {
             </View>
 
             <TabMenu onPressHandler={onPressHandler} menuList={['Feed', 'Columns', 'Reviews']} activeTab={activeTabName}/>
-
-            {feedRender && <Feed />}
-            {columnsRender && <Columns />}
-            {reviewsRender && <Review />}
+            <View style={{marginTop:20}}>
+                {feedRender && <Feed />}
+                {columnsRender && <Columns />}
+                {reviewsRender && <Review />}
+            </View>
 
         </ScrollView>
 
 
 
 		<Pressable style={communityDot.addBox} onPress={onBoardAdd}>
-			<Text><Feather name="plus" size={14} color="#fff"/></Text>
+			<Text><FontAwesome6 name='plus' style={communityDot.addBoxFont} /></Text>
 		</Pressable>
 
 	</View>
@@ -98,6 +99,10 @@ const communityDot = StyleSheet.create({
 		borderRadius:50,
 		opacity:100,
 	},
+        addBoxFont: {
+        color: 'white',
+        fontSize: 14
+    },
 });
 
 export default CommunityScreen;
