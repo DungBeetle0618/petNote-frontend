@@ -7,7 +7,7 @@ import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scrollview';
 
 const DismissKeyboardView = ({children, ...props}) => (
   <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-    <KeyboardAwareScrollView {...props} style={props.style}>
+    <KeyboardAwareScrollView {...props} style={props.style} contentContainerStyle={{ flexGrow: 1 }}>
       {children}
     </KeyboardAwareScrollView>
   </TouchableWithoutFeedback>
