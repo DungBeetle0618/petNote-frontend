@@ -8,7 +8,7 @@ const AppointmentCard = ({ data }) => {
     return (
         <View style={styles.card}>
             <View style={styles.row}>
-                <FontAwesome name="hospital-o" size={20} color="#6A4DFF" />
+                <FontAwesome name="hospital-o" size={20} color="#333" />
                 <View style={{ marginLeft: 10 }}>
                     <Text style={styles.hospitalName}>{data.hospital}</Text>
                     <Text style={styles.time}>{data.time}</Text>
@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
     hospitalName: {
         fontSize: 15,
         fontWeight: '700',
-        color: '#4A2EFF',
+        color: '#333',
     },
     time: {
         fontSize: 13,

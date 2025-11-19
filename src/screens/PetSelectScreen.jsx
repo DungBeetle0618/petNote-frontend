@@ -2,7 +2,7 @@
  * 반려동물 관리 화면 
  */
 import React, { useState, useEffect, useRef } from 'react';
-import { View, Text, ScrollView, TouchableOpacity, StyleSheet, FlatList } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, StyleSheet, FlatList, Platform } from 'react-native';
 
 import gs, { COLORS, PX_SIZE } from '../assets/styles/globalStyles';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';

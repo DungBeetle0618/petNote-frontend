@@ -2,7 +2,7 @@
  * 동물 선택 셀렉트박스 컴포넌트
  */
 import React, { useState, useEffect, useRef } from 'react';
-import { View, TouchableOpacity, StyleSheet, Image , Text} from 'react-native';
+import { View, TouchableOpacity, StyleSheet, Image , Text, Platform} from 'react-native';
 import gs, { COLORS } from '../../assets/styles/globalStyles';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';

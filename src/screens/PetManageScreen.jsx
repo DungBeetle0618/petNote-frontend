@@ -6,13 +6,14 @@ import {
     ImageBackground,
     Pressable,
     Alert,
-    Dimensions
+    Dimensions,
+    Platform
 } from 'react-native';
 
 import Feather from 'react-native-vector-icons/Feather';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
-import { useAnimatedReaction, runOnJS } from 'react-native-reanimated';
+import { useAnimatedReaction, runOnJS, useSharedValue, useAnimatedScrollHandler } from 'react-native-reanimated';
 import { Tabs } from 'react-native-collapsible-tab-view';
 
 import EBoldTextN from '../components/font/EBoldText_n';
@@ -25,13 +26,10 @@ import ConditionsTab from '../components/petManage/ConditionsTab';
 import ActivityTab from '../components/petManage/ActivityTab';
 
 const HEADER_HEIGHT = 300;
-const {height} = Dimensions.get("window");
 
 const PetManageScreen = ({ route, navigation }) => {
     const { pet } = route.params;
     const [main, setMain] = useState(pet.main);
-
-    console.log(height)
 
     useEffect(() => {
         setMain(pet.main)
@@ -82,7 +80,6 @@ const PetManageScreen = ({ route, navigation }) => {
                     </Text>
                 </View>
             </ImageBackground>
-            {/* <View style={styles.blankView}></View> */}
         </View>
     );
 
@@ -131,8 +128,14 @@ const PetManageScreen = ({ route, navigation }) => {
 
 
     return (
-        <View style={{flex: 1}}>
+        <View style={{ flex: 1 }}>
             <Tabs.Container
+                allowHeaderOverscroll={false}
+                snapThreshold={0.5}
+                gestureHandlerProps={{
+                    activeOffsetX: [-30, 30],  // 좌우 스와이프 민감도
+                    activeOffsetY: [-10, 10],  // 세로 스크롤 부드럽게
+                }}
                 headerHeight={HEADER_HEIGHT}
                 revealHeaderOnScroll={false}
                 headerContainerStyle={{
@@ -152,26 +155,54 @@ const PetManageScreen = ({ route, navigation }) => {
                 containerStyle={{ paddingTop: 0 }}   // ← 중요
             >
                 <Tabs.Tab name="정보">
-                    <Tabs.ScrollView style={[styles.bottomSheet, {paddingHorizontal:0}]} >
+                    <Tabs.ScrollView 
+                        // onScroll={useAnimatedScrollHandler({
+                        //     onScroll: (e) => {
+                        //         scrollY.value = e.contentOffset.y;
+                        //     },
+                        // })}
+                        scrollEventThrottle={16}
+                        style={[styles.bottomSheet, { paddingHorizontal: 0 }]} >
                         <PetInfo data={pet} />
                     </Tabs.ScrollView>
                     <ModiPetInfoBtn />
                 </Tabs.Tab>
 
                 <Tabs.Tab name="건강">
-                    <Tabs.ScrollView style={styles.bottomSheet}>
+                    <Tabs.ScrollView 
+                        // onScroll={useAnimatedScrollHandler({
+                        //     onScroll: (e) => {
+                        //         scrollY.value = e.contentOffset.y;
+                        //     },
+                        // })}
+                        scrollEventThrottle={16}
+                        style={styles.bottomSheet}>
                         <HealthTab />
                     </Tabs.ScrollView>
                 </Tabs.Tab>
 
                 <Tabs.Tab name="식사/배변">
-                    <Tabs.ScrollView style={styles.bottomSheet}>
+                    <Tabs.ScrollView 
+                        // onScroll={useAnimatedScrollHandler({
+                        //     onScroll: (e) => {
+                        //         scrollY.value = e.contentOffset.y;
+                        //     },
+                        // })}
+                        scrollEventThrottle={16}
+                        style={styles.bottomSheet}>
                         <ConditionsTab />
                     </Tabs.ScrollView>
                 </Tabs.Tab>
 
                 <Tabs.Tab name="활동">
-                    <Tabs.ScrollView style={styles.bottomSheet}>
+                    <Tabs.ScrollView 
+                        // onScroll={useAnimatedScrollHandler({
+                        //     onScroll: (e) => {
+                        //         scrollY.value = e.contentOffset.y;
+                        //     },
+                        // })}
+                        scrollEventThrottle={16}
+                        style={styles.bottomSheet}>
                         <ActivityTab />
                     </Tabs.ScrollView>
                 </Tabs.Tab>

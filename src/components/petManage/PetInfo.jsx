@@ -20,7 +20,7 @@ const PetInfo = ({ data }) => {
     //특이사항(예시)
     const contents = '아주 건강하고 똑똑하지만 약간 멍청함\n먹는거 좋아하고 사람이나 다른 강아지들 좋아함\n알러지 없음\n하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하\n하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하';
 
-
+    // const photos = [];
     const photos = Array.from({ length: 9 }).map((_, i) => ({
         id: i.toString(),
         image: `https://picsum.photos/200?random=${i}`, // 예시 이미지
@@ -109,29 +109,40 @@ const PetInfo = ({ data }) => {
                     </Pressable>
                 </View>
 
-                <FlatList
-                    scrollEnabled={false}
-                    data={photos}
-                    numColumns={3}
-                    keyExtractor={(item) => item.id}
-                    columnWrapperStyle={{ gap: 10 }}      // 가로 간격
-                    contentContainerStyle={{ gap: 10 }}   // 세로 간격
-                    renderItem={({ item }) => (
-                        <Pressable
-                            style={({ pressed }) => [
-                                styles.item,
-                                { opacity: pressed ? 0.7 : 1 },
-                            ]}
-                            onPress={() => console.log("Pressed:", item.id)}
-                        >
-                            <Image
-                                source={{ uri: item.image }}
-                                style={styles.image}
-                                resizeMode="cover"
+                {
+                    !photos || photos.length == 0 ?
+                        (
+                            <View style={[styles.photoItem, {width: '30%', height: 'auto'}]}>
+                                <Text style={styles.noPhoto}>사진을 추가해보세요</Text>
+                            </View>
+                        )
+                        :
+                        (
+                            <FlatList
+                                scrollEnabled={false}
+                                data={photos}
+                                numColumns={3}
+                                keyExtractor={(item) => item.id}
+                                columnWrapperStyle={{ gap: 10 }}      // 가로 간격
+                                contentContainerStyle={{ gap: 10 }}   // 세로 간격
+                                renderItem={({ item }) => (
+                                    <Pressable
+                                        style={({ pressed }) => [
+                                            styles.photoItem,
+                                            { opacity: pressed ? 0.7 : 1 },
+                                        ]}
+                                        onPress={() => console.log("Pressed:", item.id)}
+                                    >
+                                        <Image
+                                            source={{ uri: item.image }}
+                                            style={styles.image}
+                                            resizeMode="cover"
+                                        />
+                                    </Pressable>
+                                )}
                             />
-                        </Pressable>
-                    )}
-                />
+                        )
+                }
 
             </View>
 
@@ -152,7 +163,7 @@ const styles = StyleSheet.create({
         marginTop: 25,
     },
     infoBreed: {
-        color: COLORS.textSecondary,
+        color: COLORS.textSecondary, //TODO: 컬러변경
         fontSize: 13,
         marginHorizontal: 10,
     },
@@ -214,17 +225,24 @@ const styles = StyleSheet.create({
 
 
 
-    item: {
+    photoItem: {
         flex: 1,
         aspectRatio: 1,
         borderRadius: 12,
         overflow: 'hidden', // round가 이미지에 적용되도록
         backgroundColor: '#ccc', // 이미지 로딩 전 placeholder
+        justifyContent: 'center'
     },
     image: {
         width: '100%',
         height: '100%',
     },
+    noPhoto: {
+        fontSize: 12,
+        color: 'white',
+        paddingHorizontal: 15,
+        textAlign: 'center',
+    }
 
 });
 
