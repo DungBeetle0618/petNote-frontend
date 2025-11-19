@@ -73,7 +73,7 @@ export default function LoginScreen() {
             <View style={styles.logoCircle}>
               <Ionicons name="heart" size={30} color="#fff" />
             </View>
-            <Text style={styles.title}>PetNote에 오신 걸 환영합니다</Text>
+            <Text style={styles.title}>PETNOTE</Text>
             <Text style={styles.subtitle}>반려동물 케어 동반자</Text>
           </View>
 
@@ -132,28 +132,31 @@ export default function LoginScreen() {
             </TouchableOpacity>
 
             {/* 소셜 로그인 구분선 */}
-            <View style={styles.hr} />
-            <Text style={styles.socialTitle}>또는 소셜 계정으로 계속하기</Text>
-
+            <View style={styles.snsContainer}>
+              <View style={styles.snsLine}></View>
+                <Text style={styles.snsText}>SNS 계정으로 로그인</Text>
+              <View style={styles.snsLine}></View>
+            </View>
             {/* 카카오 로그인 */}
             <TouchableOpacity
-              style={styles.kakaoBtn}
+              style={styles.socialBtn}
               onPress={onKakaoLogin}
-              activeOpacity={0.9}
             >
               <Image
-                source={require('../assets/images/icon/login/kakao_login_large_wide.png')}
-                style={styles.kakaoImg}
-                resizeMode="contain"
+                source={require('../assets/images/icon/login/kakao_login_btn.png')}
+                style={styles.socialBtnImg}
+                resizeMode="stretch"
               />
             </TouchableOpacity>
 
             {/* 네이버 로그인 */}
-            <TouchableOpacity style={styles.naverBtn} onPress={onNaverLogin} activeOpacity={0.9}>
+            <TouchableOpacity 
+              style={styles.socialBtn}
+              onPress={onNaverLogin}>
               <Image
-                source={require('../assets/images/icon/login/naver_logo.png')}
-                style={styles.kakaoImg}
-                resizeMode="contain"
+                source={require('../assets/images/icon/login/naver_login_btn.png')}
+                style={styles.socialBtnImg}
+                resizeMode="stretch"
               />
             </TouchableOpacity>
 
@@ -181,6 +184,36 @@ export default function LoginScreen() {
 }
 
 const styles = StyleSheet.create({
+  snsContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: 20
+  },
+
+  snsLine: {
+    flex: 1,
+    height: 1,
+    backgroundColor: '#ccc', // 선 색상
+  },
+
+  snsText: {
+    marginHorizontal: 10,
+    color: '#999',
+    fontSize: 14,
+  },
+
+  socialBtn: {
+    width: '70%',
+    height: 50,
+    marginBottom: 12, // 버튼 사이 간격
+    marginLeft: 50
+  },
+
+  socialBtnImg: {
+    width: '100%',
+    height: '100%',
+  },
+
   safe: { flex: 1, backgroundColor: COLORS.bg },
   flex: { flex: 1 },
   container: { flex: 1, alignItems: 'center', paddingHorizontal: 20, backgroundColor: COLORS.bg },
