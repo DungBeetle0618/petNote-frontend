@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react'
-import { Pressable, ScrollView } from 'react-native';
+import { Image, Pressable, ScrollView } from 'react-native';
 import { View, Text, StyleSheet, Dimensions } from 'react-native'
 import ImagePicker from 'react-native-image-crop-picker';
 import ImageResizer from 'react-native-image-resizer';
@@ -13,29 +13,21 @@ const CommunityAdd = () => {
 
   usePermissions();
 
-  const [image, setImage] = useState("");
-  const [preview, setPreview] = useState();
+  const [image, setImage] = useState([]);
+  const [preview, setPreview] = useState([]);
 
-  const onResponse = useCallback(async response => {
-    setPreview({uri: `data:${response.mime};base64,${response.data}`});
-    const orientation = response.exif.Orientation;
-    console.log('orientation', orientation);
-    return ImageResizer.createResizedImage(
-      response.path,
-      600,
-      600,
-      response.mime.includes('jpeg') ? 'JPEG' : 'PNG',
-      100,
-      0,
-    ).then(r => {
-      console.log(r.uri, r.name);
-      setImage({
-        uri: r.uri,
-        name: r.name,
-        type: response.mime,
-      });
-    });
-  }, []);
+  const onResponse = useCallback(async (response) => {
+	const list = Array.isArray(response) ? response : [response];
+
+	const previewList = list.map(img => ({
+	uri: `data:${img.mime};base64,${img.data}`,
+	}));
+	setPreview(previewList);
+	console.log(previewList);
+
+
+	}, []);
+
 
 
   const onChangeFile = useCallback(() => {
@@ -53,7 +45,18 @@ const CommunityAdd = () => {
 	<DismissKeyboardView style={{backgroundColor:'#fff', position:'relative', flex:1}}>
 		<View style={{flex:1}}>
 			<Pressable style={styles.preview} onPress={onChangeFile}>
-				{preview ? <Image style={styles.previewImage} source={preview}/> : <Text>클릭해서 이미지를 업로드하세요. </Text>}
+				{
+					preview.length === 0  ?
+						<Text>클릭해서 이미지를 업로드하세요. </Text>
+						: 
+						preview.map((item, index) => (
+						<Image
+							key={index}
+							source={{ uri: item.uri }}
+							style={styles.previewImage}
+						/>
+					))
+				}
 			</Pressable>
 			<View style={styles.textInputWrapper}>
 				<TextInput style={styles.textInput} placeholder='문구를 작성하거나 설문을 추가하세요..' multiline ></TextInput>
@@ -85,7 +88,8 @@ const styles = StyleSheet.create({
   },
   previewImage: {
     resizeMode: 'contain',
-    height:'100%'
+    height:'100%',
+    width:'100%',
   },
   textInputWrapper: {
     width: Dimensions.get('window').width - 40,
