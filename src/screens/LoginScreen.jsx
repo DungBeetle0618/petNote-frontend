@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import {
   View, Text, TextInput, TouchableOpacity, StyleSheet,
-  KeyboardAvoidingView, Platform, StatusBar, Alert, Image
+  KeyboardAvoidingView, Platform, StatusBar, Alert, Image,
 } from 'react-native';
 import { loginWithKakaoAccount as KaKaoLogin , login as KaKaoLoginWeb } from "@react-native-seoul/kakao-login";
 import NaverLogin from '@react-native-seoul/naver-login';
@@ -30,13 +30,21 @@ const SIZES = { radiusLg: 20, radiusXl: 24 };
 
 export default function LoginScreen() {
   const navigation = useNavigation();
-  const { signIn, socialLoginKakao } = useAuth();
+  const { signIn, socialLoginKakao, socialLoginNaver } = useAuth();
   const [userId, setUserId] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [helpOpen, setHelpOpen] = useState(false);
 
-  
+  const naverLoginConfig = { 
+    appName: "PetNote",
+    consumerKey: "ofddJH526zwmEwSowGKP",
+    consumerSecret : "rIAvtVXITB",
+    serviceUrlSchemeIOS : "petnote"
+  }
+
+  NaverLogin.initialize(naverLoginConfig)
+
   const onLogin = async () => {
       if (!userId.trim() || !password) {
         Alert.alert('입력 확인', '아이디와 비밀번호를 입력해 주세요.');
@@ -49,7 +57,6 @@ export default function LoginScreen() {
       }
   };
 
-  // 소셜 로그인 (실연동 전 임시)
   const onKakaoLogin = async () => {
     try {
       const  { accessToken } = await KaKaoLoginWeb();
@@ -58,9 +65,18 @@ export default function LoginScreen() {
       console.log(e);
     }
   };
-  const onNaverLogin = () => {
-    // TODO: 실제 OAuth 연동
-    Alert.alert('네이버 로그인', '네이버 로그인 플로우를 연결하세요.');
+  const onNaverLogin = async () => {
+    try{
+      const { successResponse, failureResponse } = await NaverLogin.login();
+      console.log(successResponse)
+      console.log(successResponse.accessToken)
+      const naverLogin = await socialLoginNaver(successResponse.accessToken);
+    } catch (e) {
+      console.log(e)
+    }
+
+    
+    
   };
 
   return (

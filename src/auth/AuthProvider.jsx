@@ -4,7 +4,7 @@ import { api } from '../net/api';
 import { saveAccessToken, getAccessToken, clearAccessToken } from '../secure/tokenStorage';
 
 const AuthContext = createContext(null);
-const DEV_BYPASS_AUTH = __DEV__ && true;
+const DEV_BYPASS_AUTH = __DEV__ && false;
 export function AuthProvider({ children }) {
   const [state, setState] = useState('loading'); // 'loading' | 'authenticated' | 'unauthenticated'
 
@@ -31,15 +31,18 @@ export function AuthProvider({ children }) {
   }, []);
 
     const socialLoginKakao = useCallback(async (accessToken) => {
-      const { data } = await api.post('/auth/social/kakao/login', accessToken);
+      const { data } = await api.post('/auth/social/kakao/login', {accessToken});
       await saveAccessToken(data.accessToken);
       setState('authenticated');
       return true;
     }, [])
 
-    const socialLoginNaver = () => {
-
-    }
+    const socialLoginNaver = useCallback(async (accessToken) => {
+      const { data } = await api.post('/auth/social/naver/login', {accessToken});
+      await saveAccessToken(data.accessToken);
+      setState('authenticated');
+      return true;
+    }, [])
 
   const signIn = useCallback(async (userId, password) => {
     try {
