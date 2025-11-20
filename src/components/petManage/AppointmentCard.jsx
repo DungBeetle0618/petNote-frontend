@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import gs, { COLORS } from '../../assets/styles/globalStyles';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
+import { ImageBackground } from 'react-native/types_generated/index';
 
 const AppointmentCard = ({ data }) => {
     
     return (
         <View style={styles.card}>
             <View style={styles.row}>
-                <FontAwesome name="hospital-o" size={20} color="#333" />
+                {/* <FontAwesome6 name="hospital" size={20} color="#333" /> */}
+                <Image source={{uri: 'https://picsum.photos/id/237/200/300'}} style={{width: 50, height: 50, backgroundColor: '#eee', borderRadius: 25}} />
                 <View style={{ marginLeft: 10 }}>
                     <Text style={styles.hospitalName}>{data.hospital}</Text>
                     <Text style={styles.time}>{data.time}</Text>

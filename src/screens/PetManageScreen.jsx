@@ -35,9 +35,15 @@ const PetManageScreen = ({ route, navigation }) => {
         setMain(pet.main)
     }, [pet])
 
+    // const PetInfoContent = (props) => <PetInfo {...props} />;
+    // const HealthTabContent = (props) => <HealthTab {...props} />;
+    // const ConditionsTabContent = (props) => <ConditionsTab {...props} />;
+    // const ActivityTabContent = (props) => <ActivityTab {...props} />;
+
+
     /**
-         * 대표설정
-         */
+     * 대표설정
+     */
     function setMainPet(main) {
 
         Alert.alert(
@@ -130,20 +136,17 @@ const PetManageScreen = ({ route, navigation }) => {
     return (
         <View style={{ flex: 1 }}>
             <Tabs.Container
+                lazy={false}
+                pagerProps={{
+                    offscreenPageLimit: 4    // 탭 개수만큼
+                }}
                 allowHeaderOverscroll={false}
                 snapThreshold={0.5}
                 gestureHandlerProps={{
-                    activeOffsetX: [-30, 30],  // 좌우 스와이프 민감도
+                    activeOffsetX: [-50, 50],  // 좌우 스와이프 민감도
                     activeOffsetY: [-10, 10],  // 세로 스크롤 부드럽게
                 }}
-                headerHeight={HEADER_HEIGHT}
                 revealHeaderOnScroll={false}
-                headerContainerStyle={{
-                    shadowColor: 'transparent',
-                    shadowOpacity: 0,
-                    shadowRadius: 0,
-                    elevation: 0,
-                }}
                 renderHeader={() => <Header pet={pet} navigation={navigation} />}
                 renderTabBar={(props) => (
                     <CustomTabBar
@@ -152,29 +155,20 @@ const PetManageScreen = ({ route, navigation }) => {
                         onTabPress={props.onTabPress}
                     />
                 )}
-                containerStyle={{ paddingTop: 0 }}   // ← 중요
+                containerStyle={{ paddingTop: 0 }}   
             >
                 <Tabs.Tab name="정보">
                     <Tabs.ScrollView 
-                        // onScroll={useAnimatedScrollHandler({
-                        //     onScroll: (e) => {
-                        //         scrollY.value = e.contentOffset.y;
-                        //     },
-                        // })}
                         scrollEventThrottle={16}
                         style={[styles.bottomSheet, { paddingHorizontal: 0 }]} >
                         <PetInfo data={pet} />
                     </Tabs.ScrollView>
+                    <PetInfo data={pet} />
                     <ModiPetInfoBtn />
                 </Tabs.Tab>
 
                 <Tabs.Tab name="건강">
                     <Tabs.ScrollView 
-                        // onScroll={useAnimatedScrollHandler({
-                        //     onScroll: (e) => {
-                        //         scrollY.value = e.contentOffset.y;
-                        //     },
-                        // })}
                         scrollEventThrottle={16}
                         style={styles.bottomSheet}>
                         <HealthTab />
@@ -183,11 +177,6 @@ const PetManageScreen = ({ route, navigation }) => {
 
                 <Tabs.Tab name="식사/배변">
                     <Tabs.ScrollView 
-                        // onScroll={useAnimatedScrollHandler({
-                        //     onScroll: (e) => {
-                        //         scrollY.value = e.contentOffset.y;
-                        //     },
-                        // })}
                         scrollEventThrottle={16}
                         style={styles.bottomSheet}>
                         <ConditionsTab />
@@ -195,12 +184,7 @@ const PetManageScreen = ({ route, navigation }) => {
                 </Tabs.Tab>
 
                 <Tabs.Tab name="활동">
-                    <Tabs.ScrollView 
-                        // onScroll={useAnimatedScrollHandler({
-                        //     onScroll: (e) => {
-                        //         scrollY.value = e.contentOffset.y;
-                        //     },
-                        // })}
+                    <Tabs.ScrollView
                         scrollEventThrottle={16}
                         style={styles.bottomSheet}>
                         <ActivityTab />
@@ -220,9 +204,11 @@ const styles = StyleSheet.create({
         backgroundColor: '#ececec'
     },
     bgImage: {
-        height: HEADER_HEIGHT,
+        // height: HEADER_HEIGHT,
+        flex: 1,
         width: '100%',
-        justifyContent: 'flex-end'
+        justifyContent: 'flex-end',
+        overflow: 'hidden'
     },
     backBtn: {
         position: 'absolute',
@@ -251,8 +237,6 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         padding: 20,
         paddingTop: 75,
-        // borderTopLeftRadius: 20,
-        // borderTopRightRadius: 20,
     },
     tabBarWrapper: {
         position: 'absolute',
