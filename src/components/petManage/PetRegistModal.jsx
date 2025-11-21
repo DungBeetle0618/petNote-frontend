@@ -19,45 +19,53 @@ import {
 import DatePicker from 'react-native-date-picker';
 import { MODAL_COLORS } from '../../assets/styles/globalStyles';
 
-export default function PetRegistModal({ visible, onClose, onSubmit }) {
+export default function PetRegistModal({ visible, onClose, onSubmit, modiData }) {
     const [data, setData] = useState({
-        petName: '',
+        name: '',
         age: '',
         birth: '',
         birthKnowYn: false,
         gender: '',
         neuterYn: '',
-        breedType1: '',
-        breedType2: '',
+        species: '',
+        speciesCode: '',
         breed: '',
+        breedCode: '',
+        breedEtc: '',
         remark: '',
         profileImg: null,
+        length: ''
     });
 
     useEffect(() => {
         if (!visible) {
             setData({
-                petName: '',
+                name: '',
                 age: '',
                 birth: '',
                 birthKnowYn: false,
                 gender: '',
                 neuterYn: '',
-                breedType1: '',
-                breedType2: '',
+                species: '',
                 breed: '',
+                breedEtc: '',
                 remark: '',
                 profileImg: null,
+                length: ''
             });
             setDisabled(false);
             setShowDatePicker(false);
+        } else {
+            if(modiData) {
+                setData(modiData);
+            }
         }
     }, [visible]);
 
     const breedOptions = {
-        DOG: [{code: '0000', title: '말티즈'}, {code: '0001', title: '푸들'}, {code: '0002', title: '시바견'}, {code: '0003', title: '리트리버'}, {code: '0004', title: '시츄'}, {code: '0005', title: '포메라니안'}, {code: '0006', title: '기타'},],
-        CAT: [{code: '0000', title: '러시안블루'}, {code: '0001', title: '페르시안'}, {code: '0002', title: '먼치킨'}, {code: '0003', title: '스코티시폴드'}, {code: '0004', title: '기타'}],
-        ETC: [{code: '0000', title: '기타'}],
+        DOG: [{code: '0000', title: '말티즈'}, {code: '0001', title: '푸들'}, {code: '0002', title: '시바견'}, {code: '0003', title: '리트리버'}, {code: '0004', title: '시츄'}, {code: '0005', title: '포메라니안'}, {code: '9999', title: '기타'},],
+        CAT: [{code: '0000', title: '러시안블루'}, {code: '0001', title: '페르시안'}, {code: '0002', title: '먼치킨'}, {code: '0003', title: '스코티시폴드'}, {code: '0004', title: '코리안 숏헤어'}, {code: '9999', title: '기타'}],
+        ETC: [{code: '9999', title: '기타'}],
     };
 
     const [showDatePicker, setShowDatePicker] = useState(false);
@@ -67,15 +75,15 @@ export default function PetRegistModal({ visible, onClose, onSubmit }) {
     const handleChange = (key, value) => setData(prev => ({ ...prev, [key]: value }));
 
     const handleSubmit = () => {
-        if (!data.petName.trim()) return alert('이름을 입력해주세요 🐶');
+        if (!data.name.trim()) return alert('이름을 입력해주세요 🐶');
         onSubmit(data);
         onClose();
     };
 
     return (
-        <BottomModal visible={visible} onClose={onClose} title="🐾 동물 정보 등록" maxHeight='85%'>
+        <BottomModal visible={visible} onClose={onClose} title="🐾 동물 정보" maxHeight='85%'>
             <View style={{paddingHorizontal: 24, paddingBottom: 24}}>
-                <AppInput label="이름" value={data.petName} onChangeText={v => handleChange('petName', v)} />
+                <AppInput label="이름" value={data.name} onChangeText={v => handleChange('name', v)} />
 
                 <AppInput
                     label="나이"
@@ -146,6 +154,12 @@ export default function PetRegistModal({ visible, onClose, onSubmit }) {
                     }
                 </View>
 
+                <AppInput 
+                    label="몸길이"
+                    value={data.length}
+                    onChangeText={v => handleChange('length', v)}
+                />
+
                 <AppSelect
                     label="성별"
                     options={[{code: 'M', title: '남'}, {code: 'F', title: '여'}]}
@@ -163,25 +177,25 @@ export default function PetRegistModal({ visible, onClose, onSubmit }) {
                 <AppSelect
                     label="품종1 (동물종)"
                     options={[{code: 'DOG', title: '강아지'}, {code: 'CAT', title: '고양이'}, {code: 'ETC', title: '기타'}]}
-                    selected={data.breedType1}
-                    onSelect={(v) => handleChange('breedType1', v)}
+                    selected={data.speciesCode}
+                    onSelect={(v) => handleChange('speciesCode', v)}
                 />
 
-                {data.breedType1 && (
+                {data.speciesCode && (
                     <AppDropdown
                         label="품종2 (세부종)"
-                        data={breedOptions[data.breedType1].map(o => ({ label: o.title, value: o.code }))}
-                        value={data.breedType2}
-                        onChange={(v) => handleChange('breedType2', v)}
+                        data={breedOptions[data.speciesCode].map(o => ({ label: o.title, value: o.code }))}
+                        value={data.breedCode}
+                        onChange={(v) => handleChange('breedCode', v)}
                         isSearch={true}
                         />
                 )}
 
-                {data.breedType2 === '기타' && (
+                {data.breedCode === '9999' && (
                     <AppInput
                         label="기타 품종"
-                        value={data.breed}
-                        onChangeText={(v) => handleChange('breed', v)}
+                        value={data.breedEtc}
+                        onChangeText={(v) => handleChange('breedEtc', v)}
                     />
                 )}
 
@@ -197,7 +211,7 @@ export default function PetRegistModal({ visible, onClose, onSubmit }) {
                     onChange={(v) => handleChange('profileImg', v)}
                 />
 
-                <AppButton title="등록하기" onPress={handleSubmit} />
+                <AppButton title={modiData ? '수정하기' : '등록하기'} onPress={handleSubmit} />
                 <TouchableOpacity style={styles.cancelBtn} onPress={onClose}>
                     <Text style={styles.cancelText}>닫기</Text>
                 </TouchableOpacity>

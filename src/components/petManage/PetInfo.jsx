@@ -13,14 +13,18 @@ import { launchImageLibrary } from 'react-native-image-picker';
 import EBoldTextN from '../font/EBoldText_n';
 import LightTextN from '../font/LightText_n';
 import ChevronIcon from '../common/ChevronIcon';
+import PetRegistModal from './PetRegistModal';
 
 const PetInfo = ({ data }) => {
+    const [petInfo, setPetInfo] = useState(data);
     const [expanded, setExpanded] = useState(false);
     const [showMore, setShowMore] = useState(false);
     const [main, setMain] = useState(data?.main);
 
+    const [petModalVisible, setPetModalVisible] = useState(false);
+
     useEffect(() => {
-        setMain(data.main)
+        setMain(petInfo.main)
     }, [data?.main])
 
     /**
@@ -40,10 +44,13 @@ const PetInfo = ({ data }) => {
                 onDismiss: () => { }
             }
         )
-    }
+    }    
 
     //특이사항(예시)
-    const contents = '아주 건강하고 똑똑하지만 약간 멍청함\n먹는거 좋아하고 사람이나 다른 강아지들 좋아함\n알러지 없음\n하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하\n하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하';
+    const handleSubmit = data => {
+        setPetInfo(data)
+        setPetModalVisible(false);
+    };
 
     // const photos = [];
     const photos = Array.from({ length: 9 }).map((_, i) => ({
@@ -60,8 +67,18 @@ const PetInfo = ({ data }) => {
     return (
         <View style={{ flex: 1 }}>
             <View style={styles.info}>
-                <EBoldTextN style={styles.infoName}>{data.name}</EBoldTextN>
-                <LightTextN style={styles.infoBreed}><Material name="pets" /> {data.species} • {data.breed}</LightTextN>
+                <View style={styles.nameBox}>
+                    <View>
+                        <EBoldTextN style={styles.infoName}>{petInfo.name}</EBoldTextN>
+                        <LightTextN style={styles.infoBreed}><Material name="pets" /> {petInfo.species} • {petInfo.breed}</LightTextN>
+                    </View>
+                    <Pressable style={styles.setMainBtn} onPress={() => setMainPet(main)} activeOpacity={1}>
+                        {
+                            main ? <FontAwesome name='star' style={{ fontSize: 20, color: 'white' }} />
+                                : <FontAwesome name='star-o' style={{ fontSize: 20, color: 'white' }} />
+                        }
+                    </Pressable>
+                </View>
 
                 <ScrollView
                     horizontal
@@ -70,30 +87,30 @@ const PetInfo = ({ data }) => {
                 >
                     <View style={[styles.infoSub, { width: 100 }]}>
                         <EBoldTextN style={{ fontSize: 12, marginBottom: 6 }}>생일</EBoldTextN>
-                        <LightTextN styles={styles.subContent}>{data.birth}</LightTextN>
+                        <LightTextN styles={styles.subContent}>{petInfo.birth}</LightTextN>
                     </View>
                     <View style={styles.infoSub}>
                         <EBoldTextN style={{ fontSize: 12, marginBottom: 6 }}>나이</EBoldTextN>
-                        <LightTextN styles={styles.subContent}>{data.age}</LightTextN>
+                        <LightTextN styles={styles.subContent}>{petInfo.age}살</LightTextN>
                     </View>
                     <View style={[styles.infoSub,]}>
                         <EBoldTextN style={{ fontSize: 12, marginBottom: 6 }}>몸길이</EBoldTextN>
-                        <LightTextN styles={styles.subContent}>300cm</LightTextN>
+                        <LightTextN styles={styles.subContent}>{petInfo.length}cm</LightTextN>
                     </View>
                     <View style={styles.infoSub}>
                         <EBoldTextN style={{ fontSize: 12, marginBottom: 6 }}>성별</EBoldTextN>
-                        <LightTextN styles={styles.subContent}>{data.gender}</LightTextN>
+                        <LightTextN styles={styles.subContent}>{petInfo.gender == 'M' ? '남' : '여'}</LightTextN>
                     </View>
                     <View style={styles.infoSub}>
                         <EBoldTextN style={{ fontSize: 12, marginBottom: 6 }}>중성화</EBoldTextN>
-                        <LightTextN styles={styles.subContent}>Y</LightTextN>
+                        <LightTextN styles={styles.subContent}>{petInfo.neuterYn}</LightTextN>
                     </View>
                 </ScrollView>
 
                 <View style={styles.memo}>
                     <View style={{ flexDirection: 'row', alignItems: 'start', justifyContent: 'space-between' }}>
                         <Text style={{ fontSize: 16, marginBottom: 8, fontWeight: 600 }}>NOTES</Text>
-                        {contents.length > 100 && (
+                        {petInfo.remark.length > 100 && (
                             <TouchableOpacity onPress={() => setExpanded(prev => !prev)} activeOpacity={1} hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}>
                                 <ChevronIcon visible={expanded} size={16} />
                             </TouchableOpacity>
@@ -105,7 +122,7 @@ const PetInfo = ({ data }) => {
                                 key="open"
                                 ellipsizeMode='tail'
                             >
-                                {contents}
+                                {petInfo.remark}
                             </Text>
                         ) : (
                             <Text style={styles.memoContent}
@@ -118,7 +135,7 @@ const PetInfo = ({ data }) => {
                                     }
                                 }}
                             >
-                                {contents}
+                                {petInfo.remark}
                             </Text>
                         )}
                     </TouchableOpacity>
@@ -126,14 +143,8 @@ const PetInfo = ({ data }) => {
 
                 {/* 수정, 대표 선택 */}
                 <View style={styles.modiView}>
-                    <Pressable onPress={() => { alert('수정') }} activeOpacity={1} style={styles.modiBtn}>
+                    <Pressable onPress={() => { setPetModalVisible(true) }} activeOpacity={1} style={styles.modiBtn}>
                         <Text style={styles.modiText}>수정하기  <FontAwesome name="pencil" style={{ fontSize: 12 }} /></Text>
-                    </Pressable>
-                    <Pressable style={styles.setMainBtn} onPress={() => setMainPet(main)} activeOpacity={1}>
-                        {
-                            main ? <FontAwesome name='star' style={{ fontSize: 20, color: 'white' }} />
-                                : <FontAwesome name='star-o' style={{ fontSize: 20, color: 'white' }} />
-                        }
                     </Pressable>
                 </View>
                         
@@ -185,6 +196,7 @@ const PetInfo = ({ data }) => {
 
             </View>
 
+            <PetRegistModal visible={petModalVisible} onClose={() => setPetModalVisible(false)} onSubmit={handleSubmit} modiData={petInfo} />
         </View>
     );
 };
@@ -195,11 +207,18 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         paddingHorizontal: 20
     },
+    nameBox: {
+        flexDirection: 'row', 
+        alignItems: 'flex-start', 
+        justifyContent: 'space-between', 
+        flexWrap:'wrap', 
+        marginTop: 25
+    },
     infoName: {
         fontSize: 20,
         marginBottom: 8,
         marginHorizontal: 10,
-        marginTop: 25,
+        // marginTop: 25,
     },
     infoBreed: {
         color: COLORS.textSecondary, //TODO: 컬러변경
@@ -234,10 +253,10 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        marginTop: 20
+        marginTop: 30
     },
     modiBtn: {
-        width: '82%',
+        width: '100%',
         height: 30,
         backgroundColor: COLORS.primary,
         borderRadius: 10,
@@ -250,9 +269,9 @@ const styles = StyleSheet.create({
         fontWeight: 500
     },
     setMainBtn: {
-        width: 30,
-        height: 30,
-        borderRadius: 30 / 2,
+        width: 40,
+        height: 40,
+        borderRadius: 40 / 2,
         backgroundColor: COLORS.primary,
         alignItems: 'center',
         justifyContent: 'center',

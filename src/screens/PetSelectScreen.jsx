@@ -26,11 +26,12 @@ const PetSelectScreen = () => {
 
 
     //예시데이터
+    const contents = '아주 건강하고 똑똑하지만 약간 멍청함\n먹는거 좋아하고 사람이나 다른 강아지들 좋아함\n알러지 없음\n하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하\n하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하';
     const options = [
-        { no: 1, name: '뭉치', species: '강아지', breed: '노바 스코샤 덕 톨링 리트리버', profile: require('../assets/images/golden_retriever_sample.png'), birth: '2023.12.25', age: '3살', gender: '남', info: '인절미같은 우리집 왕자님' },
-        { no: 2, name: '아치', species: '고양이', breed: '코리안 숏헤어', profile: '', birth: '2023.12.25', age: '3살', gender: '여', info: '혜지씨네 고양이' },
-        { no: 4, name: '흰둥이', species: '강아지', breed: '비숑', profile: require('../assets/images/siro.jpg'), birth: '2023.12.25', age: '3살', gender: '남', main: true, info: '솜사탕' },
-        { no: 3, name: '마루', species: '강아지', breed: '푸들', profile: '', birth: '2023.12.25', age: '3살', gender: '여', info: '마루는 강쥐' },
+        { no: 1, name: '뭉치', speciesCode: 'DOG', species: '강아지', breedCode: '0003', breed: '노바 스코샤 덕 톨링 리트리버', profile: require('../assets/images/golden_retriever_sample.png'), birth: '2023.12.25', age: '3', gender: 'M', info: '인절미같은 우리집 왕자님', neuterYn: 'Y', length: '150', remark: contents },
+        { no: 2, name: '아치', speciesCode: 'CAT', species: '고양이', breedCode: '0004', breed: '코리안 숏헤어', profile: '', birth: '2023.12.25', age: '3', gender: 'F', info: '혜지씨네 고양이', neuterYn: 'Y', length: '80', remark: contents },
+        { no: 4, name: '흰둥이', speciesCode: 'DOG', species: '강아지', breedCode: '0000', breed: '비숑', profile: require('../assets/images/siro.jpg'), birth: '2023.12.25', age: '3', gender: 'M', main: true, info: '솜사탕', neuterYn: 'N', length: '103.4', remark: contents },
+        { no: 3, name: '마루', speciesCode: 'DOG', species: '강아지', breedCode: '0001', breed: '푸들', profile: '', birth: '2023.12.25', age: '3', gender: 'F', info: '마루는 강쥐', neuterYn: 'N', length: '94', remark: contents },
     ];
 
 
