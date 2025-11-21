@@ -29,41 +29,18 @@ const HEADER_HEIGHT = 300;
 
 const PetManageScreen = ({ route, navigation }) => {
     const { pet } = route.params;
-    const [main, setMain] = useState(pet.main);
 
-    useEffect(() => {
-        setMain(pet.main)
-    }, [pet])
+    const [headerHeight, setHeaderHeight] = useState(HEADER_HEIGHT);
 
     // const PetInfoContent = (props) => <PetInfo {...props} />;
     // const HealthTabContent = (props) => <HealthTab {...props} />;
     // const ConditionsTabContent = (props) => <ConditionsTab {...props} />;
     // const ActivityTabContent = (props) => <ActivityTab {...props} />;
 
-
-    /**
-     * 대표설정
-     */
-    function setMainPet(main) {
-
-        Alert.alert(
-            'PetNote',
-            '대표 동물로 설정하시겠습니까?',
-            [
-                { text: '취소', onPress: () => { }, style: 'cancel' },
-                { text: '확인', onPress: () => { setMain(!main) }, style: 'default' },
-            ],
-            {
-                cancelable: true,
-                onDismiss: () => { }
-            }
-        )
-    }
-
     const tabs = ['정보', '건강', '식사/배변', '활동'];
 
     const Header = ({ pet, navigation }) => (
-        <View style={styles.headerImageWrapper}>
+        <View style={styles.headerImageWrapper} onLayout={event => setHeaderHeight(event.nativeEvent.layout.height)}>
             <ImageBackground
                 source={pet.profile}
                 resizeMode="cover"
@@ -116,21 +93,7 @@ const PetManageScreen = ({ route, navigation }) => {
         );
     };
 
-    const ModiPetInfoBtn = () => {
-        return (
-            <View style={styles.modiView}>
-                <Pressable onPress={() => { alert('수정') }} activeOpacity={1} style={styles.modiBtn}>
-                    <Text style={styles.modiText}>수정하기  <FontAwesome name="pencil" style={{ fontSize: 16 }} /></Text>
-                </Pressable>
-                <Pressable style={styles.setMainBtn} onPress={() => setMainPet(main)} activeOpacity={1}>
-                    {
-                        main ? <FontAwesome name='star' style={{ fontSize: 20, color: 'white' }} />
-                            : <FontAwesome name='star-o' style={{ fontSize: 20, color: 'white' }} />
-                    }
-                </Pressable>
-            </View>
-        )
-    }
+
 
 
     return (
@@ -146,6 +109,7 @@ const PetManageScreen = ({ route, navigation }) => {
                     activeOffsetX: [-50, 50],  // 좌우 스와이프 민감도
                     activeOffsetY: [-10, 10],  // 세로 스크롤 부드럽게
                 }}
+                headerHeight={headerHeight}
                 revealHeaderOnScroll={false}
                 renderHeader={() => <Header pet={pet} navigation={navigation} />}
                 renderTabBar={(props) => (
@@ -155,20 +119,18 @@ const PetManageScreen = ({ route, navigation }) => {
                         onTabPress={props.onTabPress}
                     />
                 )}
-                containerStyle={{ paddingTop: 0 }}   
+                containerStyle={{ paddingTop: 0 }}
             >
                 <Tabs.Tab name="정보">
-                    <Tabs.ScrollView 
+                    <Tabs.ScrollView
                         scrollEventThrottle={16}
                         style={[styles.bottomSheet, { paddingHorizontal: 0 }]} >
                         <PetInfo data={pet} />
                     </Tabs.ScrollView>
-                    <PetInfo data={pet} />
-                    <ModiPetInfoBtn />
                 </Tabs.Tab>
 
                 <Tabs.Tab name="건강">
-                    <Tabs.ScrollView 
+                    <Tabs.ScrollView
                         scrollEventThrottle={16}
                         style={styles.bottomSheet}>
                         <HealthTab />
@@ -176,7 +138,7 @@ const PetManageScreen = ({ route, navigation }) => {
                 </Tabs.Tab>
 
                 <Tabs.Tab name="식사/배변">
-                    <Tabs.ScrollView 
+                    <Tabs.ScrollView
                         scrollEventThrottle={16}
                         style={styles.bottomSheet}>
                         <ConditionsTab />
@@ -201,14 +163,15 @@ const styles = StyleSheet.create({
         height: HEADER_HEIGHT,
         width: '100%',
         position: 'relative',
-        backgroundColor: '#ececec'
+        backgroundColor: '#ececec',
+        overflow: 'hidden'
     },
     bgImage: {
         // height: HEADER_HEIGHT,
         flex: 1,
         width: '100%',
         justifyContent: 'flex-end',
-        overflow: 'hidden'
+        // overflow: 'hidden'
     },
     backBtn: {
         position: 'absolute',
@@ -244,7 +207,6 @@ const styles = StyleSheet.create({
         left: 20,
         right: 20,
 
-        // height: 48,
         borderRadius: 24,
         backgroundColor: '#fff',
 
@@ -262,41 +224,8 @@ const styles = StyleSheet.create({
             },
         }),
 
-        zIndex: 9999,
+        // zIndex: 9999,
         overflow: 'hidden',
-    },
-
-    modiView: {
-        position: 'absolute',
-        bottom: 20,
-        left: 0,
-        right: 0,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        zIndex: 999,
-        paddingHorizontal: 20
-    },
-    modiBtn: {
-        width: '82%',
-        height: 50,
-        backgroundColor: COLORS.primary,
-        borderRadius: 10,
-        paddingBlock: 12
-    },
-    modiText: {
-        color: '#fff',
-        textAlign: 'center',
-        fontSize: 16,
-        fontWeight: 500
-    },
-    setMainBtn: {
-        width: 50,
-        height: 50,
-        borderRadius: 50 / 2,
-        backgroundColor: COLORS.primary,
-        alignItems: 'center',
-        justifyContent: 'center',
     },
 
 });

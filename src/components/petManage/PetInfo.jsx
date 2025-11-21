@@ -2,10 +2,11 @@
  * 동물정보 카드
  */
 import React, { useState, useEffect, useRef } from 'react';
-import { View, TouchableOpacity, StyleSheet, Image, ScrollView, Text, FlatList, Pressable } from 'react-native';
+import { View, TouchableOpacity, StyleSheet, Image, ScrollView, Text, FlatList, Pressable, Alert } from 'react-native';
 import gs, { COLORS } from '../../assets/styles/globalStyles';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Material from 'react-native-vector-icons/MaterialIcons';
 import { launchImageLibrary } from 'react-native-image-picker';
 
@@ -16,6 +17,30 @@ import ChevronIcon from '../common/ChevronIcon';
 const PetInfo = ({ data }) => {
     const [expanded, setExpanded] = useState(false);
     const [showMore, setShowMore] = useState(false);
+    const [main, setMain] = useState(data?.main);
+
+    useEffect(() => {
+        setMain(data.main)
+    }, [data?.main])
+
+    /**
+     * 대표설정
+     */
+    function setMainPet(main) {
+
+        Alert.alert(
+            'PetNote',
+            '대표 동물로 설정하시겠습니까?',
+            [
+                { text: '취소', onPress: () => { }, style: 'cancel' },
+                { text: '확인', onPress: () => { setMain(!main) }, style: 'default' },
+            ],
+            {
+                cancelable: true,
+                onDismiss: () => { }
+            }
+        )
+    }
 
     //특이사항(예시)
     const contents = '아주 건강하고 똑똑하지만 약간 멍청함\n먹는거 좋아하고 사람이나 다른 강아지들 좋아함\n알러지 없음\n하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하\n하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하';
@@ -98,6 +123,20 @@ const PetInfo = ({ data }) => {
                         )}
                     </TouchableOpacity>
                 </View>
+
+                {/* 수정, 대표 선택 */}
+                <View style={styles.modiView}>
+                    <Pressable onPress={() => { alert('수정') }} activeOpacity={1} style={styles.modiBtn}>
+                        <Text style={styles.modiText}>수정하기  <FontAwesome name="pencil" style={{ fontSize: 12 }} /></Text>
+                    </Pressable>
+                    <Pressable style={styles.setMainBtn} onPress={() => setMainPet(main)} activeOpacity={1}>
+                        {
+                            main ? <FontAwesome name='star' style={{ fontSize: 20, color: 'white' }} />
+                                : <FontAwesome name='star-o' style={{ fontSize: 20, color: 'white' }} />
+                        }
+                    </Pressable>
+                </View>
+                        
 
             </View>
 
@@ -192,26 +231,31 @@ const styles = StyleSheet.create({
         color: '#555',
     },
     modiView: {
-        position: 'absolute',
-        bottom: 200,
-        left: 10,
-        right: 10,
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
+        marginTop: 20
     },
     modiBtn: {
-        width: '80%',
-        height: 40,
+        width: '82%',
+        height: 30,
         backgroundColor: COLORS.primary,
         borderRadius: 10,
-        paddingBlock: 8
+        paddingBlock: 4
     },
     modiText: {
         color: '#fff',
         textAlign: 'center',
-        fontSize: 16,
+        fontSize: 14,
         fontWeight: 500
+    },
+    setMainBtn: {
+        width: 30,
+        height: 30,
+        borderRadius: 30 / 2,
+        backgroundColor: COLORS.primary,
+        alignItems: 'center',
+        justifyContent: 'center',
     },
 
     albumView: {
@@ -219,7 +263,7 @@ const styles = StyleSheet.create({
         marginTop: 60,
         paddingHorizontal: 30,
         paddingTop: 20,
-        paddingBlock: 200,
+        paddingBottom: 120,
         backgroundColor: '#efefef'
     },
 
