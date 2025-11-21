@@ -54,7 +54,6 @@ const style = StyleSheet.create({
   },
 
   profileInfo: {
-    flexDirection
   }
 
 })
