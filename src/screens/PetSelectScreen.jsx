@@ -22,8 +22,6 @@ const PetSelectScreen = () => {
     const handleSubmit = data => {
         console.log('등록된 동물 정보:', data);
         setPetModalVisible(false);
-
-        //테스트
     };
 
 

@@ -18,8 +18,38 @@ import {
 } from '../common';
 import DatePicker from 'react-native-date-picker';
 import { MODAL_COLORS } from '../../assets/styles/globalStyles';
+import { getCommonCode } from '../../api/common';
 
 export default function PetRegistModal({ visible, onClose, onSubmit, modiData }) {
+    const [speciesOptions, setSpeciesOptions] = useState([]);
+    const [breedOptions, setBreedOptions] = useState([]);
+    
+    // 종 구분
+    const getSpeciesType = async() => {
+        try {
+            const {data} = await getCommonCode('BREED_TYPE', 'SPECIES');
+            if(data.result === 'SUCCESS') {
+                setSpeciesOptions(data.list);
+            }
+            console.log(speciesOptions);
+        } catch(e) {
+            console.log(e);
+        }
+    }
+    
+    // 품종 구분
+    const getBreedType = async(species) => {
+        try {
+            const {data} = await getCommonCode('BREED_TYPE', species);
+            if(data.result === 'SUCCESS') {
+                setBreedOptions(data.list);
+            }
+            console.log(breedOptions);
+        } catch(e) {
+            console.log(e);
+        }
+    }
+
     const [data, setData] = useState({
         name: '',
         age: '',
@@ -56,17 +86,22 @@ export default function PetRegistModal({ visible, onClose, onSubmit, modiData })
             setDisabled(false);
             setShowDatePicker(false);
         } else {
+            getSpeciesType();
             if(modiData) {
                 setData(modiData);
             }
         }
     }, [visible]);
 
-    const breedOptions = {
-        DOG: [{code: '0000', title: '말티즈'}, {code: '0001', title: '푸들'}, {code: '0002', title: '시바견'}, {code: '0003', title: '리트리버'}, {code: '0004', title: '시츄'}, {code: '0005', title: '포메라니안'}, {code: '9999', title: '기타'},],
-        CAT: [{code: '0000', title: '러시안블루'}, {code: '0001', title: '페르시안'}, {code: '0002', title: '먼치킨'}, {code: '0003', title: '스코티시폴드'}, {code: '0004', title: '코리안 숏헤어'}, {code: '9999', title: '기타'}],
-        ETC: [{code: '9999', title: '기타'}],
-    };
+    useEffect(()=>{
+        handleChange('breedCode', '');
+        if (!data.speciesCode) {
+            setBreedOptions([]);
+            return;
+        }
+        getBreedType(data.speciesCode);
+    }, [data.speciesCode])
+
 
     const [showDatePicker, setShowDatePicker] = useState(false);
     const [date, setDate] = useState(data.birth ? new Date(data.birth) : new Date());
@@ -162,21 +197,21 @@ export default function PetRegistModal({ visible, onClose, onSubmit, modiData })
 
                 <AppSelect
                     label="성별"
-                    options={[{code: 'M', title: '남'}, {code: 'F', title: '여'}]}
+                    options={[{code: 'M', korName: '남'}, {code: 'F', korName: '여'}]}
                     selected={data.gender}
                     onSelect={(v) => handleChange('gender', v)}
                 />
 
                 <AppSelect
                     label="중성화 여부"
-                    options={[{code: 'Y', title: '예'}, {code: 'N', title: '아니오'}]}
+                    options={[{code: 'Y', korName: '예'}, {code: 'N', korName: '아니오'}]}
                     selected={data.neuterYn}
                     onSelect={(v) => handleChange('neuterYn', v)}
                 />
 
                 <AppSelect
                     label="품종1 (동물종)"
-                    options={[{code: 'DOG', title: '강아지'}, {code: 'CAT', title: '고양이'}, {code: 'ETC', title: '기타'}]}
+                    options={speciesOptions}
                     selected={data.speciesCode}
                     onSelect={(v) => handleChange('speciesCode', v)}
                 />
@@ -184,7 +219,7 @@ export default function PetRegistModal({ visible, onClose, onSubmit, modiData })
                 {data.speciesCode && (
                     <AppDropdown
                         label="품종2 (세부종)"
-                        data={breedOptions[data.speciesCode].map(o => ({ label: o.title, value: o.code }))}
+                        data={breedOptions.map(o => ({ label: o.korName, value: o.code }))}
                         value={data.breedCode}
                         onChange={(v) => handleChange('breedCode', v)}
                         isSearch={true}

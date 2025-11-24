@@ -16,7 +16,7 @@ export default function AppSelect({ label, options, selected, onSelect }) {
             <Text
               style={[styles.selectText, selected === o.code && styles.selectTextActive]}
             >
-              {o.title}
+              {o.korName}
             </Text>
           </TouchableOpacity>
         ))}
