@@ -4,7 +4,7 @@
 import React, { useState } from 'react'
 import { View, Text, ScrollView, Dimensions, StyleSheet } from 'react-native';
 
-import Slider from "../components/Slider";
+import Slider from "../components/home/Slider";
 import EBoldText from '../components/font/EBoldText';
 import BoldText from '../components/font/BoldText';
 import RegularText from '../components/font/RegularText';

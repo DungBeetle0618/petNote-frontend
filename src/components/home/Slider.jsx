@@ -4,7 +4,7 @@ import Magazine from "./Magazine";
 import Petcard from "./Petcard";
 
 
-import gs, { COLORS } from '../assets/styles/globalStyles';
+import gs, { COLORS } from '../../assets/styles/globalStyles';
 
 const Slider = ({ flag, onAddPetPress  }) => {
   const { width } = Dimensions.get("window");

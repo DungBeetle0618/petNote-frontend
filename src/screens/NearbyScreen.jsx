@@ -4,7 +4,7 @@
 import React from 'react';
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
 
-import KakaoMapView from '../components/KakaoMapView';
+import KakaoMapView from '../components/nearby/KakaoMapView';
 
 import EBoldText from '../components/font/EBoldText';
 import gs from '../assets/styles/globalStyles';

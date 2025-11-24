@@ -1,12 +1,22 @@
 import React, { useState } from "react";
 import { View, Text, Dimensions, StyleSheet, TouchableOpacity } from "react-native";
 import { VictoryChart, VictoryLine, VictoryVoronoiContainer, VictoryTooltip, VictoryAxis, VictoryScatter, VictoryGroup } from "victory-native";
+import MealsAddModal from "../petManage/MealsAddModal"
+import WalkAddModal from "./WalkAddModal";
 
-import gs, { COLORS } from '../assets/styles/globalStyles';
+import gs, { COLORS } from '../../assets/styles/globalStyles';
 const Petcard = ({ item }) => {
     
     const screenWidth = Dimensions.get("window").width;
     const [selected, setSelected] = useState(item);
+
+    const [modalType, setModalType] =  useState(null);
+    const [modalVisible, setmodalVisible] = useState(false);
+
+    const handleSubmit = () => {
+         console.log('식사량 :', data);
+        setOpen(false);
+    };
 
     // ✅ activityData가 없으면 빈 배열로 기본값 설정
     const activityData = selected?.activityData ?? [];
@@ -78,49 +88,77 @@ const Petcard = ({ item }) => {
             
 
             {/* 활동 카드 3개 */}
+            <>
             <View style={styles.cardContainer3}>
                 {/* 산책하기 */}
-                <View style={[styles.card3, { backgroundColor: "#47e471ff" }]}>
-                <Text style={styles.cardSub3}>스트레스 해소!</Text>
-                <Text style={styles.cardTitle3}>산책하기</Text>
-                <Text style={styles.cardValue3}>0분</Text>
-                {/* <Image
-                    source={require("../assets/images/heart.png")} // ❤️ 하트 이미지 추가
-                    style={styles.iconImage3}
-                /> */}
-                </View>
+                <TouchableOpacity style={[styles.card3, { backgroundColor: "#47e471ff" }]}
+                  onPress={() => {
+                    setModalType('walk');
+                    setOpen(true);
+                  }}
+                >
+                  <Text style={styles.cardSub3}>스트레스 해소!</Text>
+                  <Text style={styles.cardTitle3}>산책하기</Text>
+                  <Text style={styles.cardValue3}>0분</Text>
+                  {/* <Image
+                      source={require("../assets/images/heart.png")} // ❤️ 하트 이미지 추가
+                      style={styles.iconImage3}
+                  /> */}
+                </TouchableOpacity>
 
                 {/* 식사하기 */}
-                <View style={[styles.card3, { backgroundColor: "#7e70acff" }]}>
-                <Text style={styles.cardSub3}>맛있게 냠냠!</Text>
-                <Text style={styles.cardTitle3}>식사하기</Text>
-                <Text style={styles.cardValue3}>1번</Text>
-
-
-
-                {/* <Image
-                    source={require("../assets/images/food.png")} // 🍖 밥그릇 이미지
-                    style={styles.iconImage3}
-                /> */}
-                </View>
+                <TouchableOpacity style={[styles.card3, { backgroundColor: "#7e70acff" }]}
+                  onPress={() => {
+                    setModalType('meal');
+                    setmodalVisible(true);
+                  }}
+                >
+                  <Text style={styles.cardSub3}>맛있게 냠냠!</Text>
+                  <Text style={styles.cardTitle3}>식사하기</Text>
+                  <Text style={styles.cardValue3}>1번</Text>
+                  {/* <Image
+                      source={require("../assets/images/food.png")} // 🍖 밥그릇 이미지
+                      style={styles.iconImage3}
+                  /> */}
+                </TouchableOpacity>
 
                 {/* 배변활동 */}
-                <View style={[styles.card3, { backgroundColor: "#cc9159ff" }]}>
-                <Text style={styles.cardSub3}>간단 건강체크!</Text>
-                <Text style={styles.cardTitle3}>배변활동</Text>
-                <Text style={styles.cardValue3}>0번</Text>
-                {/* <Image
-                    source={require("../assets/images/poop.png")} // 💩 이미지
-                    style={styles.iconImage3}
-                /> */}
-                </View>
+                <TouchableOpacity style={[styles.card3, { backgroundColor: "#cc9159ff" }]}
+                  onPress={() => {
+                    setModalType('toilet');
+                    setOpen(true);
+                  }}
+                >
+                  <Text style={styles.cardSub3}>간단 건강체크!</Text>
+                  <Text style={styles.cardTitle3}>배변활동</Text>
+                  <Text style={styles.cardValue3}>0번</Text>
+                  {/* <Image
+                      source={require("../assets/images/poop.png")} // 💩 이미지
+                      style={styles.iconImage3}
+                  /> */}
+                </TouchableOpacity>
+
+                {modalType === "meal" ? (
+                  <MealsAddModal
+                    visible={modalVisible}
+                    onClose={() => setModalVisible(false)}
+                    onSubmit={handleSubmit}
+                  />
+                ) : modalType === "walk" ? (
+                  <WalkAddModal
+                    visible={modalVisible}
+                    onClose={() => setModalVisible(false)}
+                    onSubmit={handleSubmit}
+                  />
+                ) : null}
             </View>
+            </>
 
 
 
         {/* Activity Chart */}
         <View style={{ marginTop: 20 }}>
-            <Text style={styles.chartTitle}>주간 활동량</Text>
+            <Text style={gs.text}>주간 활동량</Text>
 
             <VictoryChart
             width={screenWidth - 40}
