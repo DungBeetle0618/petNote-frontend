@@ -27,6 +27,7 @@ const WalkAddModal = ({visible, onClose, onSubmit, day }) => {
                     options={[
                         {code: '0001', title: '토리'},
                         {code: '0002', title: '아치'},
+                        {code: '0003', title: '???'},
                     ]}
                     selected={data.petList}
                     onSelect={(v) => handleChange('petList', v)}
