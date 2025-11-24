@@ -11,7 +11,7 @@ const Petcard = ({ item }) => {
     const [selected, setSelected] = useState(item);
 
     const [modalType, setModalType] =  useState(null);
-    const [modalVisible, setmodalVisible] = useState(false);
+    const [modalVisible, setModalVisible] = useState(false);
 
     const handleSubmit = () => {
          console.log('식사량 :', data);
@@ -94,7 +94,7 @@ const Petcard = ({ item }) => {
                 <TouchableOpacity style={[styles.card3, { backgroundColor: "#47e471ff" }]}
                   onPress={() => {
                     setModalType('walk');
-                    setOpen(true);
+                    setModalVisible(true);
                   }}
                 >
                   <Text style={styles.cardSub3}>스트레스 해소!</Text>
@@ -110,7 +110,7 @@ const Petcard = ({ item }) => {
                 <TouchableOpacity style={[styles.card3, { backgroundColor: "#7e70acff" }]}
                   onPress={() => {
                     setModalType('meal');
-                    setmodalVisible(true);
+                    setModalVisible(true);
                   }}
                 >
                   <Text style={styles.cardSub3}>맛있게 냠냠!</Text>
