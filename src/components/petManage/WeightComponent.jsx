@@ -49,7 +49,7 @@ const WeightComponent = () => {
     { date: "2025-11-06", weight: 12.7 },
   ];
   const [range, setRange] = useState('1M');
-  const rangeOptions = [{ code: '1W', title: '1주일' }, { code: '1M', title: '1개월' }, { code: '3M', title: '3개월' }, { code: '6M', title: '6개월' }, { code: '12M', title: '12개월' },];
+  const rangeOptions = [{ code: '1W', korName: '1주일' }, { code: '1M', korName: '1개월' }, { code: '3M', korName: '3개월' }, { code: '6M', korName: '6개월' }, { code: '12M', korName: '12개월' },];
 
   const rangeMap = {
     "1W": { unit: "week", value: 1 },

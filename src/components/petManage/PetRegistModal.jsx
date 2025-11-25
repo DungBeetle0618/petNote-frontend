@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
     View,
     Text,
@@ -23,6 +23,7 @@ import { getCommonCode } from '../../api/common';
 export default function PetRegistModal({ visible, onClose, onSubmit, modiData }) {
     const [speciesOptions, setSpeciesOptions] = useState([]);
     const [breedOptions, setBreedOptions] = useState([]);
+    const initialSpeciesLoad = useRef(true); // 첫 로드에서는 breedCode를 비우지 않는다
     
     // 종 구분
     const getSpeciesType = async() => {
@@ -62,7 +63,7 @@ export default function PetRegistModal({ visible, onClose, onSubmit, modiData })
         breedCode: '',
         breedEtc: '',
         remark: '',
-        profileImg: null,
+        profile: null,
         length: ''
     });
 
@@ -76,14 +77,17 @@ export default function PetRegistModal({ visible, onClose, onSubmit, modiData })
                 gender: '',
                 neuterYn: '',
                 species: '',
+                speciesCode: '',
                 breed: '',
+                breedCode: '',
                 breedEtc: '',
                 remark: '',
-                profileImg: null,
+                profile: null,
                 length: ''
             });
             setDisabled(false);
             setShowDatePicker(false);
+            initialSpeciesLoad.current = true;
         } else {
             if(modiData) {
                 setData(modiData);
@@ -98,10 +102,15 @@ export default function PetRegistModal({ visible, onClose, onSubmit, modiData })
 
     //품종 옵션 리스트
     useEffect(()=>{
-        handleChange('breedCode', '');
         if (!data.speciesCode) {
             setBreedOptions([]);
             return;
+        }
+        if (initialSpeciesLoad.current) {
+            // 첫 렌더에서는 기존 값 유지
+            initialSpeciesLoad.current = false;
+        } else {
+            handleChange('breedCode', '');
         }
         getBreedType(data.speciesCode);
     }, [data.speciesCode])
@@ -246,8 +255,8 @@ export default function PetRegistModal({ visible, onClose, onSubmit, modiData })
 
                 <AppImagePicker
                     label="대표 사진"
-                    value={data.profileImg}
-                    onChange={(v) => handleChange('profileImg', v)}
+                    value={data.profile}
+                    onChange={(v) => handleChange('profile', v)}
                 />
 
                 <AppButton title={modiData ? '수정하기' : '등록하기'} onPress={handleSubmit} />

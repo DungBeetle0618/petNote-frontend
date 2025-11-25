@@ -3,6 +3,11 @@ import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
 import { launchImageLibrary } from 'react-native-image-picker';
 import { MODAL_COLORS } from '../../assets/styles/globalStyles';
 
+const resolveSource = (val) => {
+  if (!val) return null;
+  return typeof val === 'string' ? { uri: val } : val;
+};
+
 export default function AppImagePicker({ label, value, onChange }) {
   const pickImage = () => {
     launchImageLibrary({ mediaType: 'photo' }, (res) => {
@@ -10,12 +15,14 @@ export default function AppImagePicker({ label, value, onChange }) {
     });
   };
 
+  const source = resolveSource(value);
+
   return (
     <View style={styles.inputGroup}>
       {label && <Text style={styles.label}>{label}</Text>}
       <TouchableOpacity style={styles.picker} onPress={pickImage}>
-        {value ? (
-          <Image source={{ uri: value }} style={styles.image} />
+        {source ? (
+          <Image source={source} style={styles.image} resizeMode="cover" />
         ) : (
           <Text style={{ color: MODAL_COLORS.placeholder }}>사진 선택하기</Text>
         )}

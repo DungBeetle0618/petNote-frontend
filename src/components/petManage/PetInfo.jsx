@@ -48,6 +48,7 @@ const PetInfo = ({ data }) => {
 
     //특이사항(예시)
     const handleSubmit = data => {
+        console.log(data)
         setPetInfo(data)
         setPetModalVisible(false);
     };
