@@ -31,7 +31,6 @@ export default function PetRegistModal({ visible, onClose, onSubmit, modiData })
             if(data.result === 'SUCCESS') {
                 setSpeciesOptions(data.list);
             }
-            console.log(speciesOptions);
         } catch(e) {
             console.log(e);
         }
@@ -42,9 +41,9 @@ export default function PetRegistModal({ visible, onClose, onSubmit, modiData })
         try {
             const {data} = await getCommonCode('BREED_TYPE', species);
             if(data.result === 'SUCCESS') {
+                // if(species === 'ETC') data.list = [{code: '9999', korName: '기타'}]
                 setBreedOptions(data.list);
             }
-            console.log(breedOptions);
         } catch(e) {
             console.log(e);
         }
@@ -86,13 +85,18 @@ export default function PetRegistModal({ visible, onClose, onSubmit, modiData })
             setDisabled(false);
             setShowDatePicker(false);
         } else {
-            getSpeciesType();
             if(modiData) {
                 setData(modiData);
             }
         }
     }, [visible]);
 
+    //종 옵션 리스트
+    useEffect(()=>{
+        getSpeciesType();
+    }, [])
+
+    //품종 옵션 리스트
     useEffect(()=>{
         handleChange('breedCode', '');
         if (!data.speciesCode) {
@@ -216,7 +220,7 @@ export default function PetRegistModal({ visible, onClose, onSubmit, modiData })
                     onSelect={(v) => handleChange('speciesCode', v)}
                 />
 
-                {data.speciesCode && (
+                {(data.speciesCode && data.speciesCode != 'ETC') && (
                     <AppDropdown
                         label="품종2 (세부종)"
                         data={breedOptions.map(o => ({ label: o.korName, value: o.code }))}
@@ -226,7 +230,7 @@ export default function PetRegistModal({ visible, onClose, onSubmit, modiData })
                         />
                 )}
 
-                {data.breedCode === '9999' && (
+                {(data.breedCode === '9999' || data.speciesCode === 'ETC') && (
                     <AppInput
                         label="기타 품종"
                         value={data.breedEtc}
