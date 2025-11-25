@@ -14,7 +14,7 @@ export const api = axios.create({
 
 // -----------------------------------------
 // 2) 에뮬/시뮬/실기기 자동 감지하여 baseURL 설정 (useEffect 대체, 1회 실행)
-(async () => {
+export const apiReady = (async () => {
   try {
     const ip = await NetworkInfo.getIPAddress(); // 기기의 현재 IP
     
