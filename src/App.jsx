@@ -16,7 +16,6 @@ function App() {
     useEffect(() => {
       (async () => {
         await apiReady;
-        await new Promise(res => setTimeout(res, 2000));
         setReady(true);
       })();
     }, []);

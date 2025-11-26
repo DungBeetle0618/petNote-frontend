@@ -15,6 +15,7 @@ import ProductScreen from '../screens/ProductScreen';
 import ChallengeScreen from '../screens/ChallengeScreen';
 import ReminderScreen from '../screens/ReminderScreen';
 import MypageScreen from '../screens/MypageScreen';
+import MyProfile from '../screens/MyProfileScreen';
 import MealsDetailScreen from '../screens/MealsDetailScreen';
 import ActivityDetailScreen from '../screens/ActivityDetailScreen';
 import WeightDetailScreen from '../screens/WeightDetailScreen';
@@ -82,6 +83,7 @@ function Navigator({ onRouteChange }) {
       <MenuStack.Screen name="Reminder" component={ReminderScreen} />
       <MenuStack.Screen name="Challenge" component={ChallengeScreen} />
       <MenuStack.Screen name="Product" component={ProductScreen} />
+      <MenuStack.Screen name="MyProfile" component={MyProfile} />
     </MenuStack.Navigator>
   )
 
