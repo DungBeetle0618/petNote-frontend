@@ -51,7 +51,7 @@ const PetSelectScreen = () => {
             <TouchableOpacity
                 activeOpacity={0.8}
                 style={styles.addBtn}
-                onPress={() => { setPetModalVisible(true); console.log('dd') }}
+                onPress={() => { setPetModalVisible(true); }}
             >
                 <FontAwesome6 name='plus' style={styles.whiteFont} />
             </TouchableOpacity>

@@ -3,6 +3,8 @@ import { View, Text, StyleSheet, TouchableOpacity, } from 'react-native';
 import gs, { COLORS } from '../../assets/styles/globalStyles';
 import { scale } from 'react-native-size-matters';
 import { BottomModal, AppInput, AppSelect, AppButton } from '../common';
+import DatePicker from 'react-native-date-picker';
+import TimePicker from '../common/TimePicker';
 
 const MealsAddModal = ({visible, onClose, onSubmit, modiData, day }) => {
     const [data, setData] = useState({
@@ -32,6 +34,7 @@ const MealsAddModal = ({visible, onClose, onSubmit, modiData, day }) => {
     }, [visible]);
 
     const handleChange = (key, value) => setData(prev => ({ ...prev, [key]: value }));
+    const onChange = (value) => handleChange('pendingTime', value);
 
     const handleSubmit = () => {
         if (!data.meal.trim()) return alert('식사종류를 입력해주세요.');
@@ -48,7 +51,7 @@ const MealsAddModal = ({visible, onClose, onSubmit, modiData, day }) => {
 
                 <AppSelect
                     label={'식사종류'}
-                    options={[{code: '0001', title: '아침'}, {code: '0002', title: '점심'}, {code: '0003', title: '저녁'}, {code: '0004', title: '아침 간식'}, {code: '0005', title: '점심 간식'}, {code: '0006', title: '저녁 간식'}]}
+                    options={[{code: '0001', korName: '아침'}, {code: '0002', korName: '점심'}, {code: '0003', korName: '저녁'}, {code: '0004', korName: '아침 간식'}, {code: '0005', korName: '점심 간식'}, {code: '0006', korName: '저녁 간식'}]}
                     selected={data.meal}
                     onSelect={(v) => handleChange('meal', v)}
                 />
@@ -71,16 +74,13 @@ const MealsAddModal = ({visible, onClose, onSubmit, modiData, day }) => {
                 />
                 <AppSelect
                     label={'식사 완료 여부'}
-                    options={[{code: 'C', title: '완료'}, {code: 'P', title: '예정'}]}
+                    options={[{code: 'C', korName: '완료'}, {code: 'P', korName: '예정'}]}
                     selected={data.status}
                     onSelect={(v) => handleChange('status', v)}
                 />
                 {
                     data.status === "P" && (
-                        <AppInput
-                            label={'예정 시간 (리마인더로 알려드려요!)'}
-                            placeholder={'시간picker 필요'}
-                        />
+                        <TimePicker label="예정 시간" onChange={onChange} selectTime={data.pendingTime}  />
                     )
                 }
 

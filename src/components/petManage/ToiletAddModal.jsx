@@ -1,25 +1,29 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, } from 'react-native';
-import gs, { COLORS } from '../../assets/styles/globalStyles';
+import gs, { COLORS, MODAL_COLORS } from '../../assets/styles/globalStyles';
 import { scale } from 'react-native-size-matters';
 import { BottomModal, AppInput, AppSelect, AppButton, AppDropdown, AppTextArea } from '../common';
+import DateTimePicker from '../common/DateTimePicker';
 
-const WeightAddModal = ({visible, onClose, onSubmit, modiData, day }) => {
+const ToiletAddModal = ({ visible, onClose, onSubmit, modiData, day }) => {
+
     const [data, setData] = useState({
-        weight: '',
-        type: '',
+        toiletDate: '',
+        toiletTime: '',
+        toiletType: '',
         memo: ''
     });
 
     useEffect(() => {
         if (!visible) {
             setData({
-                weight: '',
-                type: '',
+                toiletDate: '',
+                toiletTime: '',
+                toiletType: '',
                 memo: ''
             });
         } else {
-            if(modiData) {
+            if (modiData) {
                 setData(modiData);
             }
         }
@@ -27,8 +31,13 @@ const WeightAddModal = ({visible, onClose, onSubmit, modiData, day }) => {
 
     const handleChange = (key, value) => setData(prev => ({ ...prev, [key]: value }));
 
+    const onChange = (key, value) => {
+        if(key == "date") handleChange("toiletDate", value);
+        if(key == "time") handleChange("toiletTime", value);
+    }
+
     const handleSubmit = () => {
-        if (!data.weight.trim()) return alert('몸무게를 입력해주세요.');
+        if (!data.toiletDate.trim()) return alert('날짜/시간을 입력해주세요.');
         onSubmit(data);
         onClose();
     };
@@ -36,22 +45,24 @@ const WeightAddModal = ({visible, onClose, onSubmit, modiData, day }) => {
     return (
 
         < BottomModal visible={visible} onClose={onClose} >
-            <View style={{padding: 24}}>
-                <Text style={styles.modalTitle}>{day?day:'오늘의 몸무게'}</Text>
+            <View style={{ padding: 24 }}>
+                <Text style={styles.modalTitle}>{day ? day : '오늘의 기록'}</Text>
 
-                <AppInput
-                    label={'몸무게'}
-                    // keyboardType="numeric"
-                    value={(data.weight.toString())}
-                    onChangeText={(v) => handleChange('weight', v)}
-                />
                 <AppSelect
-                    label="g/kg"
-                    options={[{code: 'g', korName: 'g'}, {code: 'kg', korName: 'kg'}]}
-                    selected={data.type}
-                    onSelect={(v) => handleChange('type', v)}
+                    label="종류"
+                    options={[{ code: '01', korName: '대변' }, { code: '02', korName: '소변' }]}
+                    selected={data.toiletType}
+                    onSelect={(v) => handleChange('toiletType', v)}
                 />
-                <AppTextArea 
+
+                <DateTimePicker 
+                    label="날짜/시간" 
+                    onChange={onChange} 
+                    selectDate={data.toiletDate} 
+                    selectTime={data.toiletTime}
+                />
+
+                <AppTextArea
                     label={'메모'}
                     value={data.memo}
                     onChangeText={(v) => handleChange('memo', v)}
@@ -74,8 +85,9 @@ const styles = StyleSheet.create({
         marginBottom: scale(28),
         fontSize: 18,
         fontWeight: 500
-    }
+    },
+
 
 });
 
-export default WeightAddModal;
+export default ToiletAddModal;

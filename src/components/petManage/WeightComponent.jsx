@@ -17,7 +17,7 @@ const WeightComponent = () => {
   /**
    * 몸무게 등록
    */
-  const handleSubmit = () => {
+  const handleSubmit = (data) => {
     console.log('몸무게 :', data);
     setOpen(false);
   };

@@ -5,15 +5,9 @@ import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import gs, { COLORS } from '../../assets/styles/globalStyles';
 import { useNavigation } from '@react-navigation/native';
+import { convertToAmPm } from '../../assets/js/common';
 
 const DayWalkCard = ({ item, index, isFirst, isLast }) => {
-    const convertToAmPm = (timeStr) => {
-        const [hourStr, minute] = timeStr.split(':');
-        let hour = parseInt(hourStr, 10);
-        const ampm = hour >= 12 ? 'PM' : 'AM';
-        hour = hour % 12 || 12;
-        return `${hour}:${minute} ${ampm}`;
-    };
 
     const calcDuration = (startStr, endStr) => {
         const [sh, sm] = startStr.split(':').map(Number);

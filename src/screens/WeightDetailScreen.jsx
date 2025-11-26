@@ -10,10 +10,10 @@ import WeightAddModal from "../components/petManage/WeightAddModal";
 
 const WeightDetailScreen = () => {
     const [weightData, setWeightData] = useState([
-        { date: "2025-10-28", weight: 12.0, type: 'kg', note: "산책량 많음" },
-        { date: "2025-11-01", weight: 12.3, type: 'kg', note: "사료 교체" },
-        { date: "2025-11-06", weight: 12.7, type: 'kg', note: "간식 과다 섭취" },
-        { date: "2025-11-10", weight: 12.6, type: 'kg', note: "" },
+        { date: "2025-10-28", weight: 12.0, type: 'kg', memo: "산책량 많음" },
+        { date: "2025-11-01", weight: 12.3, type: 'kg', memo: "사료 교체" },
+        { date: "2025-11-06", weight: 12.7, type: 'kg', memo: "간식 과다 섭취" },
+        { date: "2025-11-10", weight: 12.6, type: 'kg', memo: "" },
     ]);
 
     // 날짜 선택
@@ -105,7 +105,7 @@ const WeightDetailScreen = () => {
                             <Text style={styles.noteLabel}><FontAwesome5Icon name="book-open" /> 메모</Text>
                         </View>
                         <Text style={styles.noteContent}>
-                            {selectedRecord.note || "메모 없음"}
+                            {selectedRecord.memo || "메모 없음"}
                         </Text>
                     </View>
                 </View>

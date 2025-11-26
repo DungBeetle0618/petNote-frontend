@@ -16,7 +16,7 @@ const MealsComponent = () => {
     const [open, setOpen] = useState(false);
     const [modiData, setModiData] = useState(null);
 
-    const handleSubmit = () => {
+    const handleSubmit = (data) => {
          console.log('식사량 :', data);
         setOpen(false);
     };
