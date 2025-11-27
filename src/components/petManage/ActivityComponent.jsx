@@ -6,6 +6,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import gs, { COLORS } from '../../assets/styles/globalStyles';
 import { useNavigation } from '@react-navigation/native';
 import { convertToAmPm } from '../../assets/js/common';
+import ActivityDetail from './ActivityDetail';
 
 const DayWalkCard = ({ item, index, isFirst, isLast }) => {
 
@@ -72,10 +73,11 @@ const DayWalkCard = ({ item, index, isFirst, isLast }) => {
 
 
 const ActivityComponent = () => {
-    const navigation = useNavigation();
     
     const [totalSteps, setTotalSteps] = useState(0);
     const [totalMinutes, setTotalMinutes] = useState(0);
+
+    const [detailOpen, setDetailOpen] = useState(false);
 
     const walkData = [
         { start: '7:30', end: '7:55', steps: '2800' },
@@ -145,7 +147,7 @@ const ActivityComponent = () => {
                         <Text style={styles.subTitle}>오늘의 산책 기록을 확인하세요</Text>
                     </View>
                 </View>
-                <TouchableOpacity onPress={() => navigation.navigate("activityDetail", { headerTitle: '활동 기록' })} style={styles.calendar}>
+                <TouchableOpacity onPress={() => setDetailOpen(true)} style={styles.calendar}>
                     <FontAwesome name="calendar" style={{ fontSize: 20, color: '#381600ff' }} />
                 </TouchableOpacity>
             </View>
@@ -208,6 +210,9 @@ const ActivityComponent = () => {
                     }
                 </View>
             </View>
+
+            {/* 상세 */}
+            <ActivityDetail visible={detailOpen} onClose={()=>setDetailOpen(false)} title={'활동 기록'} />
         </View>
     );
 };

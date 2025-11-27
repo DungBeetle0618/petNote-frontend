@@ -16,7 +16,6 @@ import ChallengeScreen from '../screens/ChallengeScreen';
 import ReminderScreen from '../screens/ReminderScreen';
 import MypageScreen from '../screens/MypageScreen';
 import MyProfile from '../screens/MyProfileScreen';
-import ActivityDetailScreen from '../screens/ActivityDetailScreen';
 import WeightDetailScreen from '../screens/WeightDetailScreen';
 import SignUpScreen from '../screens/SignUpScreen';
 import { COLORS } from '../assets/styles/globalStyles';
@@ -69,7 +68,7 @@ function Navigator({ onRouteChange }) {
       <PetManageStack.Screen name="PetManageScreen" component={PetManageScreen} />
       <PetManageStack.Screen name="weightDetail" component={WeightDetailScreen} options={headerOptions} />
       {/* <PetManageStack.Screen name="mealsDetail" component={MealsDetailScreen} options={headerOptions} /> */}
-      <PetManageStack.Screen name="activityDetail" component={ActivityDetailScreen} options={headerOptions} />
+      {/* <PetManageStack.Screen name="activityDetail" component={ActivityDetailScreen} options={headerOptions} /> */}
     </PetManageStack.Navigator>
   )
 
