@@ -7,11 +7,12 @@ import { useNavigation } from '@react-navigation/native';
 import AppointmentCard from './AppointmentCard';
 import HospitalRecord from './HospitalRecord';
 import Swiper from 'react-native-swiper';
+import HospitalDetail from './HospitalDetail';
 
 const { width } = Dimensions.get('window');
 
 const HospitalComponent = () => {
-    const navigation = useNavigation();
+    const [detailOpen, setDetailOpen] = useState(false);
 
     const [currentIndex, setCurrentIndex] = useState(0);
     const rightAnim = useRef(new Animated.Value(0)).current;
@@ -78,7 +79,7 @@ const HospitalComponent = () => {
                 </View>
 
                 <TouchableOpacity
-                    onPress={() => navigation.navigate('calendar')}
+                    onPress={() => setDetailOpen(true) }
                     style={styles.calendar}
                 >
                     <FontAwesome name='calendar' style={{ fontSize: 20, color: '#381600ff' }} />
@@ -150,6 +151,9 @@ const HospitalComponent = () => {
                     )
                 }
             </View>
+
+            {/* 상세 */}
+            <HospitalDetail visible={detailOpen} onClose={()=>setDetailOpen(false)} title={'진료 기록'} />
         </View>
     );
 };
