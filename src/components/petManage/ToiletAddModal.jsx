@@ -5,7 +5,7 @@ import { scale } from 'react-native-size-matters';
 import { BottomModal, AppInput, AppSelect, AppButton, AppDropdown, AppTextArea } from '../common';
 import DateTimePicker from '../common/DateTimePicker';
 
-const ToiletAddModal = ({ visible, onClose, onSubmit, modiData, day }) => {
+const ToiletAddModal = ({ visible, onClose, onSubmit, modiData, day, selectDay }) => {
 
     const [data, setData] = useState({
         toiletDate: '',
@@ -25,6 +25,7 @@ const ToiletAddModal = ({ visible, onClose, onSubmit, modiData, day }) => {
         } else {
             if (modiData) {
                 setData(modiData);
+                console.log(modiData)
             }
         }
     }, [visible]);
@@ -60,6 +61,7 @@ const ToiletAddModal = ({ visible, onClose, onSubmit, modiData, day }) => {
                     onChange={onChange} 
                     selectDate={data.toiletDate} 
                     selectTime={data.toiletTime}
+                    value={selectDay}
                 />
 
                 <AppTextArea

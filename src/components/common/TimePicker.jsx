@@ -29,7 +29,7 @@ export default function TimePicker({ label, value, onChange, selectTime, maximum
                 open={open}
                 date={time}
                 locale="ko"
-                title="날짜/시간 선택"
+                title="시간 선택"
                 maximumDate={maximumTime} // 미래 선택 방지
                 confirmText="확인"
                 cancelText="취소"

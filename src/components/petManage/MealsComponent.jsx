@@ -8,13 +8,15 @@ import { BottomModal, AppInput, AppSelect, AppButton } from '../common';
 import { useNavigation } from '@react-navigation/native';
 import MealsAddModal from './MealsAddModal';
 import MealStatusCard from './MealStatusCard';
+import MealsDetail from './MealsDetail';
 
 const MealsComponent = () => {
-    const navigation = useNavigation();
 
     //추가, 수정 모달
     const [open, setOpen] = useState(false);
     const [modiData, setModiData] = useState(null);
+
+    const [detailOpen, setDetailOpen] = useState(false);
 
     const handleSubmit = (data) => {
          console.log('식사량 :', data);
@@ -49,7 +51,7 @@ const MealsComponent = () => {
                             <Text style={styles.subTitle}>오늘의 영양 밸런스를 기록해요</Text>
                         </View>
                     </View>
-                    <TouchableOpacity onPress={() => navigation.navigate('mealsDetail', { headerTitle: '식사 기록' })}
+                    <TouchableOpacity onPress={() => setDetailOpen(true) }
                         style={styles.calendar}
                     >
                         <FontAwesome name='calendar' style={{ fontSize: 20, color: '#381600ff' }} />
@@ -70,6 +72,7 @@ const MealsComponent = () => {
 
             {/* 추가/수정 모달 */}
             <MealsAddModal visible={open} onClose={()=>setOpen(false)} onSubmit={handleSubmit} modiData={modiData} />
+            <MealsDetail visible={detailOpen} onClose={()=>setDetailOpen(false)} title={'식사 기록'} />
         </>
     );
 };

@@ -3,37 +3,35 @@ import { View, Text, StyleSheet, TouchableOpacity, } from 'react-native';
 import gs, { COLORS } from '../../assets/styles/globalStyles';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
-import { BottomModal, AppInput, AppSelect, AppButton } from '../common';
-import { useNavigation } from '@react-navigation/native';
 import { convertToAmPm } from '../../assets/js/common';
 import ToiletAddModal from './ToiletAddModal';
+import ToiletDetail from './ToiletDetail';
+import ToiletStatusCard from './ToiletStatusCard';
 
 const ToiletComponent = () => {
-    const navigation = useNavigation();
 
     //추가, 수정 모달
     const [open, setOpen] = useState(false);
     const [modiData, setModiData] = useState(null);
+
+    const [detailOpen, setDetailOpen] = useState(false);
 
     const handleSubmit = (data) => {
          console.log('배변량 :', data);
         setOpen(false);
     };
 
-    const mealStatus = [
-        { day: '2026-11-26', time: '8:30', memo: '특이사항 없음.', type: '01', typeName: '대변'  },
-        { day: '2026-11-26', time: '9:00', memo: '', type: '02', typeName: '소변'  },
-        { day: '2026-11-26', time: '14:30', memo: '오늘 양이 쫌 많음', type: '01', typeName: '대변'  },
+    const toiletStatus = [
+        { toiletDate: '2026-11-26', toiletTime: '8:30', memo: '특이사항 없음.', toiletType: '01', typeName: '대변'  },
+        { toiletDate: '2026-11-26', toiletTime: '9:00', memo: '', toiletType: '02', typeName: '소변'  },
+        { toiletDate: '2026-11-26', toiletTime: '14:30', memo: '오늘 양이 쫌 많음', toiletType: '01', typeName: '대변'  },
     ]
 
-    const MealStatusListComponent = ({ list, text }) => {
+    const StoolStatusCard = ({ list, text }) => {
         return (
             list.length > 0 ? list.map((item, key) => {
                 return (
-                    <View key={key} style={[styles.stoolItem, item.type == '02' ? styles.urineItem : styles.fecalItem ]}>
-                        <Text style={styles.stoolTime}>{convertToAmPm(item.time)}</Text>
-                        <Text style={styles.stoolSub}>{item.typeName} • {item.memo ? item.memo : '메모 없음'}</Text>
-                    </View>
+                    <ToiletStatusCard key={key} item={item} setOpen={setOpen} setModiData={setModiData}/>
                 )
             })
                 :
@@ -53,7 +51,7 @@ const ToiletComponent = () => {
                             <Text style={styles.subTitle}>소화 건강을 살펴보세요</Text>
                         </View>
                     </View>
-                    <TouchableOpacity onPress={() => navigation.navigate('mealsDetail', { headerTitle: '배변 기록' })}
+                    <TouchableOpacity onPress={() => setDetailOpen(true) }
                         style={styles.calendar}
                     >
                         <FontAwesome name='calendar' style={{ fontSize: 20, color: '#381600ff' }} />
@@ -76,7 +74,7 @@ const ToiletComponent = () => {
                 </View>
 
                 <View style={{ marginTop: 40 }}>
-                    <MealStatusListComponent list={mealStatus} text='오늘은 아직인가요?' />
+                    <StoolStatusCard list={toiletStatus} text='오늘은 아직인가요?' />
                 </View>
 
                 <View style={{ marginTop: 20 }}>
@@ -89,6 +87,7 @@ const ToiletComponent = () => {
 
             {/* 추가/수정 모달 */}
             <ToiletAddModal visible={open} onClose={()=>setOpen(false)} onSubmit={handleSubmit} modiData={modiData} />
+            <ToiletDetail visible={detailOpen} onClose={()=>setDetailOpen(false)} title={'배변 기록'} />
         </>
     );
 };
@@ -157,32 +156,7 @@ const styles = StyleSheet.create({
         fontWeight: 500,
         fontSize: 18
     },
-    stoolItem: {
-        paddingBlock: 10,
-        paddingHorizontal: 20,
-        borderRadius: 12,
-        marginBottom: 10,
-        // elevation: 2,
-        // backgroundColor: '#fff'
-        borderWidth: 1
-    },
-    fecalItem: {
-        backgroundColor: '#F3FFF6',
-        borderColor: '#D7F5E0',
-    },
-    urineItem: {
-        backgroundColor: '#FFF8F2',
-        borderColor: '#FFE1C4',
-    },
-    stoolTime: {
-        fontSize: 15,
-        fontWeight: 500
-    },
-    stoolSub: {
-        fontSize: 13,
-        color: '#333',
-        marginTop: 6
-    }
+    
 
 });
 
