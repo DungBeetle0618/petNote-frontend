@@ -56,8 +56,14 @@ export function AuthProvider({ children }) {
     }
   }, []);
 
-  const signOut = useCallback(async () => {
+  const logout = useCallback(async () => {
     try { await api.post('/auth/logout'); } catch {}
+    await clearAccessToken();
+    setState('unauthenticated');
+  }, []);
+
+  const deleteAccount = useCallback(async () => {
+    try { await api.post('/auth/delete-account'); } catch {}
     await clearAccessToken();
     setState('unauthenticated');
   }, []);
@@ -68,7 +74,7 @@ export function AuthProvider({ children }) {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ state, signIn, signOut, socialLoginKakao, socialLoginNaver, reloadSession }}>
+    <AuthContext.Provider value={{ state, signIn, logout, deleteAccount, socialLoginKakao, socialLoginNaver, reloadSession }}>
       {children}
     </AuthContext.Provider>
   );

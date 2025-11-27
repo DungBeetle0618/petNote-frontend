@@ -12,8 +12,10 @@ import {
 } from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { useAuth } from '../auth/AuthProvider';
 
 export default function MyProfileScreen({ navigation }) {
+  const { logout, deleteAccount } = useAuth();
   const [isEditing, setIsEditing] = useState(false);
 
   const [fullName, setFullName] = useState('Sarah Johnson');
@@ -27,6 +29,24 @@ export default function MyProfileScreen({ navigation }) {
     setIsEditing(false);
   };
 
+
+  const onLogout = async () => {
+    try {
+      await logout();
+    } catch(e) {
+      console.log(e)
+    }
+  }
+
+  const onDeleteAccount = async () => {
+    try {
+      await deleteAccount();
+    } catch(e) {
+      console.log(e)
+    }
+  }
+
+
   const handleDeleteAccount = () => {
     Alert.alert(
       'Delete Account',
@@ -36,9 +56,7 @@ export default function MyProfileScreen({ navigation }) {
         {
           text: '탈퇴하기',
           style: 'destructive',
-          onPress: () => {
-            // TODO: 탈퇴 API 호출
-          },
+          onPress: () => onDeleteAccount()
         },
       ]
     );
@@ -196,9 +214,7 @@ export default function MyProfileScreen({ navigation }) {
             label="Log Out"
             labelColor="#E44E3A"
             sub="Sign out of your account"
-            onPress={() => {
-              // TODO: 로그아웃 처리
-            }}
+            onPress={onLogout}
           />
 
           <ArrowRow
