@@ -8,11 +8,13 @@ import { useNavigation } from '@react-navigation/native';
 import WeightAddModal from './WeightAddModal';
 import { AppSelect, AnimateLineChart } from '../common';
 import dayjs from 'dayjs';
+import WeightDetail from './WeightDetail';
 
 const WeightComponent = () => {
-  const navigation = useNavigation();
-  
+
   const [open, setOpen] = useState(false);
+
+  const [detailOpen, setDetailOpen] = useState(false);
 
   /**
    * 몸무게 등록
@@ -91,7 +93,7 @@ const WeightComponent = () => {
               <Text style={styles.subTitle}>지난 30일</Text>
             </View>
           </View>
-          <TouchableOpacity onPress={() => navigation.navigate('weightDetail', { headerTitle: '몸무게 기록' })} style={styles.calendar}>
+          <TouchableOpacity onPress={() => setDetailOpen(true)} style={styles.calendar}>
             <FontAwesome name='calendar' style={{ fontSize: 20, color: '#381600ff' }} />
           </TouchableOpacity>
         </View>
@@ -130,6 +132,7 @@ const WeightComponent = () => {
       </View>
 
       <WeightAddModal visible={open} onClose={() => setOpen(false)} onSubmit={handleSubmit} />
+      <WeightDetail visible={detailOpen} onClose={() => setDetailOpen(false)} title={'몸무게 기록'} />
     </>
   );
 };

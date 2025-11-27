@@ -1,14 +1,15 @@
 import React, { useState, useMemo } from "react";
 import { View, Text, ScrollView, TouchableOpacity, TextInput, StyleSheet, Modal, Pressable } from "react-native";
 import dayjs from "dayjs";
-import { AppButton, AppCalendar, BottomModal } from "../components/common";
+import { AppButton, AppCalendar, BottomModal } from "../common";
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import FontAwesome5Icon from "react-native-vector-icons/FontAwesome5";
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import gs from '../assets/styles/globalStyles';
-import WeightAddModal from "../components/petManage/WeightAddModal";
+import gs, { COLORS, PX_SIZE } from '../../assets/styles/globalStyles';
+import WeightAddModal from "./WeightAddModal";
+import FullModal from "../common/FullModal";
 
-const WeightDetailScreen = () => {
+const WeightDetail = ({ visible, onClose, title }) => {
     const [weightData, setWeightData] = useState([
         { date: "2025-10-28", weight: 12.0, type: 'kg', memo: "산책량 많음" },
         { date: "2025-11-01", weight: 12.3, type: 'kg', memo: "사료 교체" },
@@ -41,17 +42,30 @@ const WeightDetailScreen = () => {
 
     // 수정/삭제 선택 모달
     const [open, setOpen] = useState(false);
-    const [visible, setVisible] = useState(false);
+    const [addVisible, setAddVisible] = useState(false);
     const [modiData, setModiData] = useState(null);
 
     const handleSubmit = () => {
         console.log('몸무게:', data);
         setOpen(false);
     };
+
+    /**
+     * 상태 초기화
+     */
+    const resetStates = () => {
+        setDaySelected(dayjs().format('YYYY-MM-DD'));
+        setModiData(null);
+    }
+    const handleClosed = () => {
+        resetStates();
+        onClose();
+    }
     
 
     return (
-        <ScrollView style={gs.screen}>
+        <FullModal visible={visible} onClose={handleClosed} title={title}>
+            <View style={styles.container}>
             <AppCalendar
                selected={daySelected}
                 setSelected={setDaySelected}
@@ -114,25 +128,31 @@ const WeightDetailScreen = () => {
                     <Text style={{ marginTop: 40, textAlign: "center", color: "#999" }}>
                         날짜를 선택하세요
                     </Text>
-                    <AppButton title={'몸무게 입력하기'} onPress={()=>{setModiData(null); setVisible(true);}} style={{marginTop: 50}} />
+                    <AppButton title={'몸무게 입력하기'} onPress={()=>{setModiData(null); setAddVisible(true);}} style={{marginTop: 50}} />
                 </View>
             )}
+            </View>
 
             {/* 편집/삭제 선택 */}
             <BottomModal visible={open} onClose={()=>setOpen(false)} >
                 <View style={{paddingBlock: 25, alignItems: 'center'}}>
-                    <Pressable style={styles.menuBtn} onPress={()=>{setOpen(false); setVisible(true); setModiData(selectedRecord)}}><Text style={{textAlign: 'center'}}>편집</Text></Pressable>
+                    <Pressable style={styles.menuBtn} onPress={()=>{setOpen(false); setAddVisible(true); setModiData(selectedRecord)}}><Text style={{textAlign: 'center'}}>편집</Text></Pressable>
                     <View style={gs.bar}/>
                     <Pressable style={styles.menuBtn} onPress={()=>{alert('삭제'); setOpen(false);}}><Text style={{textAlign: 'center'}}>삭제</Text></Pressable>
                 </View>
             </BottomModal>
 
-            <WeightAddModal visible={visible} onClose={()=>setVisible(false)} onSubmit={()=>handleSubmit} modiData={modiData} day={kor}  />
-        </ScrollView>
+            <WeightAddModal visible={addVisible} onClose={()=>setAddVisible(false)} onSubmit={()=>handleSubmit} modiData={modiData} day={kor}  />
+        </FullModal>
     );
 }
 
 const styles = StyleSheet.create({
+    container: {
+        backgroundColor: COLORS.background,
+        paddingHorizontal: PX_SIZE.lg, 
+        paddingVertical: 30,
+    },
     detailBox: {
         backgroundColor: "#FDF8F3",
         paddingHorizontal: 16,
@@ -190,4 +210,4 @@ const styles = StyleSheet.create({
     
 });
 
-export default WeightDetailScreen;
+export default WeightDetail;
