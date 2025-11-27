@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react'
-import { Image, Pressable, ScrollView } from 'react-native';
+import { Alert, Image, Pressable, ScrollView } from 'react-native';
 import { View, Text, StyleSheet, Dimensions } from 'react-native'
 import ImagePicker from 'react-native-image-crop-picker';
 import ImageResizer from 'react-native-image-resizer';
@@ -8,13 +8,15 @@ import { COLORS } from '../../assets/styles/globalStyles';
 import { TextInput } from 'react-native';
 import DismissKeyboardView from '../DismissKeyboardView';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
+import { api } from '../../net/api';
 
 const CommunityAdd = () => {
 
   usePermissions();
 
-  const [image, setImage] = useState([]);
+  const [files, setFiles] = useState([]);
   const [preview, setPreview] = useState([]);
+  const [contents, setContents] = useState('');
 
   const onResponse = useCallback(async (response) => {
 	const list = Array.isArray(response) ? response : [response];
@@ -26,8 +28,15 @@ const CommunityAdd = () => {
 	console.log(previewList);
 
 
-	}, []);
+	const uploadFiles = list.map(img => ({
+		uri: img.path, 
+		type: img.mime,
+		name: img.filename || `img_${Date.now()}.jpg`
+		}));
+	setFiles(uploadFiles);
 
+
+	}, []);
 
 
   const onChangeFile = useCallback(() => {
@@ -40,6 +49,43 @@ const CommunityAdd = () => {
       .then(onResponse)
       .catch(console.log);
   }, [onResponse]);
+
+
+  const onChangeContents =  useCallback(text => {
+    setContents(text);
+  }, []);
+
+  
+const onUpload = () => {
+  let formData = new FormData();
+	formData.append("contents", contents);
+
+	files.forEach(f => {
+	formData.append("uploadFile", {
+		uri: f.uri,
+		type: f.type,
+		name: f.name,
+		});
+	});
+
+
+  api({
+    method: 'POST',
+    url: 'api/community/upload',
+    data: formData,
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  })
+    .then(res => {
+      console.log("res", res.data);
+    })
+    .catch(err => {
+      console.log("error >>>", err.message);
+    });
+};
+
+  
 
   return (
 	<DismissKeyboardView style={{backgroundColor:'#fff', position:'relative', flex:1}}>
@@ -59,16 +105,16 @@ const CommunityAdd = () => {
 				}
 			</Pressable>
 			<View style={styles.textInputWrapper}>
-				<TextInput style={styles.textInput} placeholder='문구를 작성하거나 설문을 추가하세요..' multiline ></TextInput>
+				<TextInput style={styles.textInput} placeholder='문구를 작성하거나 설문을 추가하세요..' onChangeText={onChangeContents} multiline ></TextInput>
 			</View>
 			<View style={styles.shareWrapper}>
 				<View style={styles.release}>
 					<Text style={styles.releaseText}><FontAwesome6 name='eye' size={16} /> 공개대상</Text>
 					<Text style={styles.releaseText}>팔로워</Text>
 				</View>
-				<View style={styles.share}>
+				<Pressable style={styles.share} onPress={onUpload}>
 					<Text style={styles.shareText}>공유</Text>
-				</View>
+				</Pressable>
 			</View>
 		</View>
 	</DismissKeyboardView>
