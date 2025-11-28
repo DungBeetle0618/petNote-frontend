@@ -2,32 +2,41 @@ import React, { useEffect, useState } from "react";
 import { View, FlatList, Dimensions, StyleSheet, Text, TouchableOpacity } from "react-native";
 import Magazine from "./Magazine";
 import Petcard from "./Petcard";
-
+import axios from "axios";
 
 import gs, { COLORS } from '../../assets/styles/globalStyles';
 
-const Slider = ({ flag, onAddPetPress  }) => {
+const Slider = ({ flag, onAddPetPress, accessToken  }) => {
   const { width } = Dimensions.get("window");
   const [data, setData] = useState([]);
   const [page, setPage] = useState(0);
   const [heights, setHeights] = useState({}); // 카드별 높이 저장
   const [sliderHeight, setSliderHeight] = useState(0); // 현재 카드 높이
   
-  const onScroll = (e) => {
-    const offsetX = e.nativeEvent.contentOffset.x;
-    const currentIndex = Math.round(offsetX / width);
-    setPage(currentIndex);
+  // const API_URL = {
+  //   pet: "/home/pet",
+  //   magazine: "/home/magazine"
+  //   // 필요하면 더 확장 가능
+  // };
 
-    // 현재 페이지 높이로 슬라이더 높이 업데이트
-    if (heights[currentIndex]) {
-      setSliderHeight(heights[currentIndex]);
-    }
-  };
+  // useEffect(() => {
+  //   if (!API_URL[flag]) return;
 
-  const finalData = flag === "petcard" && data.length === 0
-  ? [{ id: "add", type: "add" }]
-  : data;
+  //   const fetchData = async () => {
+  //     try {
+  //       const response = await axios.get(API_URL[flag], {
+  //         headers: {
+  //           Authorization: `Bearer ${accessToken}`, // JWT 넣기
+  //         },
+  //       });
+  //       setData(response.data);
+  //     } catch (err) {
+  //       console.log(err);
+  //     }
+  //   };
 
+  //   fetchData();
+  // }, [flag, accessToken]);
 
   useEffect(() => {
     if (flag == "magazine") {
@@ -77,20 +86,26 @@ const Slider = ({ flag, onAddPetPress  }) => {
     }
   }, [flag]);
 
- {/**
-   const API_URL = {
-    magazine: "https://your-api-url.com/magazines",
-    today: "https://your-api-url.com/today-recommendations",
-    // 필요하면 더 확장 가능
+  
+
+  const onScroll = (e) => {
+    const offsetX = e.nativeEvent.contentOffset.x;
+    const currentIndex = Math.round(offsetX / width);
+    setPage(currentIndex);
+
+    // 현재 페이지 높이로 슬라이더 높이 업데이트
+    if (heights[currentIndex]) {
+      setSliderHeight(heights[currentIndex]);
+    }
   };
 
-  useEffect(() => {
-    fetch(API_URL[flag])
-      .then((res) => res.json())
-      .then((json) => setData(json))
-      .catch((err) => console.log(err));
-  }, [flag]);
-*/}
+  const finalData = 
+    flag === "petcard" && data.length === 0
+      ? [{ id: "add", type: "add" }]
+      : data;
+
+  
+
 
   const AddPetCard = ({ onPress }) => (
      <TouchableOpacity 
@@ -124,6 +139,7 @@ const Slider = ({ flag, onAddPetPress  }) => {
     }
 
     if (flag === "magazine") return <Magazine item={item} />;
+
     return null;
   };
 
