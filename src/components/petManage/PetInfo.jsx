@@ -19,12 +19,12 @@ const PetInfo = ({ data }) => {
     const [petInfo, setPetInfo] = useState(data);
     const [expanded, setExpanded] = useState(false);
     const [showMore, setShowMore] = useState(false);
-    const [main, setMain] = useState(data?.main);
+    const [main, setMain] = useState(data?.mainYn);
 
     const [petModalVisible, setPetModalVisible] = useState(false);
 
     useEffect(() => {
-        setMain(petInfo.main)
+        setMain(petInfo.mainYn)
     }, [data?.main])
 
     /**
@@ -37,7 +37,7 @@ const PetInfo = ({ data }) => {
             '대표 동물로 설정하시겠습니까?',
             [
                 { text: '취소', onPress: () => { }, style: 'cancel' },
-                { text: '확인', onPress: () => { setMain(!main) }, style: 'default' },
+                { text: '확인', onPress: () => { setMain('Y') }, style: 'default' },
             ],
             {
                 cancelable: true,
@@ -70,12 +70,12 @@ const PetInfo = ({ data }) => {
             <View style={styles.info}>
                 <View style={styles.nameBox}>
                     <View>
-                        <EBoldTextN style={styles.infoName}>{petInfo.name}</EBoldTextN>
-                        <LightTextN style={styles.infoBreed}><Material name="pets" /> {petInfo.species} • {petInfo.breed}</LightTextN>
+                        <EBoldTextN style={styles.infoName}>{petInfo.petName}</EBoldTextN>
+                        <LightTextN style={styles.infoBreed}><Material name="pets" /> {petInfo.speciesName} • {petInfo.breedName}</LightTextN>
                     </View>
                     <Pressable style={styles.setMainBtn} onPress={() => setMainPet(main)} activeOpacity={1}>
                         {
-                            main ? <FontAwesome name='star' style={{ fontSize: 20, color: 'white' }} />
+                            main == 'Y' ? <FontAwesome name='star' style={{ fontSize: 20, color: 'white' }} />
                                 : <FontAwesome name='star-o' style={{ fontSize: 20, color: 'white' }} />
                         }
                     </Pressable>
@@ -96,7 +96,7 @@ const PetInfo = ({ data }) => {
                     </View>
                     <View style={[styles.infoSub,]}>
                         <EBoldTextN style={{ fontSize: 12, marginBottom: 6 }}>몸길이</EBoldTextN>
-                        <LightTextN styles={styles.subContent}>{petInfo.length}cm</LightTextN>
+                        <LightTextN styles={styles.subContent}>{petInfo.bodyLength}cm</LightTextN>
                     </View>
                     <View style={styles.infoSub}>
                         <EBoldTextN style={{ fontSize: 12, marginBottom: 6 }}>성별</EBoldTextN>
@@ -104,7 +104,7 @@ const PetInfo = ({ data }) => {
                     </View>
                     <View style={styles.infoSub}>
                         <EBoldTextN style={{ fontSize: 12, marginBottom: 6 }}>중성화</EBoldTextN>
-                        <LightTextN styles={styles.subContent}>{petInfo.neuterYn}</LightTextN>
+                        <LightTextN styles={styles.subContent}>{petInfo.neutrificationYn}</LightTextN>
                     </View>
                 </ScrollView>
 

@@ -21,21 +21,21 @@ const PetSelectBox = ({ item, onSelect, mb }) => {
             <View style={styles.selectContainer}>
                 <View style={styles.profileView}>
                     <Image
-                        source={item.profile}
+                        source={item.profileImg}
                         style={styles.profileImg}
                     />
                 </View>
                 <View>
-                    <BoldText style={styles.title}>{item.name}</BoldText>
+                    <BoldText style={styles.title}>{item.petName}</BoldText>
                     <View style={styles.tagView}>
                         <View style={[styles.breedTag, {backgroundColor: COLORS.primary, marginRight: 6}]}>
                             <Text style={styles.breed}>
-                                {item.species}
+                                {item.speciesName}
                             </Text>
                         </View>
                         <View style={[styles.breedTag, {backgroundColor: '#9a8fff'}]}>
                             <Text style={styles.breed}>
-                                {item.breed}
+                                {item.breedName}
                             </Text>
                         </View>
                     </View>

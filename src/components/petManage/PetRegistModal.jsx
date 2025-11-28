@@ -50,41 +50,27 @@ export default function PetRegistModal({ visible, onClose, onSubmit, modiData })
         }
     }
 
-    const [data, setData] = useState({
-        name: '',
+    // 초기값
+    const initialData = {
+        petName: '',
         age: '',
         birth: '',
         birthKnowYn: false,
         gender: '',
-        neuterYn: '',
-        species: '',
-        speciesCode: '',
+        neutrificationYn: '',
+        speciesType: '',
+        breedType: '',
         breed: '',
-        breedCode: '',
-        breedEtc: '',
         remark: '',
-        profile: null,
-        length: ''
-    });
+        profileImg: null,
+        bodyLength: ''
+    }
+
+    const [data, setData] = useState(initialData);
 
     useEffect(() => {
         if (!visible) {
-            setData({
-                name: '',
-                age: '',
-                birth: '',
-                birthKnowYn: false,
-                gender: '',
-                neuterYn: '',
-                species: '',
-                speciesCode: '',
-                breed: '',
-                breedCode: '',
-                breedEtc: '',
-                remark: '',
-                profile: null,
-                length: ''
-            });
+            setData(initialData);
             setDisabled(false);
             setShowDatePicker(false);
             initialSpeciesLoad.current = true;
@@ -102,7 +88,7 @@ export default function PetRegistModal({ visible, onClose, onSubmit, modiData })
 
     //품종 옵션 리스트
     useEffect(()=>{
-        if (!data.speciesCode) {
+        if (!data.speciesType) {
             setBreedOptions([]);
             return;
         }
@@ -110,10 +96,10 @@ export default function PetRegistModal({ visible, onClose, onSubmit, modiData })
             // 첫 렌더에서는 기존 값 유지
             initialSpeciesLoad.current = false;
         } else {
-            handleChange('breedCode', '');
+            handleChange('breedType', '');
         }
-        getBreedType(data.speciesCode);
-    }, [data.speciesCode])
+        getBreedType(data.speciesType);
+    }, [data.speciesType])
 
 
     const [showDatePicker, setShowDatePicker] = useState(false);
@@ -123,7 +109,7 @@ export default function PetRegistModal({ visible, onClose, onSubmit, modiData })
     const handleChange = (key, value) => setData(prev => ({ ...prev, [key]: value }));
 
     const handleSubmit = () => {
-        if (!data.name.trim()) return alert('이름을 입력해주세요 🐶');
+        if (!data.petName.trim()) return alert('이름을 입력해주세요 🐶');
         onSubmit(data);
         onClose();
     };
@@ -131,7 +117,7 @@ export default function PetRegistModal({ visible, onClose, onSubmit, modiData })
     return (
         <BottomModal visible={visible} onClose={onClose} title="🐾 동물 정보" maxHeight='85%'>
             <View style={{paddingHorizontal: 24, paddingBottom: 24}}>
-                <AppInput label="이름" value={data.name} onChangeText={v => handleChange('name', v)} />
+                <AppInput label="이름" value={data.petName} onChangeText={v => handleChange('petName', v)} />
 
                 <AppInput
                     label="나이"
@@ -204,8 +190,8 @@ export default function PetRegistModal({ visible, onClose, onSubmit, modiData })
 
                 <AppInput 
                     label="몸길이"
-                    value={data.length}
-                    onChangeText={v => handleChange('length', v)}
+                    value={data.bodyLength}
+                    onChangeText={v => handleChange('bodyLength', v)}
                 />
 
                 <AppSelect
@@ -218,32 +204,32 @@ export default function PetRegistModal({ visible, onClose, onSubmit, modiData })
                 <AppSelect
                     label="중성화 여부"
                     options={[{code: 'Y', korName: '예'}, {code: 'N', korName: '아니오'}]}
-                    selected={data.neuterYn}
-                    onSelect={(v) => handleChange('neuterYn', v)}
+                    selected={data.neutrificationYn}
+                    onSelect={(v) => handleChange('neutrificationYn', v)}
                 />
 
                 <AppSelect
                     label="품종1 (동물종)"
                     options={speciesOptions}
-                    selected={data.speciesCode}
-                    onSelect={(v) => handleChange('speciesCode', v)}
+                    selected={data.speciesType}
+                    onSelect={(v) => handleChange('speciesType', v)}
                 />
 
-                {(data.speciesCode && data.speciesCode != 'ETC') && (
+                {(data.speciesType && data.speciesType != 'ETC') && (
                     <AppDropdown
                         label="품종2 (세부종)"
                         data={breedOptions.map(o => ({ label: o.korName, value: o.code }))}
-                        value={data.breedCode}
-                        onChange={(v) => handleChange('breedCode', v)}
+                        value={data.breedType}
+                        onChange={(v) => handleChange('breedType', v)}
                         isSearch={true}
                         />
                 )}
 
-                {(data.breedCode === '9999' || data.speciesCode === 'ETC') && (
+                {(data.breedType === '9999' || data.speciesType === 'ETC') && (
                     <AppInput
                         label="기타 품종"
-                        value={data.breedEtc}
-                        onChangeText={(v) => handleChange('breedEtc', v)}
+                        value={data.breed}
+                        onChangeText={(v) => handleChange('breed', v)}
                     />
                 )}
 
@@ -255,8 +241,8 @@ export default function PetRegistModal({ visible, onClose, onSubmit, modiData })
 
                 <AppImagePicker
                     label="대표 사진"
-                    value={data.profile}
-                    onChange={(v) => handleChange('profile', v)}
+                    value={data.profileImg}
+                    onChange={(v) => handleChange('profileImg', v)}
                 />
 
                 <AppButton title={modiData ? '수정하기' : '등록하기'} onPress={handleSubmit} />

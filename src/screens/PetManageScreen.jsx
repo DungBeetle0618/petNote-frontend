@@ -42,7 +42,7 @@ const PetManageScreen = ({ route, navigation }) => {
     const Header = ({ pet, navigation }) => (
         <View style={styles.headerImageWrapper} onLayout={event => setHeaderHeight(event.nativeEvent.layout.height)}>
             <ImageBackground
-                source={pet.profile}
+                source={pet.profileImg}
                 resizeMode="cover"
                 style={styles.bgImage}
             >
