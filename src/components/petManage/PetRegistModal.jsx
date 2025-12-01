@@ -19,6 +19,7 @@ import {
 import DatePicker from 'react-native-date-picker';
 import { MODAL_COLORS } from '../../assets/styles/globalStyles';
 import { getCommonCode } from '../../api/common';
+import { insertPet } from '../../api/pet';
 
 export default function PetRegistModal({ visible, onClose, onSubmit, modiData }) {
     const [speciesOptions, setSpeciesOptions] = useState([]);
@@ -74,12 +75,12 @@ export default function PetRegistModal({ visible, onClose, onSubmit, modiData })
         bodyLength: ''
     }
 
-    const [data, setData] = useState(initialData);
+    const [petData, setPetData] = useState(initialData);
 
     useEffect(() => {
         if (!visible) {
             //초기화
-            setData(initialData);
+            setPetData(initialData);
             setDisabled(false);
             setShowDatePicker(false);
             setErrorName('');
@@ -90,7 +91,7 @@ export default function PetRegistModal({ visible, onClose, onSubmit, modiData })
             initialSpeciesLoad.current = true;
         } else {
             if(modiData) {
-                setData(modiData);
+                setPetData(modiData);
             }
         }
     }, [visible]);
@@ -102,7 +103,7 @@ export default function PetRegistModal({ visible, onClose, onSubmit, modiData })
 
     //품종 옵션 리스트
     useEffect(()=>{
-        if (!data.speciesType) {
+        if (!petData.speciesType) {
             setBreedOptions([]);
             return;
         }
@@ -112,42 +113,49 @@ export default function PetRegistModal({ visible, onClose, onSubmit, modiData })
         } else {
             handleChange('breedType', '');
         }
-        getBreedType(data.speciesType);
-    }, [data.speciesType])
+        getBreedType(petData.speciesType);
+    }, [petData.speciesType])
 
 
     const [showDatePicker, setShowDatePicker] = useState(false);
-    const [date, setDate] = useState(data.birth ? new Date(data.birth) : new Date());
-    const [disabled, setDisabled] = useState(data.birthKnowYn == 'Y' ? false : true);
+    const [date, setDate] = useState(petData.birth ? new Date(petData.birth) : new Date());
+    const [disabled, setDisabled] = useState(petData.birthKnowYn == 'Y' ? false : true);
 
-    const handleChange = (key, value) => setData(prev => ({ ...prev, [key]: value }));
+    const handleChange = (key, value) => setPetData(prev => ({ ...prev, [key]: value }));
 
     // 제출
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
 
         //validation 체크
-        if (!data.petName.trim()) {
+        if (!petData.petName.trim()) {
             setErrorName('이름은 필수입니다.');
             nameRef.current?.focus(); 
             return;
         }
-        if (!data.speciesType.trim()) {
+        if (!petData.speciesType.trim()) {
             setErrorSpecies('동물종 선택은 필수입니다.');
             return;
         }
-        if ((data.speciesType && data.speciesType != 'ETC') && !data.breedType.trim()) {
+        if ((petData.speciesType && petData.speciesType != 'ETC') && !petData.breedType.trim()) {
             setErrorBreed('세부종 선택은 필수입니다.');
             return;
         }
-        if ((data.breedType === '9999' || data.speciesType === 'ETC') && !data.breed.trim()) {
+        if ((petData.breedType === '9999' || petData.speciesType === 'ETC') && !petData.breed.trim()) {
             setErrorEtc('기타 품종 입력은 필수입니다.');
             etcRef.current?.focus(); 
             return;
         }
         else {
-            //TODO: add API 호출
-
-            onSubmit(data);
+            //add API 호출
+            try{
+                const { data } = await insertPet(JSON.stringify(petData));
+                if (data.result === "SUCCESS") {
+                    onSubmit(petData);
+                }
+            } catch (e) {
+                alert("등록/수정 실패");
+                console.log(e);
+            }
             onClose();
         }
     };
@@ -155,18 +163,18 @@ export default function PetRegistModal({ visible, onClose, onSubmit, modiData })
     return (
         <BottomModal visible={visible} onClose={onClose} title="동물 정보" maxHeight='85%'>
             <View style={{paddingHorizontal: 24, paddingBottom: 24}}>
-                <AppInput label="이름" value={data.petName} onChangeText={v => {
+                <AppInput label="이름" value={petData.petName} onChangeText={v => {
                     setErrorName('');
                     handleChange('petName', v);
                 }} 
                     error={errorName} 
                     ref={nameRef}
                 />
-                <AppInput label="한마디" value={data.petInfo} onChangeText={v => handleChange('petInfo', v)} placeholder='반려동물에 대한 한마디를 적어주세요' />
+                <AppInput label="한마디" value={petData.petInfo} onChangeText={v => handleChange('petInfo', v)} placeholder='반려동물에 대한 한마디를 적어주세요' />
 
                 {/* <AppInput
                     label="나이"
-                    value={data.age}
+                    value={petData.age}
                     onChangeText={v => handleChange('age', v)}
                     keyboardType="numeric"
                 /> */}
@@ -177,7 +185,7 @@ export default function PetRegistModal({ visible, onClose, onSubmit, modiData })
 
                         <TouchableOpacity
                             onPress={() => {
-                                const next = data.birthKnowYn=="Y" ? "N" : "Y";
+                                const next = petData.birthKnowYn=="Y" ? "N" : "Y";
                                 setDisabled(next=='Y' ? false : true);
                                 handleChange('birthKnowYn', next);
 
@@ -189,7 +197,7 @@ export default function PetRegistModal({ visible, onClose, onSubmit, modiData })
                             style={styles.checkboxRow}
                             activeOpacity={0.7}
                         >
-                            <View style={[styles.checkbox, (data.birthKnowYn=="N") && styles.checkboxActive]} />
+                            <View style={[styles.checkbox, (petData.birthKnowYn=="N") && styles.checkboxActive]} />
                             <Text style={styles.checkboxLabel}>생일 모름</Text>
                         </TouchableOpacity>
                     </View>
@@ -203,8 +211,8 @@ export default function PetRegistModal({ visible, onClose, onSubmit, modiData })
                         onPress={() => !disabled && setShowDatePicker(true)}
                         activeOpacity={disabled ? 1 : 0.7}
                     >
-                        <Text style={{ color: data.birth ? '#333' : '#999' }}>
-                            {data.birth ? data.birth : '날짜 선택'}
+                        <Text style={{ color: petData.birth ? '#333' : '#999' }}>
+                            {petData.birth ? petData.birth : '날짜 선택'}
                         </Text>
                     </TouchableOpacity>
 
@@ -235,28 +243,28 @@ export default function PetRegistModal({ visible, onClose, onSubmit, modiData })
 
                 <AppInput 
                     label="몸길이"
-                    value={data.bodyLength}
+                    value={petData.bodyLength}
                     onChangeText={v => handleChange('bodyLength', v)}
                 />
 
                 <AppSelect
                     label="성별"
                     options={[{code: 'M', korName: '남'}, {code: 'F', korName: '여'}]}
-                    selected={data.gender}
+                    selected={petData.gender}
                     onSelect={(v) => handleChange('gender', v)}
                 />
 
                 <AppSelect
                     label="중성화 여부"
                     options={[{code: 'Y', korName: '예'}, {code: 'N', korName: '아니오'}]}
-                    selected={data.neutrificationYn}
+                    selected={petData.neutrificationYn}
                     onSelect={(v) => handleChange('neutrificationYn', v)}
                 />
 
                 <AppSelect
                     label="품종1 (동물종)"
                     options={speciesOptions}
-                    selected={data.speciesType}
+                    selected={petData.speciesType}
                     onSelect={(v) => {
                         setErrorSpecies("");
                         handleChange('speciesType', v)
@@ -264,11 +272,11 @@ export default function PetRegistModal({ visible, onClose, onSubmit, modiData })
                     error={errorSpecies} 
                 />
 
-                {(data.speciesType && data.speciesType != 'ETC') && (
+                {(petData.speciesType && petData.speciesType != 'ETC') && (
                     <AppDropdown
                         label="품종2 (세부종)"
                         data={breedOptions.map(o => ({ label: o.korName, value: o.code }))}
-                        value={data.breedType}
+                        value={petData.breedType}
                         onChange={(v) => {
                             setErrorBreed("");
                             handleChange('breedType', v)
@@ -278,10 +286,10 @@ export default function PetRegistModal({ visible, onClose, onSubmit, modiData })
                     />
                 )}
 
-                {(data.breedType === '9999' || data.speciesType === 'ETC') && (
+                {(petData.breedType === '9999' || petData.speciesType === 'ETC') && (
                     <AppInput
                         label="기타 품종"
-                        value={data.breed}
+                        value={petData.breed}
                         onChangeText={(v) => {
                             setErrorEtc('');
                             handleChange('breed', v)
@@ -293,13 +301,13 @@ export default function PetRegistModal({ visible, onClose, onSubmit, modiData })
 
                 <AppTextArea
                     label="특이사항"
-                    value={data.remark}
+                    value={petData.remark}
                     onChangeText={(v) => handleChange('remark', v)}
                 />
 
                 <AppImagePicker
                     label="대표 사진"
-                    value={data.profileImg}
+                    value={petData.profileImg}
                     onChange={(v) => handleChange('profileImg', v)}
                 />
 
