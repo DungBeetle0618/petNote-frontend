@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { MODAL_COLORS } from '../../assets/styles/globalStyles';
 
-export default function AppSelect({ label, options, selected, onSelect }) {
+const AppSelect = ({ label, options, selected, onSelect, error }) => {
   return (
     <View style={styles.inputGroup}>
       {label && <Text style={styles.label}>{label}</Text>}
@@ -10,7 +10,7 @@ export default function AppSelect({ label, options, selected, onSelect }) {
         {options.map((o) => (
           <TouchableOpacity
             key={o.code}
-            style={[styles.selectBox, selected === o.code && styles.selectBoxActive]}
+            style={[styles.selectBox, selected === o.code && styles.selectBoxActive, error && styles.errorBorder]}
             onPress={() => onSelect(o.code)}
           >
             <Text
@@ -21,9 +21,12 @@ export default function AppSelect({ label, options, selected, onSelect }) {
           </TouchableOpacity>
         ))}
       </View>
+
+      {error && <Text style={styles.errorMessage}>{error}</Text>}
+
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   inputGroup: { marginBottom: 12 },
@@ -45,4 +48,15 @@ const styles = StyleSheet.create({
   },
   selectText: { color: MODAL_COLORS.text, fontSize: 14 },
   selectTextActive: { color: MODAL_COLORS.activeText, fontWeight: '600' },
+
+  errorMessage: {
+    color: 'red',
+    fontSize: 12,
+    marginTop: 4,
+  },
+  errorBorder: {
+    borderColor: 'red',
+  },
 });
+
+export default AppSelect;

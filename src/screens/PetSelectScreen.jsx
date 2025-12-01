@@ -21,7 +21,6 @@ const PetSelectScreen = () => {
     const [options, setOptions] = useState([]);
 
     const handleSubmit = data => {
-        console.log('등록된 동물 정보:', data);
         setPetModalVisible(false);
     };
 

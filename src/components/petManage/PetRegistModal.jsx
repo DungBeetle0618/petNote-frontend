@@ -24,8 +24,16 @@ export default function PetRegistModal({ visible, onClose, onSubmit, modiData })
     const [speciesOptions, setSpeciesOptions] = useState([]);
     const [breedOptions, setBreedOptions] = useState([]);
     const initialSpeciesLoad = useRef(true); // 첫 로드에서는 breedCode를 비우지 않는다
+
+    //valid 체크
+    const [errorName, setErrorName] = useState('');
+    const [errorSpecies, setErrorSpecies] = useState('');
+    const [errorBreed, setErrorBreed] = useState('');
+    const [errorEtc, setErrorEtc] = useState('');
+    const nameRef = useRef(null);
+    const etcRef = useRef(null);
     
-    // 종 구분
+    // 종 구분 api 호출
     const getSpeciesType = async() => {
         try {
             const {data} = await getCommonCode('BREED_TYPE', 'SPECIES');
@@ -37,7 +45,7 @@ export default function PetRegistModal({ visible, onClose, onSubmit, modiData })
         }
     }
     
-    // 품종 구분
+    // 품종 구분 api 호출
     const getBreedType = async(species) => {
         try {
             const {data} = await getCommonCode('BREED_TYPE', species);
@@ -53,7 +61,7 @@ export default function PetRegistModal({ visible, onClose, onSubmit, modiData })
     // 초기값
     const initialData = {
         petName: '',
-        // age: '',
+        petInfo: '',
         birth: '',
         birthKnowYn: 'Y',
         gender: '',
@@ -70,9 +78,15 @@ export default function PetRegistModal({ visible, onClose, onSubmit, modiData })
 
     useEffect(() => {
         if (!visible) {
+            //초기화
             setData(initialData);
             setDisabled(false);
             setShowDatePicker(false);
+            setErrorName('');
+            setErrorSpecies('');
+            setErrorBreed('');
+            setErrorEtc('');
+
             initialSpeciesLoad.current = true;
         } else {
             if(modiData) {
@@ -108,16 +122,47 @@ export default function PetRegistModal({ visible, onClose, onSubmit, modiData })
 
     const handleChange = (key, value) => setData(prev => ({ ...prev, [key]: value }));
 
+    // 제출
     const handleSubmit = () => {
-        if (!data.petName.trim()) return alert('이름을 입력해주세요 🐶');
-        onSubmit(data);
-        onClose();
+
+        //validation 체크
+        if (!data.petName.trim()) {
+            setErrorName('이름은 필수입니다.');
+            nameRef.current?.focus(); 
+            return;
+        }
+        if (!data.speciesType.trim()) {
+            setErrorSpecies('동물종 선택은 필수입니다.');
+            return;
+        }
+        if ((data.speciesType && data.speciesType != 'ETC') && !data.breedType.trim()) {
+            setErrorBreed('세부종 선택은 필수입니다.');
+            return;
+        }
+        if ((data.breedType === '9999' || data.speciesType === 'ETC') && !data.breed.trim()) {
+            setErrorEtc('기타 품종 입력은 필수입니다.');
+            etcRef.current?.focus(); 
+            return;
+        }
+        else {
+            //TODO: add API 호출
+
+            onSubmit(data);
+            onClose();
+        }
     };
 
     return (
-        <BottomModal visible={visible} onClose={onClose} title="🐾 동물 정보" maxHeight='85%'>
+        <BottomModal visible={visible} onClose={onClose} title="동물 정보" maxHeight='85%'>
             <View style={{paddingHorizontal: 24, paddingBottom: 24}}>
-                <AppInput label="이름" value={data.petName} onChangeText={v => handleChange('petName', v)} />
+                <AppInput label="이름" value={data.petName} onChangeText={v => {
+                    setErrorName('');
+                    handleChange('petName', v);
+                }} 
+                    error={errorName} 
+                    ref={nameRef}
+                />
+                <AppInput label="한마디" value={data.petInfo} onChangeText={v => handleChange('petInfo', v)} placeholder='반려동물에 대한 한마디를 적어주세요' />
 
                 {/* <AppInput
                     label="나이"
@@ -212,7 +257,11 @@ export default function PetRegistModal({ visible, onClose, onSubmit, modiData })
                     label="품종1 (동물종)"
                     options={speciesOptions}
                     selected={data.speciesType}
-                    onSelect={(v) => handleChange('speciesType', v)}
+                    onSelect={(v) => {
+                        setErrorSpecies("");
+                        handleChange('speciesType', v)
+                    }}
+                    error={errorSpecies} 
                 />
 
                 {(data.speciesType && data.speciesType != 'ETC') && (
@@ -220,16 +269,25 @@ export default function PetRegistModal({ visible, onClose, onSubmit, modiData })
                         label="품종2 (세부종)"
                         data={breedOptions.map(o => ({ label: o.korName, value: o.code }))}
                         value={data.breedType}
-                        onChange={(v) => handleChange('breedType', v)}
+                        onChange={(v) => {
+                            setErrorBreed("");
+                            handleChange('breedType', v)
+                        }}
                         isSearch={true}
-                        />
+                        error={errorBreed} 
+                    />
                 )}
 
                 {(data.breedType === '9999' || data.speciesType === 'ETC') && (
                     <AppInput
                         label="기타 품종"
                         value={data.breed}
-                        onChangeText={(v) => handleChange('breed', v)}
+                        onChangeText={(v) => {
+                            setErrorEtc('');
+                            handleChange('breed', v)
+                        }}
+                        error={errorEtc} 
+                        ref={etcRef}
                     />
                 )}
 

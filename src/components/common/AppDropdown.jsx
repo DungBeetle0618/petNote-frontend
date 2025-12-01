@@ -3,12 +3,12 @@ import { View, Text, StyleSheet } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
 import { MODAL_COLORS } from '../../assets/styles/globalStyles';
 
-export default function AppDropdown({ label, data, value, onChange, isSearch }) {
+const AppDropdown = ({ label, data, value, onChange, isSearch, error }) => {
   return (
     <View style={styles.inputGroup}>
       {label && <Text style={styles.label}>{label}</Text>}
       <Dropdown
-        style={styles.dropdown}
+        style={[styles.dropdown, error && styles.errorBorder]}
         placeholderStyle={styles.placeholderStyle}
         selectedTextStyle={styles.selectedTextStyle}
         inputSearchStyle={styles.inputSearchStyle}
@@ -21,9 +21,11 @@ export default function AppDropdown({ label, data, value, onChange, isSearch }) 
         value={value}
         onChange={(item) => onChange(item.value)}
       />
+
+      {error && <Text style={styles.errorMessage}>{error}</Text>}
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   inputGroup: { marginBottom: 12 },
@@ -45,4 +47,15 @@ const styles = StyleSheet.create({
     borderBottomWidth: 0.5,
     borderColor: MODAL_COLORS.border,
   },
+
+  errorBorder: {
+    borderColor: 'red',
+  },
+  errorMessage: {
+    color: 'red',
+    marginTop: 4,
+    fontSize: 12,
+  },
 });
+
+export default AppDropdown;
