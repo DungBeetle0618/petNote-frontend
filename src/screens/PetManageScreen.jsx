@@ -32,39 +32,40 @@ const PetManageScreen = ({ route, navigation }) => {
 
     const [headerHeight, setHeaderHeight] = useState(HEADER_HEIGHT);
 
-    // const PetInfoContent = (props) => <PetInfo {...props} />;
-    // const HealthTabContent = (props) => <HealthTab {...props} />;
-    // const ConditionsTabContent = (props) => <ConditionsTab {...props} />;
-    // const ActivityTabContent = (props) => <ActivityTab {...props} />;
-
     const tabs = ['정보', '건강', '식사/배변', '활동'];
 
-    const Header = ({ pet, navigation }) => (
-        <View style={styles.headerImageWrapper} onLayout={event => setHeaderHeight(event.nativeEvent.layout.height)}>
-            <ImageBackground
-                source={pet.profileImg}
-                resizeMode="cover"
-                style={styles.bgImage}
-            >
-                <Pressable
-                    style={styles.backBtn}
-                    onPress={() => navigation.goBack()}
+    const Header = ({ pet, navigation }) => {
+        const bgSource = pet?.profileImg
+                ? { uri: pet.profileImg }
+                : require('../assets/images/noMainImage.png');
+        
+        return (
+            <View style={styles.headerImageWrapper} onLayout={event => setHeaderHeight(event.nativeEvent.layout.height)}>
+                <ImageBackground
+                    source={bgSource}
+                    resizeMode="cover"
+                    style={styles.bgImage}
                 >
-                    <Feather name="arrow-left" style={{ color: 'white', fontSize: 40 }} />
-                </Pressable>
+                    <Pressable
+                        style={styles.backBtn}
+                        onPress={() => navigation.goBack()}
+                    >
+                        <Feather name="arrow-left" style={{ color: 'white', fontSize: 40 }} />
+                    </Pressable>
 
-                <View>
-                    <EBoldTextN style={[styles.petName, styles.textShadow]}>
-                        {pet.name}
-                    </EBoldTextN>
+                    <View>
+                        <EBoldTextN style={[styles.petName, styles.textShadow]}>
+                            {pet?.petName}
+                        </EBoldTextN>
 
-                    <Text style={[styles.petBreed, styles.textShadow]}>
-                        {pet.info}
-                    </Text>
-                </View>
-            </ImageBackground>
-        </View>
-    );
+                        <Text style={[styles.petBreed, styles.textShadow]}>
+                            {pet?.petInfo}
+                        </Text>
+                    </View>
+                </ImageBackground>
+            </View>
+        )
+    };
 
 
 
@@ -92,8 +93,6 @@ const PetManageScreen = ({ route, navigation }) => {
             </View>
         );
     };
-
-
 
 
     return (

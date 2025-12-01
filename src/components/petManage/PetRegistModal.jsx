@@ -53,9 +53,9 @@ export default function PetRegistModal({ visible, onClose, onSubmit, modiData })
     // 초기값
     const initialData = {
         petName: '',
-        age: '',
+        // age: '',
         birth: '',
-        birthKnowYn: false,
+        birthKnowYn: 'Y',
         gender: '',
         neutrificationYn: '',
         speciesType: '',
@@ -104,7 +104,7 @@ export default function PetRegistModal({ visible, onClose, onSubmit, modiData })
 
     const [showDatePicker, setShowDatePicker] = useState(false);
     const [date, setDate] = useState(data.birth ? new Date(data.birth) : new Date());
-    const [disabled, setDisabled] = useState(data.birthKnowYn);
+    const [disabled, setDisabled] = useState(data.birthKnowYn == 'Y' ? false : true);
 
     const handleChange = (key, value) => setData(prev => ({ ...prev, [key]: value }));
 
@@ -119,12 +119,12 @@ export default function PetRegistModal({ visible, onClose, onSubmit, modiData })
             <View style={{paddingHorizontal: 24, paddingBottom: 24}}>
                 <AppInput label="이름" value={data.petName} onChangeText={v => handleChange('petName', v)} />
 
-                <AppInput
+                {/* <AppInput
                     label="나이"
                     value={data.age}
                     onChangeText={v => handleChange('age', v)}
                     keyboardType="numeric"
-                />
+                /> */}
 
                 <View style={styles.inputGroup}>
                     <View style={styles.rowLabel}>
@@ -132,8 +132,8 @@ export default function PetRegistModal({ visible, onClose, onSubmit, modiData })
 
                         <TouchableOpacity
                             onPress={() => {
-                                const next = !data.birthKnowYn;
-                                setDisabled(next);
+                                const next = data.birthKnowYn=="Y" ? "N" : "Y";
+                                setDisabled(next=='Y' ? false : true);
                                 handleChange('birthKnowYn', next);
 
                                 if (next) {
@@ -144,7 +144,7 @@ export default function PetRegistModal({ visible, onClose, onSubmit, modiData })
                             style={styles.checkboxRow}
                             activeOpacity={0.7}
                         >
-                            <View style={[styles.checkbox, data.birthKnowYn && styles.checkboxActive]} />
+                            <View style={[styles.checkbox, (data.birthKnowYn=="N") && styles.checkboxActive]} />
                             <Text style={styles.checkboxLabel}>생일 모름</Text>
                         </TouchableOpacity>
                     </View>

@@ -11,6 +11,7 @@ import RegularText from '../font/RegularText';
 import BoldText from '../font/BoldText';
 
 const PetSelectBox = ({ item, onSelect, mb }) => {
+    console.log(item)
 
     return (
         <TouchableOpacity

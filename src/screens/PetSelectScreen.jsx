@@ -12,40 +12,56 @@ import BoldText from '../components/font/BoldText';
 import PetRegistModal from '../components/petManage/PetRegistModal';
 import PetSelectBox from '../components/petManage/PetSelectBox';
 import { useNavigation } from '@react-navigation/native';
-
+import { getPetList, getPetInfo } from '../api/pet';
 
 const PetSelectScreen = () => {
     const navigation = useNavigation();
 
     const [petModalVisible, setPetModalVisible] = useState(false);
+    const [options, setOptions] = useState([]);
 
     const handleSubmit = data => {
         console.log('등록된 동물 정보:', data);
         setPetModalVisible(false);
     };
 
+    //나의 펫 리스트 조회
+    const getMyPetList = async () => {
+        try {
+            const { data } = await getPetList();
+            if (data.result === "SUCCESS") {
+                setOptions(data.list);
+            }
+        } catch (e) {
+            console.log(e);
+        }
+    }
 
-    //예시데이터
-    const contents = '아주 건강하고 똑똑하지만 약간 멍청함\n먹는거 좋아하고 사람이나 다른 강아지들 좋아함\n알러지 없음\n하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하\n하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하하';
-    const options = [
-        { petNo: 1, petName: '뭉치', speciesType: 'DOG', speciesName: '강아지', breedType: '0008', breedName: '노바 스코샤 덕 톨링 리트리버', profileImg: require('../assets/images/golden_retriever_sample.png'), birth: '2023.12.25', age: '3', gender: 'M', petInfo: '인절미같은 우리집 왕자님', neutrificationYn: 'Y', bodyLength: '150', remark: contents },
-        { petNo: 2, petName: '아치', speciesType: 'CAT', speciesName: '고양이', breedType: '0049', breedName: '코리안 숏헤어', profileImg: '', birth: '2023.12.25', age: '3', gender: 'F', petInfo: '혜지씨네 고양이', neutrificationYn: 'Y', bodyLength: '80', remark: contents },
-        { petNo: 4, petName: '흰둥이', speciesType: 'DOG', speciesName: '강아지', breedType: '0055', breedName: '비숑', profileImg: require('../assets/images/siro.jpg'), birth: '2023.12.25', age: '3', gender: 'M', mainYn: 'Y', petInfo: '솜사탕', neutrificationYn: 'N', bodyLength: '103.4', remark: contents },
-        { petNo: 3, petName: '마루', speciesType: 'DOG', speciesName: '강아지', breedType: '0130', breedName: '푸들', profileImg: '', birth: '2023.12.25', age: '3', gender: 'F', petInfo: '마루는 강쥐', neutrificationYn: 'N', bodyLength: '94', remark: contents },
-    ];
+    useEffect(() => {
+        getMyPetList();
+    }, [])
 
 
     //상세페이지 이동
-    const handleSelect = (item) => {
-        navigation.navigate('PetManageScreen', { pet: item });
+    const handleSelect = async (item) => {
+        //나의 펫 상세 조회
+        try {
+            const { data } = await getPetInfo(item.petNo);
+            if (data.result === "SUCCESS") {
+                console.log(data)
+                navigation.navigate('PetManageScreen', { pet: data.data });
+            }
+        } catch (e) {
+            console.log(e);
+        }
     };
 
     return (
-        <View style={[gs.screen, {height: '100%'}]} >
+        <View style={[gs.screen, { height: '100%' }]} >
 
             <EBoldText style={gs.title}>Pet</EBoldText>
             <Text style={gs.subtitle}>반려동물의 건강정보를 한눈에 확인하세요!</Text>
-            <Text style={{fontSize: 12, color: 'red'}}>TODO: 배지 색상은 변경 예정</Text>
+            <Text style={{ fontSize: 12, color: 'red' }}>TODO: 배지 색상은 변경 예정</Text>
 
             {/* 동물 추가 버튼 */}
             <TouchableOpacity
@@ -62,21 +78,21 @@ const PetSelectScreen = () => {
 
             {/* 동물 리스트 */}
             {
-                !options || options.length==0
-                ? ( 
-                    <View style={styles.noPet}>
-                        <Text style={[styles.noPetText, {fontSize: 16, fontWeight: 500, marginBottom: 10}]}>아직 등록된 반려동물이 없습니다.</Text> 
-                        <Text style={styles.noPetText}>+ 버튼을 눌러 등록해 주세요.</Text> 
-                    </View>
-                )
-                : (
-                    <FlatList 
-                        data={options}
-                        renderItem={({item}) => (
-                            <PetSelectBox item={item} onSelect={() => handleSelect(item)} mb={20} />
-                        )}
-                    />
-                )
+                !options || options.length == 0
+                    ? (
+                        <View style={styles.noPet}>
+                            <Text style={[styles.noPetText, { fontSize: 16, fontWeight: 500, marginBottom: 10 }]}>아직 등록된 반려동물이 없습니다.</Text>
+                            <Text style={styles.noPetText}>+ 버튼을 눌러 등록해 주세요.</Text>
+                        </View>
+                    )
+                    : (
+                        <FlatList
+                            data={options}
+                            renderItem={({ item }) => (
+                                <PetSelectBox item={item} onSelect={() => handleSelect(item)} mb={20} />
+                            )}
+                        />
+                    )
             }
 
         </View>
