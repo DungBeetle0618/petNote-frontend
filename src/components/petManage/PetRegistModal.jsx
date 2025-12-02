@@ -19,7 +19,7 @@ import {
 import DatePicker from 'react-native-date-picker';
 import { MODAL_COLORS } from '../../assets/styles/globalStyles';
 import { getCommonCode } from '../../api/common';
-import { insertPet } from '../../api/pet';
+import { insertPet, updatePet } from '../../api/pet';
 
 export default function PetRegistModal({ visible, onClose, onSubmit, modiData }) {
     const [speciesOptions, setSpeciesOptions] = useState([]);
@@ -148,8 +148,15 @@ export default function PetRegistModal({ visible, onClose, onSubmit, modiData })
         else {
             //add API 호출
             try{
-                const { data } = await insertPet(JSON.stringify(petData));
-                if (data.result === "SUCCESS") {
+                let res;
+                if(modiData) {
+                    const { data } = await updatePet(JSON.stringify(petData));
+                    res = data; 
+                } else {
+                    const { data } = await insertPet(JSON.stringify(petData));
+                    res = data;
+                }
+                if (res.result === "SUCCESS") {
                     onSubmit(petData);
                 }
             } catch (e) {

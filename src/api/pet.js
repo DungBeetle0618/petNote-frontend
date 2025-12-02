@@ -11,3 +11,7 @@ export const getPetInfo = (petNo) =>
 //펫등록
 export const insertPet = (data) =>
     api.post('/api/pet/insertForAxios', data, {headers: { 'Content-Type': 'application/json' }})
+
+//펫정보 수정
+export const updatePet = (data) =>
+    api.post('/api/pet/updateForAxios', data, {headers: { 'Content-Type': 'application/json' }})
