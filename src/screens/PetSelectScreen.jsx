@@ -21,6 +21,7 @@ const PetSelectScreen = () => {
     const [options, setOptions] = useState([]);
 
     const handleSubmit = data => {
+        getMyPetList(); //등록 후 리스트 다시 불러오기
         setPetModalVisible(false);
     };
 

@@ -36,7 +36,7 @@ const PetSelectBox = ({ item, onSelect, mb }) => {
                         </View>
                         <View style={[styles.breedTag, {backgroundColor: '#9a8fff'}]}>
                             <Text style={styles.breed}>
-                                {item.breedName}
+                                {item.breed}
                             </Text>
                         </View>
                     </View>

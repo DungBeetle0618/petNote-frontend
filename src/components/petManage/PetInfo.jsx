@@ -44,7 +44,7 @@ const PetInfo = ({ data }) => {
                 onDismiss: () => { }
             }
         )
-    }    
+    }
 
     const handleSubmit = data => {
         setPetInfo(data)
@@ -69,7 +69,7 @@ const PetInfo = ({ data }) => {
                 <View style={styles.nameBox}>
                     <View>
                         <EBoldTextN style={styles.infoName}>{petInfo.petName}</EBoldTextN>
-                        <LightTextN style={styles.infoBreed}><Material name="pets" /> {petInfo.speciesName} • {petInfo.breedName}</LightTextN>
+                        <LightTextN style={styles.infoBreed}><Material name="pets" /> {petInfo.speciesName} • {petInfo.breed}</LightTextN>
                     </View>
                     <Pressable style={styles.setMainBtn} onPress={() => setMainPet(main)} activeOpacity={1}>
                         {
@@ -84,26 +84,46 @@ const PetInfo = ({ data }) => {
                     contentContainerStyle={{ paddingVertical: 20, paddingHorizontal: 10 }}
                     shadowHorizontalScrollIndicator={false}
                 >
-                    <View style={[styles.infoSub, { width: 100 }]}>
-                        <EBoldTextN style={{ fontSize: 12, marginBottom: 6 }}>생일</EBoldTextN>
-                        <LightTextN styles={styles.subContent}>{petInfo.birth}</LightTextN>
-                    </View>
-                    <View style={styles.infoSub}>
-                        <EBoldTextN style={{ fontSize: 12, marginBottom: 6 }}>나이</EBoldTextN>
-                        <LightTextN styles={styles.subContent}>{petInfo.age}살</LightTextN>
-                    </View>
-                    <View style={[styles.infoSub,]}>
-                        <EBoldTextN style={{ fontSize: 12, marginBottom: 6 }}>몸길이</EBoldTextN>
-                        <LightTextN styles={styles.subContent}>{petInfo.bodyLength}cm</LightTextN>
-                    </View>
-                    <View style={styles.infoSub}>
-                        <EBoldTextN style={{ fontSize: 12, marginBottom: 6 }}>성별</EBoldTextN>
-                        <LightTextN styles={styles.subContent}>{petInfo.gender == 'M' ? '남' : '여'}</LightTextN>
-                    </View>
-                    <View style={styles.infoSub}>
-                        <EBoldTextN style={{ fontSize: 12, marginBottom: 6 }}>중성화</EBoldTextN>
-                        <LightTextN styles={styles.subContent}>{petInfo.neutrificationYn}</LightTextN>
-                    </View>
+                    {
+                        petInfo.birth && (
+                            <View style={[styles.infoSub, { width: 100 }]}>
+                                <EBoldTextN style={{ fontSize: 12, marginBottom: 6 }}>생일</EBoldTextN>
+                                <LightTextN styles={styles.subContent}>{petInfo.birth}</LightTextN>
+                            </View>
+                        )
+                    }
+                    {
+                        petInfo.age && (
+                            <View style={styles.infoSub}>
+                                <EBoldTextN style={{ fontSize: 12, marginBottom: 6 }}>나이</EBoldTextN>
+                                <LightTextN styles={styles.subContent}>{petInfo.age}살</LightTextN>
+                            </View>
+                        )
+                    }
+                    {
+                        petInfo.bodyLength && (
+                            <View style={[styles.infoSub,]}>
+                                <EBoldTextN style={{ fontSize: 12, marginBottom: 6 }}>몸길이</EBoldTextN>
+                                <LightTextN styles={styles.subContent}>{petInfo.bodyLength}cm</LightTextN>
+                            </View>
+                        )
+                    }
+                    {
+                        petInfo.gender && (
+                            <View style={styles.infoSub}>
+                                <EBoldTextN style={{ fontSize: 12, marginBottom: 6 }}>성별</EBoldTextN>
+                                <LightTextN styles={styles.subContent}>{petInfo.gender == 'M' ? '남' : '여'}</LightTextN>
+                            </View>
+                        )
+                    }
+                    {
+                        petInfo.neutrificationYn && (
+                            <View style={styles.infoSub}>
+                                <EBoldTextN style={{ fontSize: 12, marginBottom: 6 }}>중성화</EBoldTextN>
+                                <LightTextN styles={styles.subContent}>{petInfo.neutrificationYn}</LightTextN>
+                            </View>
+                        )
+                    }
                 </ScrollView>
 
                 <View style={styles.memo}>
@@ -146,7 +166,7 @@ const PetInfo = ({ data }) => {
                         <Text style={styles.modiText}>수정하기  <FontAwesome name="pencil" style={{ fontSize: 12 }} /></Text>
                     </Pressable>
                 </View>
-                        
+
 
             </View>
 
@@ -161,7 +181,7 @@ const PetInfo = ({ data }) => {
                 {
                     !photos || photos.length == 0 ?
                         (
-                            <View style={[styles.photoItem, {width: '30%', height: 'auto'}]}>
+                            <View style={[styles.photoItem, { width: '30%', height: 'auto' }]}>
                                 <Text style={styles.noPhoto}>사진을 추가해보세요</Text>
                             </View>
                         )
@@ -207,10 +227,10 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20
     },
     nameBox: {
-        flexDirection: 'row', 
-        alignItems: 'flex-start', 
-        justifyContent: 'space-between', 
-        flexWrap:'wrap', 
+        flexDirection: 'row',
+        alignItems: 'flex-start',
+        justifyContent: 'space-between',
+        flexWrap: 'wrap',
         marginTop: 25
     },
     infoName: {
