@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
     container: {
         backgroundColor: COLORS.background,
         paddingHorizontal: PX_SIZE.lg,
-        paddingVertical: 30,
+        paddingVertical: 20,
     },
     calTitle: {
         fontSize: 16,

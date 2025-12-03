@@ -151,7 +151,7 @@ const styles = StyleSheet.create({
     container: {
         backgroundColor: COLORS.background,
         paddingHorizontal: PX_SIZE.lg, 
-        paddingVertical: 30,
+        paddingVertical: 20,
     },
     detailBox: {
         backgroundColor: "#FDF8F3",

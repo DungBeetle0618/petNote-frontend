@@ -6,8 +6,9 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import FullModal from '../common/FullModal';
 import AppCalendar from '../common/AppCalendar';
 import dayjs from 'dayjs';
+import { WeekCalendar, CalendarProvider } from 'react-native-calendars';
 
-const ActivityDetail = ({visible, onClose, title}) => {
+const ActivityDetail = ({ visible, onClose, title }) => {
     const [open, setOpen] = useState(false);
     const [daySelected, setDaySelected] = useState(dayjs().format('YYYY-MM-DD'));
 
@@ -17,6 +18,18 @@ const ActivityDetail = ({visible, onClose, title}) => {
     const daySelectHandle = (day) => {
         setDaySelected(day);
     }
+
+    const goPrevWeek = () => {
+        setDaySelected(prev =>
+            dayjs(prev).subtract(7, 'day').format('YYYY-MM-DD')
+        );
+    };
+
+    const goNextWeek = () => {
+        setDaySelected(prev =>
+            dayjs(prev).add(7, 'day').format('YYYY-MM-DD')
+        );
+    };
 
     /**
      * 상태 초기화
@@ -31,9 +44,63 @@ const ActivityDetail = ({visible, onClose, title}) => {
 
     return (
         <FullModal visible={visible} onClose={handleClosed} title={title}>
-            <View style={styles.container}>
-                <AppCalendar selected={daySelected} setSelected={(day) => daySelectHandle(day)} />
+            <CalendarProvider
+                date={daySelected}
+                onDateChanged={setDaySelected}
+            >
+                <View
+                    style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        paddingHorizontal: 20,
+                        paddingVertical: 10,
+                        alignItems: 'center',
+                    }}
+                >
+                    <TouchableOpacity onPress={goPrevWeek}>
+                        <Text style={{ color: '#777', fontSize: 20 }}>{"<"}</Text>
+                    </TouchableOpacity>
+
+                    <Text style={{ fontSize: 18, color: '#333', fontWeight: '600' }}>
+                        {dayjs(daySelected).format('YYYY년 MM월')}
+                    </Text>
+
+                    <TouchableOpacity onPress={goNextWeek}>
+                        <Text style={{ color: '#777', fontSize: 20 }}>{">"}</Text>
+                    </TouchableOpacity>
+                </View>
+
+                <WeekCalendar
+                    firstDay={1} // 월요일 시작
+                    current={daySelected}
+                    onDayPress={(day) => {
+                        setDaySelected(day.dateString);
+                    }}
+                    theme={{
+                        calendarBackground: '#fff',
+                        textSectionTitleColor: '#b6c1cd',
+                        dayTextColor: '#333',
+                        todayTextColor: COLORS.primary,
+                        selectedDayBackgroundColor: COLORS.primary,
+                        selectedDayTextColor: '#fff',
+                    }}
+                    style={{
+                        backgroundColor: '#fff',
+                        paddingBottom: 10
+                    }}
+                    markedDates={{
+                        [daySelected]: {
+                            selected: true,
+                            selectedColor: COLORS.primary,
+                        }
+                    }}
+                />
+            </CalendarProvider>
+
+            <View style={styles.container} >
+                
             </View>
+
         </FullModal>
 
     );
@@ -42,8 +109,8 @@ const ActivityDetail = ({visible, onClose, title}) => {
 const styles = StyleSheet.create({
     container: {
         backgroundColor: COLORS.background,
-        paddingHorizontal: PX_SIZE.lg, 
-        paddingVertical: 30,
+        paddingHorizontal: PX_SIZE.lg,
+        paddingVertical: 20,
     },
     calTitle: {
         fontSize: 16,
