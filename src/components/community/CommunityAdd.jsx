@@ -61,7 +61,7 @@ const onUpload = () => {
 	formData.append("contents", contents);
 
 	files.forEach(f => {
-	formData.append("uploadFile", {
+	formData.append("uploadFiles", {
 		uri: f.uri,
 		type: f.type,
 		name: f.name,
@@ -96,11 +96,11 @@ const onUpload = () => {
 						<Text>클릭해서 이미지를 업로드하세요. </Text>
 						: 
 						preview.map((item, index) => (
-						<Image
-							key={index}
-							source={{ uri: item.uri }}
-							style={styles.previewImage}
-						/>
+							<Image
+								key={index}
+								source={{ uri: item.uri }}
+								style={styles.previewImage}
+							/>
 					))
 				}
 			</Pressable>
