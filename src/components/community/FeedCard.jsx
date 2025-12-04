@@ -243,6 +243,7 @@ const styles = StyleSheet.create({
 	   overflow: 'visible'
     },
     cardImg: {
+	   resizeMode:'cover',
         width: '100%',
         height: 300
     },

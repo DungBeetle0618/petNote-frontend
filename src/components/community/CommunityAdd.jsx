@@ -9,6 +9,7 @@ import { TextInput } from 'react-native';
 import DismissKeyboardView from '../DismissKeyboardView';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import { api } from '../../net/api';
+import Swiper from 'react-native-swiper';
 
 const CommunityAdd = () => {
 
@@ -21,9 +22,9 @@ const CommunityAdd = () => {
   const onResponse = useCallback(async (response) => {
 	const list = Array.isArray(response) ? response : [response];
 
-	const previewList = list.map(img => ({
-	uri: `data:${img.mime};base64,${img.data}`,
-	}));
+		const previewList = list.map(img => ({
+			uri: `data:${img.mime};base64,${img.data}`,
+		}));
 	setPreview(previewList);
 	console.log(previewList);
 
@@ -90,20 +91,66 @@ const onUpload = () => {
   return (
 	<DismissKeyboardView style={{backgroundColor:'#fff', position:'relative', flex:1}}>
 		<View style={{flex:1}}>
-			<Pressable style={styles.preview} onPress={onChangeFile}>
+			<View style={styles.preview}>
 				{
-					preview.length === 0  ?
-						<Text>클릭해서 이미지를 업로드하세요. </Text>
-						: 
-						preview.map((item, index) => (
-							<Image
-								key={index}
-								source={{ uri: item.uri }}
-								style={styles.previewImage}
-							/>
-					))
+						preview.length === 0 ? (
+							<Pressable onPress={onChangeFile} style={{width:'100%', height:'100%'}}>
+								<Text>클릭해서 이미지를 업로드하세요.</Text>
+							</Pressable>
+							) : (
+							<Swiper dot={
+									<View
+										style={{
+										backgroundColor: 'rgba(255,255,255,0.3)', 
+										width: 8,
+										height: 8,
+										borderRadius: 4,
+										marginLeft: 3,
+										marginRight: 3,
+										marginTop: 3,
+										marginBottom: 3,
+										}}
+									/>
+									}
+										activeDot={
+										<View
+											style={{
+											backgroundColor: 'rgba(255,255,255,0.9)',
+											width: 8,
+											height: 8,
+											borderRadius: 4,
+											marginLeft: 3,
+											marginRight: 3,
+											marginTop: 3,
+											marginBottom: 3,
+											}}
+										/>
+									}
+									showsPagination={true} 
+									loop={false}
+									showsButtons={true}
+									nextButton={<Text style={{fontSize: 40, color: 'rgba(255,255,255,0.8)'}}>›</Text>}
+									prevButton={<Text style={{fontSize: 40, color: 'rgba(255,255,255,0.8)'}}>‹</Text>}
+									>
+							{preview.map((item, index) => (
+								<Image
+									key={index}
+									source={{ uri: item.uri }}
+									style={styles.previewImage}
+								/>
+							))}
+							</Swiper>
+						)
 				}
-			</Pressable>
+				{
+					preview.length > 0 && (
+					<Pressable onPress={onChangeFile} style={{position:'absolute', top:'0',right:0, backgroundColor:'rgba(62, 62, 62, 0.8)'}}>
+						<Text style={{color:'#fff', fontSize:12, padding:3,}}>클릭해서 이미지를 변경하세요.</Text>
+					</Pressable>
+					)
+				}
+				
+			</View>
 			<View style={styles.textInputWrapper}>
 				<TextInput style={styles.textInput} placeholder='문구를 작성하거나 설문을 추가하세요..' onChangeText={onChangeContents} multiline ></TextInput>
 			</View>
@@ -126,16 +173,16 @@ const onUpload = () => {
 const styles = StyleSheet.create({
   preview: {
     width: Dimensions.get('window').width - 40,
-    height:Dimensions.get('window').height / 4,
+    height:300,
     borderWidth:StyleSheet.hairlineWidth,
     alignItems:'center',
     justifyContent:'center',
     margin:20,
   },
   previewImage: {
-    resizeMode: 'contain',
-    height:'100%',
-    width:'100%',
+	resizeMode:'cover',
+	width: '100%',
+	height: 300
   },
   textInputWrapper: {
     width: Dimensions.get('window').width - 40,
