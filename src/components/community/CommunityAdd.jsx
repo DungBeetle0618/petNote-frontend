@@ -94,8 +94,8 @@ const onUpload = () => {
 			<View style={styles.preview}>
 				{
 						preview.length === 0 ? (
-							<Pressable onPress={onChangeFile} style={{width:'100%', height:'100%'}}>
-								<Text>클릭해서 이미지를 업로드하세요.</Text>
+							<Pressable onPress={onChangeFile} style={{width:'100%', height:'100%', justifyContent:'center', alignItems:'center'}}>
+								<Text style={{fontSize:12}}>클릭해서 이미지를 업로드하세요.</Text>
 							</Pressable>
 							) : (
 							<Swiper dot={
