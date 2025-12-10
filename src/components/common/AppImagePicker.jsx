@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState, useCallback } from 'react';
 import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
 import { launchImageLibrary } from 'react-native-image-picker';
+import ImageCropPicker from 'react-native-image-crop-picker';
 import { MODAL_COLORS } from '../../assets/styles/globalStyles';
 
 const resolveSource = (val) => {
@@ -9,11 +10,36 @@ const resolveSource = (val) => {
 };
 
 export default function AppImagePicker({ label, value, onChange }) {
-  const pickImage = () => {
-    launchImageLibrary({ mediaType: 'photo' }, (res) => {
-      if (res.assets && res.assets[0]?.uri) onChange(res.assets[0].uri);
-    });
-  };
+  const [preview, setPreview] = useState();
+
+  const onResponse = useCallback(async (response) => {
+    const previewList = {
+      uri: `data:${response.mime};base64,${response.data}`,
+    };
+    setPreview(previewList);
+  
+    const uploadFiles = {
+      uri: response.path, 
+      type: response.mime,
+      name: response.filename || `img_${Date.now()}.jpg`
+    };
+    onChange(uploadFiles);
+  }, []);
+  
+  const pickImage = useCallback(()=>{
+    // launchImageLibrary({ mediaType: 'photo' }, (res) => {
+    //   if (res.assets && res.assets[0]?.uri) onChange(res.assets[0]);
+    // });
+    
+    return ImageCropPicker.openPicker({
+      includeExif: true,
+      includeBase64: true,
+      mediaType: 'photo',
+    })
+      .then(onResponse)
+      .catch(console.log);
+
+  }, [onResponse]); 
 
   const source = resolveSource(value);
 
@@ -22,7 +48,7 @@ export default function AppImagePicker({ label, value, onChange }) {
       {label && <Text style={styles.label}>{label}</Text>}
       <TouchableOpacity style={styles.picker} onPress={pickImage}>
         {source ? (
-          <Image source={source} style={styles.image} resizeMode="cover" />
+          <Image source={{uri: preview.uri}} style={styles.image} resizeMode="cover" />
         ) : (
           <Text style={{ color: MODAL_COLORS.placeholder }}>사진 선택하기</Text>
         )}

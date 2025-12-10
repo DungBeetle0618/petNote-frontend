@@ -45,7 +45,6 @@ const CalendarBox = React.memo(({ selectedDate, onDateChanged, markedDates, cale
 
 const ReminderScreen = () => {
 
-  // const today = useMemo(() => dayjs().format('YYYY-MM-DD'));
   const [selectedDate, setSelectedDate] = useState(dayjs().format('YYYY-MM-DD'));
   const [selectedAnimal, setSelectedAnimal] = useState('all'); // 선택한 동물
 

@@ -121,11 +121,12 @@ export default function PetRegistModal({ visible, onClose, onSubmit, modiData })
     const [date, setDate] = useState(petData.birth ? new Date(petData.birth) : new Date());
     const [disabled, setDisabled] = useState(petData.birthKnowYn == 'Y' ? false : true);
 
+    const [mainImg, setMainImg] = useState(null);
+
     const handleChange = (key, value) => setPetData(prev => ({ ...prev, [key]: value }));
 
     // 제출
     const handleSubmit = async () => {
-
         //validation 체크
         if (!petData.petName.trim()) {
             setErrorName('이름은 필수입니다.');
@@ -146,14 +147,30 @@ export default function PetRegistModal({ visible, onClose, onSubmit, modiData })
             return;
         }
         else {
+
+            let formData = new FormData();
+            Object.entries(petData).forEach(([key, value]) => {
+                formData.append(key, value);
+            });
+
+            if(mainImg) {
+                formData.append("uploadFile", {
+                    uri: mainImg.uri,
+                    type: mainImg.type,
+                    name: mainImg.name
+                });
+            }
+
+            
+
             //add API 호출
             try{
                 let res;
                 if(modiData) {
-                    const { data } = await updatePet(JSON.stringify(petData));
+                    const { data } = await updatePet(formData);
                     res = data; 
                 } else {
-                    const { data } = await insertPet(JSON.stringify(petData));
+                    const { data } = await insertPet(formData);
                     res = data;
                 }
                 if (res.result === "SUCCESS") {
@@ -315,7 +332,7 @@ export default function PetRegistModal({ visible, onClose, onSubmit, modiData })
                 <AppImagePicker
                     label="대표 사진"
                     value={petData.profileImg}
-                    onChange={(v) => handleChange('profileImg', v)}
+                    onChange={(v) => { setMainImg(v); handleChange('profileImg', v.uri); }}
                 />
 
                 <AppButton title={modiData ? '수정하기' : '등록하기'} onPress={handleSubmit} />

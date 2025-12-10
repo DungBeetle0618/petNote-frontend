@@ -6,12 +6,12 @@ import { View, TouchableOpacity, StyleSheet, Image , Text, Platform} from 'react
 import gs, { COLORS } from '../../assets/styles/globalStyles';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import { api } from '../../net/api';
 
 import RegularText from '../font/RegularText';
 import BoldText from '../font/BoldText';
 
 const PetSelectBox = ({ item, onSelect, mb }) => {
-    console.log(item)
 
     return (
         <TouchableOpacity
@@ -22,7 +22,7 @@ const PetSelectBox = ({ item, onSelect, mb }) => {
             <View style={styles.selectContainer}>
                 <View style={styles.profileView}>
                     <Image
-                        source={item.profileImg}
+                        source={{uri: item.profileImg}}
                         style={styles.profileImg}
                     />
                 </View>
