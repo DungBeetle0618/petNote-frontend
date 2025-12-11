@@ -4,6 +4,7 @@ import {
     Text,
     TouchableOpacity,
     StyleSheet,
+    Alert
 } from 'react-native';
 
 import {
@@ -19,9 +20,12 @@ import {
 import DatePicker from 'react-native-date-picker';
 import { MODAL_COLORS } from '../../assets/styles/globalStyles';
 import { getCommonCode } from '../../api/common';
-import { insertPet, updatePet } from '../../api/pet';
+import { insertPet, updatePet, deletePet } from '../../api/pet';
+import { useNavigation } from '@react-navigation/native';
 
 export default function PetRegistModal({ visible, onClose, onSubmit, modiData }) {
+    const navigation = useNavigation();
+
     const [speciesOptions, setSpeciesOptions] = useState([]);
     const [breedOptions, setBreedOptions] = useState([]);
     const initialSpeciesLoad = useRef(true); // 첫 로드에서는 breedCode를 비우지 않는다
@@ -184,6 +188,39 @@ export default function PetRegistModal({ visible, onClose, onSubmit, modiData })
         }
     };
 
+    /**
+     * 펫 삭제
+     */
+    const onDelete = () => {
+        Alert.alert(
+            'PetNote',
+            '정말 삭제하시겠습니까?',
+            [
+                { text: '확인', onPress: () => { 
+                    callDeletePetApi();
+                }, style: 'default' },
+                { text: '취소', onPress: () => { }, style: 'cancel' },
+            ],
+            {
+                cancelable: true,
+                onDismiss: () => { }
+            }
+        )
+    }
+
+    const callDeletePetApi = async() => {
+        try {
+            const {data} = await deletePet(modiData.petNo);
+            if(data.result === 'SUCCESS') {
+               onClose();
+               Alert.alert('삭제되었습니다.');
+               navigation.navigate('PetselectScreen');
+            }
+        } catch(e) {
+            console.log(e);
+        }
+    }
+
     return (
         <BottomModal visible={visible} onClose={onClose} title="동물 정보" maxHeight='85%'>
             <View style={{paddingHorizontal: 24, paddingBottom: 24}}>
@@ -335,6 +372,13 @@ export default function PetRegistModal({ visible, onClose, onSubmit, modiData })
                     onChange={(v) => { setMainImg(v); handleChange('profileImg', v.uri); }}
                 />
 
+                { modiData && (
+                    <TouchableOpacity style={{marginBlock: 10, padding: 8, width: 80, display: 'flex', alignSelf: 'flex-end'}} 
+                        onPress={onDelete}>
+                        <Text style={{textAlign: 'right', color: '#555'}}>삭제하기</Text>
+                    </TouchableOpacity>
+                )}
+            
                 <AppButton title={modiData ? '수정하기' : '등록하기'} onPress={handleSubmit} />
                 <TouchableOpacity style={styles.cancelBtn} onPress={onClose}>
                     <Text style={styles.cancelText}>닫기</Text>

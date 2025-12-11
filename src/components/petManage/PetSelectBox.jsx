@@ -22,7 +22,7 @@ const PetSelectBox = ({ item, onSelect, mb }) => {
             <View style={styles.selectContainer}>
                 <View style={styles.profileView}>
                     <Image
-                        source={{uri: item.profileImg}}
+                        source={{uri: api.defaults.baseURL+item.profileImg}}
                         style={styles.profileImg}
                     />
                 </View>

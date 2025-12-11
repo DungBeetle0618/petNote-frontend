@@ -15,3 +15,7 @@ export const insertPet = (data) =>
 //펫정보 수정
 export const updatePet = (data) =>
     api.post('/api/pet/updateForAxios', data, {headers: { 'Content-Type': 'multipart/form-data' }})
+
+//펫 삭제
+export const deletePet = (petNo) => 
+    api.get(`/api/pet/deleteForAxios?petNo=${petNo}`)
