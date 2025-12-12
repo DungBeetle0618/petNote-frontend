@@ -7,6 +7,7 @@ const AuthContext = createContext(null);
 const DEV_BYPASS_AUTH = __DEV__ && true;
 export function AuthProvider({ children }) {
   const [state, setState] = useState('loading'); // 'loading' | 'authenticated' | 'unauthenticated'
+  const [user, setUser] = useState(null);
 
   // 앱 시작 시: 토큰 있으면 일단 시도 → /auth/refresh로 세션 건강 확인
   useEffect(() => {
@@ -19,10 +20,14 @@ export function AuthProvider({ children }) {
         }
 
         const token = await getAccessToken();
-        if (!token) throw new Error('no token');
+        if (!token) throw new Error('no accessToken');
         // 있더라도 만료됐을 수 있으므로 refresh 시도
-        await api.post('/auth/refresh', {});
-        setState('authenticated');
+        const refreshOk = await api.post('/auth/refresh', {});
+        if(refreshOk.status == 200){
+          setState('authenticated');
+        } else{
+          throw new Error('no refeshToken');
+        }
       } catch {
         await clearAccessToken();
         setState('unauthenticated');
