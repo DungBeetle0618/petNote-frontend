@@ -123,6 +123,7 @@ export default function SignUpScreen() {
                       // 영문(a~zA~Z), 숫자(0~9), 특수문자(!@#$%^&* 등)만 허용
                       const filtered = text.replace(/[^a-zA-Z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>/?`~]/g, '');
                       setUserId(filtered);
+                      setIsUserIdChecked(false);
                     }}
                   placeholder="아이디를 입력하세요"
                   style={styles.input}
