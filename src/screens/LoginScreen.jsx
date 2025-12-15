@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import {
   View, Text, TextInput, TouchableOpacity, StyleSheet,
-  KeyboardAvoidingView, Platform, StatusBar, Alert, Image,
+  KeyboardAvoidingView, Platform, StatusBar, Alert, Image, ScrollView
 } from 'react-native';
 import { loginWithKakaoAccount as KaKaoLogin , login as KaKaoLoginWeb } from "@react-native-seoul/kakao-login";
 import NaverLogin from '@react-native-seoul/naver-login';
@@ -83,123 +83,133 @@ export default function LoginScreen() {
     <SafeAreaView style={styles.safe}>
       <StatusBar barStyle="dark-content" />
       <KeyboardAvoidingView style={styles.flex} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
-        <View style={styles.container}>
-          {/* 로고/타이틀 */}
-          <View style={styles.logoWrap}>
-            <View style={styles.logoCircle}>
-              <Ionicons name="heart" size={30} color="#fff" />
-            </View>
-            <Text style={styles.title}>PETNOTE</Text>
-            <Text style={styles.subtitle}>반려동물 케어 동반자</Text>
-          </View>
-
-          {/* 카드 */}
-          <View style={styles.card}>
-            {/* 아이디 */}
-            <Text style={styles.label}>아이디</Text>
-            <View style={styles.inputWrap}>
-              <MaterialCommunityIcons name="account-outline" size={20} color={COLORS.subText} style={styles.inputIcon} />
-              <TextInput
-                value={userId}
-                onChangeText={setUserId}
-                placeholder="아이디를 입력하세요"
-                autoCapitalize="none"
-                autoCorrect={false}
-                style={styles.input}
-                placeholderTextColor="#9CA3AF"
-                returnKeyType="next"
-              />
+        <ScrollView
+          contentContainerStyle={styles.scrollContent}
+          keyboardShouldPersistTaps="handled"
+          showsVerticalScrollIndicator={false}
+        >
+          <View style={styles.container}>
+            {/* 로고/타이틀 */}
+            <View style={styles.logoWrap}>
+              <View style={styles.logoCircle}>
+                <Ionicons name="heart" size={30} color="#fff" />
+              </View>
+              <Text style={styles.title}>PETNOTE</Text>
+              <Text style={styles.subtitle}>반려동물 케어 동반자</Text>
             </View>
 
-            {/* 비밀번호 */}
-            <Text style={[styles.label, { marginTop: 14 }]}>비밀번호</Text>
-            <View style={styles.inputWrap}>
-              <Ionicons name="lock-closed-outline" size={20} color={COLORS.subText} style={styles.inputIcon} />
-              <TextInput
-                value={password}
-                onChangeText={setPassword}
-                placeholder="비밀번호를 입력하세요"
-                secureTextEntry
-                style={styles.input}
-                placeholderTextColor="#9CA3AF"
-                returnKeyType="done"
-                onSubmitEditing={onLogin}
-              />
-            </View>
+            {/* 카드 */}
+            <View style={styles.card}>
+              {/* 아이디 */}
+              <Text style={styles.label}>아이디</Text>
+              <View style={styles.inputWrap}>
+                <MaterialCommunityIcons name="account-outline" size={20} color={COLORS.subText} style={styles.inputIcon} />
+                <TextInput
+                  value={userId}
+                  onChangeText={setUserId}
+                  placeholder="아이디를 입력하세요"
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  style={styles.input}
+                  placeholderTextColor="#9CA3AF"
+                  returnKeyType="next"
+                />
+              </View>
 
-            {/* 로그인 정보 찾기 */}
-            <TouchableOpacity onPress={() => setHelpOpen(true)}>
-              <Text style={{ color: '#F15A24', fontWeight: '700', marginTop: 12 }}>
-                로그인 정보가 기억나지 않나요?
+              {/* 비밀번호 */}
+              <Text style={[styles.label, { marginTop: 14 }]}>비밀번호</Text>
+              <View style={styles.inputWrap}>
+                <Ionicons name="lock-closed-outline" size={20} color={COLORS.subText} style={styles.inputIcon} />
+                <TextInput
+                  value={password}
+                  onChangeText={setPassword}
+                  placeholder="비밀번호를 입력하세요"
+                  secureTextEntry
+                  style={styles.input}
+                  placeholderTextColor="#9CA3AF"
+                  returnKeyType="done"
+                  onSubmitEditing={onLogin}
+                />
+              </View>
+
+              {/* 로그인 정보 찾기 */}
+              <TouchableOpacity onPress={() => setHelpOpen(true)}>
+                <Text style={{ color: '#F15A24', fontWeight: '700', marginTop: 12 }}>
+                  로그인 정보가 기억나지 않나요?
+                </Text>
+              </TouchableOpacity>
+
+              <ForgotHelperSheet visible={helpOpen} onClose={() => setHelpOpen(false)} />
+
+              {/* 로그인 버튼 */}
+              <TouchableOpacity
+                style={[styles.button, loading && { opacity: 0.7 }]}
+                onPress={onLogin}
+                activeOpacity={0.85}
+                disabled={loading}
+              >
+                <Ionicons name="log-in-outline" size={18} color="#fff" />
+                <Text style={styles.buttonText}>{loading ? '로그인 중…' : '로그인'}</Text>
+              </TouchableOpacity>
+
+              {/* 소셜 로그인 구분선 */}
+              <View style={styles.snsContainer}>
+                <View style={styles.snsLine}></View>
+                  <Text style={styles.snsText}>SNS 계정으로 로그인</Text>
+                <View style={styles.snsLine}></View>
+              </View>
+              {/* 카카오 로그인 */}
+              <TouchableOpacity
+                style={styles.socialBtn}
+                onPress={onKakaoLogin}
+              >
+                <Image
+                  source={require('../assets/images/icon/login/kakao_login_btn.png')}
+                  style={styles.socialBtnImg}
+                  resizeMode="stretch"
+                />
+              </TouchableOpacity>
+
+              {/* 네이버 로그인 */}
+              <TouchableOpacity 
+                style={styles.socialBtn}
+                onPress={onNaverLogin}>
+                <Image
+                  source={require('../assets/images/icon/login/naver_login_btn.png')}
+                  style={styles.socialBtnImg}
+                  resizeMode="stretch"
+                />
+              </TouchableOpacity>
+
+              {/* 구분선 */}
+              <View style={[styles.hr, { marginTop: 18 }]} />
+
+              {/* 회원가입 링크 */}
+              <Text style={styles.signupText}>
+                아직 계정이 없나요?{' '}
+                <Text style={styles.signupLink} onPress={() => navigation.navigate('SignUp')}>
+                  회원가입
+                </Text>
               </Text>
-            </TouchableOpacity>
-
-            <ForgotHelperSheet visible={helpOpen} onClose={() => setHelpOpen(false)} />
-
-            {/* 로그인 버튼 */}
-            <TouchableOpacity
-              style={[styles.button, loading && { opacity: 0.7 }]}
-              onPress={onLogin}
-              activeOpacity={0.85}
-              disabled={loading}
-            >
-              <Ionicons name="log-in-outline" size={18} color="#fff" />
-              <Text style={styles.buttonText}>{loading ? '로그인 중…' : '로그인'}</Text>
-            </TouchableOpacity>
-
-            {/* 소셜 로그인 구분선 */}
-            <View style={styles.snsContainer}>
-              <View style={styles.snsLine}></View>
-                <Text style={styles.snsText}>SNS 계정으로 로그인</Text>
-              <View style={styles.snsLine}></View>
             </View>
-            {/* 카카오 로그인 */}
-            <TouchableOpacity
-              style={styles.socialBtn}
-              onPress={onKakaoLogin}
-            >
-              <Image
-                source={require('../assets/images/icon/login/kakao_login_btn.png')}
-                style={styles.socialBtnImg}
-                resizeMode="stretch"
-              />
-            </TouchableOpacity>
 
-            {/* 네이버 로그인 */}
-            <TouchableOpacity 
-              style={styles.socialBtn}
-              onPress={onNaverLogin}>
-              <Image
-                source={require('../assets/images/icon/login/naver_login_btn.png')}
-                style={styles.socialBtnImg}
-                resizeMode="stretch"
-              />
-            </TouchableOpacity>
-
-            {/* 구분선 */}
-            <View style={[styles.hr, { marginTop: 18 }]} />
-
-            {/* 회원가입 링크 */}
-            <Text style={styles.signupText}>
-              아직 계정이 없나요?{' '}
-              <Text style={styles.signupLink} onPress={() => navigation.navigate('SignUp')}>
-                회원가입
-              </Text>
+            {/* 약관 안내 */}
+            <Text style={styles.legal}>
+              계속 진행하면 PetNote의 <Text style={styles.link}>서비스 이용약관</Text>과{' '}
+              <Text style={styles.link}>개인정보 처리방침</Text>에 동의한 것으로 간주됩니다.
             </Text>
           </View>
-
-          {/* 약관 안내 */}
-          <Text style={styles.legal}>
-            계속 진행하면 PetNote의 <Text style={styles.link}>서비스 이용약관</Text>과{' '}
-            <Text style={styles.link}>개인정보 처리방침</Text>에 동의한 것으로 간주됩니다.
-          </Text>
-        </View>
+        </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
+  scrollContent: {
+    flexGrow: 1,
+  },
+  
   snsContainer: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -232,7 +242,13 @@ const styles = StyleSheet.create({
 
   safe: { flex: 1, backgroundColor: COLORS.bg },
   flex: { flex: 1 },
-  container: { flex: 1, alignItems: 'center', paddingHorizontal: 20, backgroundColor: COLORS.bg },
+  container: {
+  flex: 1,
+  paddingHorizontal: 20,
+  paddingTop: 20,
+  paddingBottom: 24,
+  justifyContent: 'center', // 원래 가운데 정렬 원하면 유지
+},
 
   logoWrap: { alignItems: 'center', marginTop: 24, marginBottom: 16 },
   logoCircle: {
