@@ -9,3 +9,4 @@ export { default as AppTextArea } from './AppTextArea';
 export { default as AppCalendar } from './AppCalendar';
 export { default as AnimateLineChart } from './AnimateLineChart';
 export { default as AppSelects } from './AppSelects';
+export { default as AppRadioButton } from './AppRadioButton';

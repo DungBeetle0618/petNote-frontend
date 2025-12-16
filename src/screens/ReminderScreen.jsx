@@ -11,6 +11,7 @@ import { Picker } from '@react-native-picker/picker';
 import EBoldText from '../components/font/EBoldText';
 import dayjs from 'dayjs';
 import { getPetList } from '../api/pet';
+import ReminderAddModal from '../components/reminder/ReminderAddModal';
 
 const CalendarBox = React.memo(({ markedDates, theme }) => (
   <ExpandableCalendar
@@ -35,10 +36,16 @@ const CalendarBox = React.memo(({ markedDates, theme }) => (
 
 
 const ReminderScreen = () => {
+  const [modalVisible, setModalVisible] = useState(false);
+  const [modiData, setModiData] = useState(null);
 
   const [selectedDate, setSelectedDate] = useState(dayjs().format('YYYY-MM-DD'));
   const [petList, setPetList] = useState([]);
   const [selectedAnimal, setSelectedAnimal] = useState('all'); // 선택한 동물
+
+  const handleSubmit = data => {
+        setModalVisible(false);
+    };
 
   const selectedPetLabel = useMemo(() => {
     if (selectedAnimal === 'all') return '전체';
@@ -212,6 +219,7 @@ const ReminderScreen = () => {
 
 
   return (
+    <>
     <CalendarProvider date={selectedDate} onDateChanged={date => setSelectedDate(date)}>
       <View style={styles.container}>
         <View style={styles.header}>
@@ -267,13 +275,17 @@ const ReminderScreen = () => {
         <TouchableOpacity
           activeOpacity={0.8}
           style={styles.addBtn}
-        // onPress={() => { setPetModalVisible(true); }}
+          onPress={() => { setModalVisible(true); }}
         >
           <FontAwesome6 name='plus' style={styles.whiteFont} />
         </TouchableOpacity>
 
       </View>
     </CalendarProvider>
+
+    <ReminderAddModal visible={modalVisible} onClose={()=>setModalVisible(false)} onSubmit={handleSubmit} modiData={modiData} selectDay={selectedDate} petList={petList}/>
+
+    </>
   );
 };
 

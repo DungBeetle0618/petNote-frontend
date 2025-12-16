@@ -3,7 +3,7 @@ import { View, Text, TextInput, StyleSheet, TouchableOpacity } from 'react-nativ
 import { MODAL_COLORS } from '../../assets/styles/globalStyles';
 import DatePicker from 'react-native-date-picker';
 
-export default function DateTimePicker({ label, value, onChange, selectDate, selectTime, maximumDate, ...props }) {
+export default function DateTimePicker({ label, value, onChange, selectDate, selectTime, maximumDate, error, ...props }) {
     const [open, setOpen] = useState(false);
     const [date, setDate] = useState(value ? new Date(value) : new Date());
 
@@ -14,12 +14,13 @@ export default function DateTimePicker({ label, value, onChange, selectDate, sel
                 style={[
                     styles.input,
                     { justifyContent: 'center' },
+                    error && styles.inputError
                 ]}
                 onPress={() => setOpen(true)}
                 activeOpacity={0.7}
             >
                 <Text style={{ color: selectDate ? '#333' : '#999' }}>
-                    {selectDate ? selectDate + ' ' + selectTime  : '날짜/시간 선택'}
+                    {selectDate ? selectDate + ' ' + selectTime : '날짜/시간 선택'}
                 </Text>
             </TouchableOpacity>
 
@@ -50,7 +51,9 @@ export default function DateTimePicker({ label, value, onChange, selectDate, sel
                 onCancel={() => setOpen(false)}
                 {...props}
             />
-
+            {error && (
+                <Text style={styles.errorMessage}>{error}</Text>  // 에러 메시지 표시
+            )}
         </View>
     );
 }
@@ -67,5 +70,14 @@ const styles = StyleSheet.create({
         backgroundColor: MODAL_COLORS.background,
         fontSize: 14,
         color: MODAL_COLORS.text,
+    },
+
+    inputError: {
+        borderColor: 'red',
+    },
+    errorMessage: {
+        color: 'red',
+        marginTop: 4,
+        fontSize: 12,
     },
 });
