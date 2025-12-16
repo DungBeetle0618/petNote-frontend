@@ -24,6 +24,7 @@ import PetInfo from '../components/petManage/PetInfo';
 import HealthTab from '../components/petManage/HealthTab';
 import ConditionsTab from '../components/petManage/ConditionsTab';
 import ActivityTab from '../components/petManage/ActivityTab';
+import { BASE_URL } from '@env';
 
 const HEADER_HEIGHT = 300;
 
@@ -36,7 +37,7 @@ const PetManageScreen = ({ route, navigation }) => {
 
     const Header = ({ pet, navigation }) => {
         const bgSource = pet?.profileImg
-                ? { uri: pet.profileImg }
+                ? { uri: BASE_URL+pet.profileImg }
                 : require('../assets/images/noMainImage.png');
         
         return (

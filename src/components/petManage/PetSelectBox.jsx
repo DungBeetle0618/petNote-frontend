@@ -10,6 +10,7 @@ import { api } from '../../net/api';
 
 import RegularText from '../font/RegularText';
 import BoldText from '../font/BoldText';
+import { BASE_URL } from '@env';
 
 const PetSelectBox = ({ item, onSelect, mb }) => {
 
@@ -22,7 +23,7 @@ const PetSelectBox = ({ item, onSelect, mb }) => {
             <View style={styles.selectContainer}>
                 <View style={styles.profileView}>
                     <Image
-                        source={{uri: api.defaults.baseURL+item.profileImg}}
+                        source={{uri: BASE_URL+item.profileImg}}
                         style={styles.profileImg}
                     />
                 </View>
