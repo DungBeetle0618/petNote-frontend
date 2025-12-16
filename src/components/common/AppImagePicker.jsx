@@ -3,10 +3,11 @@ import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
 import { launchImageLibrary } from 'react-native-image-picker';
 import ImageCropPicker from 'react-native-image-crop-picker';
 import { MODAL_COLORS } from '../../assets/styles/globalStyles';
+import { BASE_URL } from '@env';
 
 const resolveSource = (val) => {
   if (!val) return null;
-  return typeof val === 'string' ? { uri: val } : val;
+  return typeof val === 'string' ? { uri: BASE_URL+val } : BASE_URL+val;
 };
 
 export default function AppImagePicker({ label, value, onChange }) {
