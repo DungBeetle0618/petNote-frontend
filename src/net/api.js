@@ -2,6 +2,7 @@ import axios from 'axios';
 import { Alert, Platform } from 'react-native';
 import { NetworkInfo } from 'react-native-network-info';
 import { getAccessToken, saveAccessToken, clearAccessToken } from '../secure/tokenStorage';
+import { getAuthActions } from '../utils/authBridge';
 
 // -----------------------------------------
 // 1) axios 인스턴스 (초기 기본값: 즉시 사용 가능)
@@ -45,14 +46,13 @@ api.interceptors.request.use(async (config) => {
   if (config.url?.includes('/auth')){
     return config; // 로그인/리프레시 자기 자신은 제외
   } 
-
   const token = await getAccessToken();
   if (token) config.headers.Authorization = `Bearer ${token}`;
   return config;
 });
 
 // -----------------------------------------
-// 4) 응답 인터셉터: 401/403 → refresh + 재시도 / 공통 에러 처리
+// 4) 응답 인터셉터: 403 → refresh + 재시도 / 공통 에러 처리
 let isRefreshing = false;
 let queue = []; // { resolve, reject, executor }
 
@@ -78,7 +78,6 @@ api.interceptors.response.use(
   (res) => res,
   async (err) => {
     const { config, response, code, message } = err;
-
     // --- 네트워크/타임아웃(서버 응답 자체 없음) ---
     if (!response) {
       if (__DEV__) console.log('❌ API Network Error:', code, message);
@@ -92,11 +91,11 @@ api.interceptors.response.use(
 
     const { status, data } = response;
     const serverMessage = data?.message;
-    console.log(serverMessage)
     const url = config?.url || '';
-
     // refresh 자기 자신은 제외 (무한 루프 방지)
-    if (url.includes('/auth/refresh')) return Promise.reject(err);
+    if (url.includes('/auth/refresh')) {
+      return Promise.reject(err);
+    }
 
     // 인증 관련 엔드포인트는 refresh 시도 X (그 자리에서 안내)
     if (url.includes('/auth/')) {
@@ -106,8 +105,8 @@ api.interceptors.response.use(
       return Promise.reject(err);
     }
 
-    // --- 401/403만 토큰 갱신 대상 ---
-    const shouldRefresh = (status === 401 || status === 403) && !config.__retry;
+    // --- 403만 토큰 갱신 대상 ---
+    const shouldRefresh = (status === 403) && !config.__retry;
     if (!shouldRefresh) {
       // 공통 예외 처리
 /*       if (status === 404) {
@@ -148,9 +147,9 @@ api.interceptors.response.use(
       config.headers.Authorization = `Bearer ${newToken}`;
       return api(config);
     } catch (e) {
-      await clearAccessToken();
       flushQueue(e, null);
-      Alert.alert('세션 만료', '다시 로그인해주세요.');
+      Alert.alert('로그아웃', '다시 로그인해주세요.');
+      getAuthActions()?.logout?.();
       return Promise.reject(e);
     } finally {
       isRefreshing = false;

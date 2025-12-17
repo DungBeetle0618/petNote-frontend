@@ -2,9 +2,10 @@ import React, { createContext, useContext, useEffect, useState, useCallback } fr
 import { Alert } from 'react-native'
 import { api } from '../net/api';
 import { saveAccessToken, getAccessToken, clearAccessToken } from '../secure/tokenStorage';
+import { setAuthActions } from '../utils/authBridge';
 
 const AuthContext = createContext(null);
-const DEV_BYPASS_AUTH = __DEV__ && true;
+const DEV_BYPASS_AUTH = __DEV__ && false;
 export function AuthProvider({ children }) {
   const [state, setState] = useState('loading'); // 'loading' | 'authenticated' | 'unauthenticated'
   const [user, setUser] = useState(null);
@@ -34,6 +35,11 @@ export function AuthProvider({ children }) {
       }
     })();
   }, []);
+
+  useEffect(() => {
+    setAuthActions({ logout, setState });
+    return () => setAuthActions(null);
+  }, [logout]);
 
     const socialLoginKakao = useCallback(async (accessToken) => {
       const { data } = await api.post('/auth/social/kakao/login', {accessToken});

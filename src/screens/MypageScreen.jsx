@@ -1,13 +1,14 @@
 /**
  * 마이페이지
  */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, ScrollView, Pressable, StyleSheet, Image, TouchableOpacity, Dimensions } from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import EBoldText from '../components/font/EBoldText';
 import gs from '../assets/styles/globalStyles';
 import { useNavigation } from '@react-navigation/native';
+import { getUser } from '../api/user'
 
 const petsData = [
   { id: 1, name: 'Charlie', breed: 'Golden Retriever', age: '3 years', weight: '12.3kg', image: require('../assets/images/golden_retriever_sample.png') },
@@ -17,6 +18,16 @@ const petsData = [
 
 
 const MypageScreen = () => {
+  useEffect(() => {
+      (async () => {
+        try {
+          const userId = await getUser();
+          console.log(userId)
+        } catch (e) {
+          console.log(e)
+        }
+      })();
+    }, []);
   const navigation = useNavigation();
   const [activePet, setActivePet] = useState(0);
   const screenWidth = Dimensions.get('window').width;
