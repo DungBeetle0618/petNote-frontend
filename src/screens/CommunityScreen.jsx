@@ -16,6 +16,7 @@ import {
     Image,
 } from 'react-native';
 
+import Feather from 'react-native-vector-icons/Feather';
 import ImagePicker from 'react-native-image-crop-picker';
 import EBoldText from '../components/font/EBoldText';
 import gs, { COLORS, MODAL_COLORS } from '../assets/styles/globalStyles';
@@ -37,8 +38,8 @@ const CommunityScreen = ({navigation}) => {
     const [reviewsRender, setReivewsRender] = useState(false);
     const [activeTabName, setActiveTabName] = useState('Feed');
 
-    /* modal START */
     const [communityAddModal, setCommunityAddModal] = useState(false);
+    const [communitySearchModal, setCommunitySearchModal] = useState(false);
     const [files, setFiles] = useState([]);
     const [preview, setPreview] = useState([]);
     const [contents, setContents] = useState('');
@@ -109,8 +110,6 @@ const CommunityScreen = ({navigation}) => {
     };
 
 
-    /* modal END */
-
 
     const maxHeight = '100%';
     const [translateY] = useState(new Animated.Value(400));
@@ -140,28 +139,39 @@ const CommunityScreen = ({navigation}) => {
 
      const onBoardAdd = useCallback(() => {
 		//navigation.navigate('CommunityAdd');
-        setCommunityAddModal(true);
+          setCommunityAddModal(true);
 	});
 
-    const onCloseCommnet = () => {
+     const onCloseCommnet = () => {
 		setCommunityAddModal(false);
+	}
+
+
+	// search modal
+
+	const onSearch = () => {
+		setCommunitySearchModal(true);
+	}
+
+	const onCloseSearch = () => {
+		setCommunitySearchModal(false);
 	}
 
 
     return (
 	<View>
         <ScrollView contentContainerStyle={gs.screen}>
-            <View>
+            <View style={{justifyContent:'space-between', flexDirection:'row'}}>
                 <EBoldText style={gs.title}>Community</EBoldText>
+			 <Pressable onPress={onSearch}><Text><Feather name="search" size={26} color="#000" /></Text></Pressable>
             </View>
             <View>
                 <Text style={gs.subtitle}>Connect with pet lovers</Text>
             </View>
-
-            <TabMenu onPressHandler={onPressHandler} menuList={['Feed', 'Columns', 'Reviews']} activeTab={activeTabName}/>
+            <TabMenu onPressHandler={onPressHandler} menuList={['Feed', 'Reviews']} activeTab={activeTabName}/>
             <View style={{marginTop:20}}>
                 {feedRender && <Feed />}
-                {columnsRender && <Columns />}
+                {/* {columnsRender && <Columns />} */}
                 {reviewsRender && <Review />}
             </View>
 
@@ -172,6 +182,7 @@ const CommunityScreen = ({navigation}) => {
 		<Pressable style={communityDot.addBox} onPress={onBoardAdd}>
 			<Text><FontAwesome6 name='plus' style={communityDot.addBoxFont} /></Text>
 		</Pressable>
+
 
         <Modal transparent visible={communityAddModal} animationType="fade" onRequestClose={onCloseCommnet}>
              <Animated.View style={styles.modalContainer}>
@@ -248,6 +259,18 @@ const CommunityScreen = ({navigation}) => {
                 </View>
             </Animated.View>
         </Modal>
+
+
+	   <Modal transparent visible={communitySearchModal} animationType="fade" onRequestClose={onCloseSearch}>
+		 <Animated.View style={styles.modalContainer}>
+			 <ScrollView contentContainerStyle={gs.screen}>
+				<TextInput style={styles.searchInput} placeholder='검색'  multiline ></TextInput>
+				{feedRender && <Feed />}
+				{/* {columnsRender && <Columns />} */}
+				{reviewsRender && <Review />}
+			 </ScrollView>
+		 </Animated.View>
+	   </Modal>
 
 
     </View>
@@ -332,6 +355,17 @@ const styles = StyleSheet.create({
         color:'#fff',
         fontWeight:600,
     },
+
+	// search
+	searchInput:{
+		borderWidth:StyleSheet.hairlineWidth,
+		borderRadius:12,
+		marginBottom:10,
+		height:40,
+		paddingLeft:35,
+		fontSize:13,
+	},
+
 });
 
 export default CommunityScreen;
